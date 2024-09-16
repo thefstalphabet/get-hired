@@ -4,7 +4,6 @@ import NavigationBar from "./components/navigation-bar";
 
 export default function App() {
   return (
-    // my-16 grid gap-20 mx-auto px-5 w-[100%] lg:w-[70%] lg:px-0 md:max-w-6xl
     <div>
       <NavigationBar />
       <Routes>

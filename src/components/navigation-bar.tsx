@@ -1,20 +1,31 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignIn,
-  UserButton,
-} from "@clerk/clerk-react";
-import { Link } from "react-router-dom";
+import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/clerk-react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import logo from "../assets/logo.png";
 
 export default function NavigationBar() {
   const [signInModalVisibility, setSignInModalVisibility] =
     useState<boolean>(false);
+  const [search, setSearch] = useSearchParams();
+
+  const handleOutSideModalClicks = (e: React.SyntheticEvent) => {
+    if (e.target === e.currentTarget) {
+      setSignInModalVisibility(false);
+    }
+    setSearch({});
+  };
+
+  useEffect(() => {
+    if (search.get("sign-in")) {
+      setSignInModalVisibility(true);
+    }
+  }, [search]);
+
   return (
     <nav className="flex items-center justify-between px-20 py-5">
       <Link to="/">
-        <h1 className="text-2xl font-extrabold">Get Hired</h1>
+        <img className="w-[8rem]" src={logo} alt="logo" />
       </Link>
       <div className="flex items-center gap-4">
         <SignedOut>
@@ -23,7 +34,7 @@ export default function NavigationBar() {
               setSignInModalVisibility(true);
             }}
           >
-            Signin
+            Sign In
           </Button>
         </SignedOut>
         <SignedIn>
@@ -50,10 +61,13 @@ export default function NavigationBar() {
         </SignedIn>
       </div>
       {signInModalVisibility && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div
+          onClick={handleOutSideModalClicks}
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+        >
           <SignIn
-            fallbackRedirectUrl="/dashboard"
-            signUpForceRedirectUrl="/dashboard"
+            fallbackRedirectUrl="/onbording"
+            signUpForceRedirectUrl="/onbording"
           />
         </div>
       )}

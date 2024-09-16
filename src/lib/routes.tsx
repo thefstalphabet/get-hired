@@ -1,6 +1,7 @@
 import ProtectedRoute from "../components/protected-route";
 import Dashboard from "../pages/dashboard";
 import Home from "../pages/home";
+import Onbording from "../pages/onbording";
 
 export interface IRoutes {
   path: string;
@@ -30,6 +31,10 @@ const routes: Array<IRoutes> = [
   {
     path: "/bookmarks",
     element: <ProtectedRoute>/bookmarks</ProtectedRoute>,
+  },
+  {
+    path: "/onbording",
+    element: <Onbording />,
   },
 ];
 
