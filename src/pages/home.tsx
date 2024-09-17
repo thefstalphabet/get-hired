@@ -1,4 +1,5 @@
 import HomeImage from "../assets/home-img.png";
+import JobsListing from "../components/jobs-listing";
 export default function Home() {
   return (
     <div
@@ -21,6 +22,7 @@ export default function Home() {
         <p>and apply in seconds.</p>
       </div>
       <img className="w-[85%] mt-10" src={HomeImage} alt="img-home" />
+      <JobsListing />
     </div>
   );
 }
