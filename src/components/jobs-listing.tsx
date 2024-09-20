@@ -1,23 +1,44 @@
-import { useEffect } from "react";
-import { useSession } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
 import { getJobs } from "../api/jobs";
+import useFetch from "../hooks/use-fetch";
+import { useUser } from "@clerk/clerk-react";
+import JobCard from "./job-card";
 
 export default function JobsListing() {
-  const { session } = useSession();
+  const [location, setLocation] = useState<string>("");
+  const [companyId, setCompanyId] = useState<string>("");
+  const [jobTitle, setJobTitle] = useState<string>("");
+  const { isLoaded } = useUser();
 
-  const fetchJobs = async () => {
-    const supabaseAccessToken = await session?.getToken({
-      template: "supabase",
-    });
-    console.log(supabaseAccessToken);
-    if (supabaseAccessToken) {
-      const data = await getJobs(supabaseAccessToken);
-      console.log(data);
-    }
-  };
+  const {
+    makeRequest,
+    data,
+    loading,
+  } = useFetch(getJobs, {
+    location: location,
+    company_id: companyId,
+    searchQuery: jobTitle,
+  });
+
+  const handleOnBookmark = () => {};
+
   useEffect(() => {
-    fetchJobs();
-  }, [session]);
+    makeRequest();
+  }, [isLoaded]);
 
-  return <div>jobs-listing</div>;
+  return (
+    <div>
+      {!loading &&
+        data?.map((job: any) => {
+          return (
+            <JobCard
+              job={job}
+              onBookmark={handleOnBookmark}
+              isMyJob={false}
+              savedInit={job?.saved?.length > 0}
+            />
+          );
+        })}
+    </div>
+  );
 }
