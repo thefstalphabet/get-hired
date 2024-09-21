@@ -7,10 +7,10 @@ export default function JobSearch() {
     <div>
       <div className="relative">
         <div className="h-24" style={{ backgroundColor: "#691F74" }}></div>
-        <div className="absolute bottom-[65px] left-1/2 transform -translate-x-1/2">
-          <JobsFilter handleSearch={() => {}} type="big" />
+        <div className="absolute bottom-[34px] left-1/2 transform -translate-x-1/2">
+          <JobsFilter type="big" />
         </div>
-        <div className="h-40 bg-white"></div>
+        <div className="h-32 bg-white"></div>
       </div>
       <div
         className="grid grid-flow-col grid-cols-2 p-5 gap-3 px-40"

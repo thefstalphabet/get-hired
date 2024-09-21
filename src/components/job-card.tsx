@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegBookmark } from "react-icons/fa6";
-import { Button } from "./ui/button";
 import { FaBookmark } from "react-icons/fa6";
-import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
-import { FaLocationCrosshairs } from "react-icons/fa6";
+import { Card } from "./ui/card";
 import useFetch from "../hooks/use-fetch";
 import { bookmarkJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
@@ -34,15 +32,25 @@ export default function JobCard(props: {
 
   return (
     <Card className="flex gap-6 p-5">
-      <img className="h-[3rem] border rounded-md" src={job.company.logo_url} alt="company logo" />
+      <img
+        className="h-[3rem] border rounded-md"
+        src={job.company.logo_url}
+        alt="company logo"
+      />
       <div>
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold">{job.title}</h1>
           {!isMyJob &&
             (saved ? (
-              <FaBookmark className="text-xl cursor-pointer" />
+              <FaBookmark
+                className="text-xl cursor-pointer"
+                onClick={handleBookmarkClicks}
+              />
             ) : (
-              <FaRegBookmark className="text-xl cursor-pointer" />
+              <FaRegBookmark
+                className="text-xl cursor-pointer"
+                onClick={handleBookmarkClicks}
+              />
             ))}
         </div>
         <h4 style={{ color: "#691F74" }} className="font-semibold">
