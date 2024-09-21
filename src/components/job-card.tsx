@@ -59,8 +59,8 @@ export default function JobCard(props: {
         <p>{job?.location}</p>
         <div style={{ color: "#676767" }}>
           <p className="text-sm mt-2 pr-10">
-            {job?.description.split(".").slice(0, 3).join(".") +
-              (job?.description.split(".").length > 3 ? "." : "")}
+            {job?.description.split(".").slice(0, 2).join(".") +
+              (job?.description.split(".").length > 2 ? "." : "")}
           </p>
           <p className="text-sm mt-1">
             {Math.floor(
