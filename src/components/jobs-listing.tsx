@@ -10,11 +10,7 @@ export default function JobsListing() {
   const [jobTitle, setJobTitle] = useState<string>("");
   const { isLoaded } = useUser();
 
-  const {
-    makeRequest,
-    data,
-    loading,
-  } = useFetch(getJobs, {
+  const { makeRequest, data, loading } = useFetch(getJobs, {
     location: location,
     company_id: companyId,
     searchQuery: jobTitle,
@@ -27,7 +23,7 @@ export default function JobsListing() {
   }, [isLoaded]);
 
   return (
-    <div>
+    <div className="grid gap-3">
       {!loading &&
         data?.map((job: any) => {
           return (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaRegBookmark } from "react-icons/fa6";
 import { Button } from "./ui/button";
 import { FaBookmark } from "react-icons/fa6";
-import { Card, CardFooter, CardHeader } from "./ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { FaLocationCrosshairs } from "react-icons/fa6";
 import useFetch from "../hooks/use-fetch";
 import { bookmarkJob } from "../api/jobs";
@@ -33,40 +33,35 @@ export default function JobCard(props: {
   }, [data]);
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <div className="grid gap-2">
-            <h1 className="text-xl font-bold">{job.title}</h1>
-            <div className="flex items-center gap-1 text-sm">
-              <FaLocationCrosshairs className="text-lg" />
-              <p>{job?.location}</p>
-            </div>
-          </div>
-          <img
-            className="h-[3rem]"
-            src={job.company.logo_url}
-            alt="company logo"
-          />
+    <Card className="flex gap-6 p-5">
+      <img className="h-[3rem] border rounded-md" src={job.company.logo_url} alt="company logo" />
+      <div>
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-semibold">{job.title}</h1>
+          {!isMyJob &&
+            (saved ? (
+              <FaBookmark className="text-xl cursor-pointer" />
+            ) : (
+              <FaRegBookmark className="text-xl cursor-pointer" />
+            ))}
         </div>
-      </CardHeader>
-      <CardFooter>
-        <p>{job?.description.slice(0, job.description.indexOf(".") + 1)}</p>
-      </CardFooter>
-      <CardFooter className="flex justify-between items-center gap-5">
-        <Button className="flex-1" variant="outline">
-          More Details
-        </Button>
-        {!isMyJob && (
-          <Button
-            variant="outline"
-            onClick={handleBookmarkClicks}
-            disabled={loading}
-          >
-            {saved ? <FaBookmark className="text-xl" /> : <FaRegBookmark className="text-xl"/>}
-          </Button>
-        )}
-      </CardFooter>
+        <h4 style={{ color: "#691F74" }} className="font-semibold">
+          {job.company.name}
+        </h4>
+        <p>{job?.location}</p>
+        <div style={{ color: "#676767" }}>
+          <p className="text-sm mt-2 pr-10">
+            {job?.description.split(".").slice(0, 3).join(".") +
+              (job?.description.split(".").length > 3 ? "." : "")}
+          </p>
+          <p className="text-sm mt-1">
+            {Math.floor(
+              (Date.now() - new Date(job?.created_at)) / (1000 * 60 * 60 * 24)
+            )}{" "}
+            days ago
+          </p>
+        </div>
+      </div>
     </Card>
   );
 }

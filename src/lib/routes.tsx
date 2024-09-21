@@ -1,6 +1,7 @@
 import ProtectedRoute from "../components/protected-route";
 import Dashboard from "../pages/dashboard";
 import Home from "../pages/home";
+import JobSearch from "../pages/job-search";
 import Onbording from "../pages/onbording";
 
 export interface IRoutes {
@@ -35,6 +36,10 @@ const routes: Array<IRoutes> = [
   {
     path: "/onbording",
     element: <Onbording />,
+  },
+  {
+    path: "/job-search",
+    element: <JobSearch />,
   },
 ];
 

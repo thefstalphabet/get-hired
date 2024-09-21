@@ -1,8 +1,8 @@
 import HomeImage from "../assets/home-img.png";
-import JobsListing from "../components/jobs-listing";
+import JobsFilter from "../components/jobs-filter";
 export default function Home() {
   return (
-    <div>
+    <div className="relative">
       <div
         className="pt-16 flex flex-col gap-8 text-center justify-center items-center bg-no-repeat bg-left-top"
         style={{
@@ -25,7 +25,9 @@ export default function Home() {
         </div>
         <img className="w-[85%] mt-10" src={HomeImage} alt="img-home" />
       </div>
-      <JobsListing />
+      <div className="absolute bottom-[-34px] left-1/2 transform -translate-x-1/2">
+        <JobsFilter handleSearch={() => {}} type="small" />
+      </div>
     </div>
   );
 }

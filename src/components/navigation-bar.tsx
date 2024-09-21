@@ -63,7 +63,7 @@ export default function NavigationBar() {
       {signInModalVisibility && (
         <div
           onClick={handleOutSideModalClicks}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
         >
           <SignIn
             fallbackRedirectUrl="/onbording"
