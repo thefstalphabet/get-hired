@@ -29,17 +29,25 @@ export async function getJobs(token: string, payload: IGetJobPayload) {
   return data;
 }
 
-export async function bookmarkJob(token: string, payload: { alreadyBookmarked?: boolean }, saveData: any) {
+export interface IBookmarkJobPayload {
+  alreadyBookmarked?: boolean,
+  userId: string,
+  jobId: string
+}
+
+export async function bookmarkJob(token: string, payload: IBookmarkJobPayload) {
   const supabase = await supabaseClient(token);
+
   if (payload.alreadyBookmarked) {
-    const { data, error: unBookmarkError } = await supabase.from("saved_jobs").delete().eq("job_id", saveData?.job_id)
+    const { data, error: unBookmarkError } = await supabase.from("saved_jobs").delete().eq("job_id", payload?.job_id)
     if (unBookmarkError) {
       console.log("Error in unbookmark Jobs", unBookmarkError)
       return null;
     }
     return data
   } else {
-    const { data, error: bookmarkError } = await supabase.from("saved_jobs").insert([saveData]).select()
+    delete payload?.alreadyBookmarked
+    const { data, error: bookmarkError } = await supabase.from("saved_jobs").insert([payload]).select()
     if (bookmarkError) {
       console.log("Error in bookmark Jobs", bookmarkError)
       return null;

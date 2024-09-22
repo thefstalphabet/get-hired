@@ -3,9 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialStage {
   searchedJobs: any[];
+  selectedJob: any | null
 }
 const initialState: IInitialStage = {
   searchedJobs: [],
+  selectedJob: null
 };
 
 const JobSlices = createSlice({
@@ -14,6 +16,9 @@ const JobSlices = createSlice({
   reducers: {
     setSearchedJobs(state, action: PayloadAction<any[]>) {
       state.searchedJobs = action.payload;
+    },
+    setSelectedJob(state, action: PayloadAction<any>) {
+      state.selectedJob = action.payload;
     },
     // addaddress(state, action: PayloadAction<any>) {
     //   state.address = [...state.address, action.payload];
@@ -43,6 +48,6 @@ const JobSlices = createSlice({
     // },
   },
 });
-export const { setSearchedJobs } =
+export const { setSearchedJobs, setSelectedJob } =
   JobSlices.actions;
 export default JobSlices.reducer;

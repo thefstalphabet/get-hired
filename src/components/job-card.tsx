@@ -5,23 +5,26 @@ import { Card } from "./ui/card";
 import useFetch from "../hooks/use-fetch";
 import { bookmarkJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
+import { useAppSelector } from "../redux/Hooks";
 
 export default function JobCard(props: {
   job: any;
-  handleOnBookmark: Function;
+  handleOnClick: Function;
   isMyJob: boolean;
   savedInit: boolean;
 }) {
-  const { job, handleOnBookmark, savedInit, isMyJob } = props;
+  const { job, savedInit, isMyJob, handleOnClick } = props;
+  const { selectedJob } = useAppSelector((store) => store.job);
   const { user } = useUser();
   const [saved, setSaved] = useState<boolean>(savedInit);
-  const { makeRequest, data, loading } = useFetch(bookmarkJob, {
-    alreadyBookmarked: saved,
-  });
+  const { makeRequest, data } = useFetch(bookmarkJob);
 
   const handleBookmarkClicks = async () => {
-    const res = await makeRequest({ user_id: user?.id, job_id: job?.id });
-    console.log(res);
+    await makeRequest({
+      user_id: user?.id,
+      job_id: job?.id,
+      alreadyBookmarked: saved,
+    });
   };
 
   useEffect(() => {
@@ -31,9 +34,16 @@ export default function JobCard(props: {
   }, [data]);
 
   return (
-    <Card className="flex gap-6 p-5">
+    <Card
+      className={`flex gap-6 p-5 cursor-pointer ${
+        job?.id === selectedJob?.id && "border-black"
+      }`}
+      onClick={() => {
+        handleOnClick(job);
+      }}
+    >
       <img
-        className="h-[3rem] border rounded-md"
+        className="h-[3rem] border p-2 rounded-md"
         src={job.company.logo_url}
         alt="company logo"
       />

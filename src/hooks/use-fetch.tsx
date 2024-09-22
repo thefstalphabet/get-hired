@@ -1,7 +1,7 @@
 import { useSession, useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 
-const useFetch = (apiCallFun: any, payload: any) => {
+const useFetch = (apiCallFun: any, payload?: any) => {
   const { session } = useSession();
   const { isLoaded } = useUser();
   const [data, setData] = useState<any>(undefined);
@@ -14,7 +14,14 @@ const useFetch = (apiCallFun: any, payload: any) => {
       const supabaseAccessToken = await session?.getToken({
         template: "supabase",
       });
-      const res = await apiCallFun(supabaseAccessToken, {payload, ...args});
+      let query;
+      if (payload) {
+        query = payload;
+      }
+      if (args) {
+        query = { ...query, ...args };
+      }
+      const res = await apiCallFun(supabaseAccessToken, query);
       setData(res);
     } catch (error) {
       setError(error);
