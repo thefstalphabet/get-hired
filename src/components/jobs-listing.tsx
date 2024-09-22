@@ -2,9 +2,11 @@ import JobCard from "./job-card";
 import JobCardSkeleton from "./job-card-skeleton";
 import { useAppDispatch, useAppSelector } from "../redux/Hooks";
 import { setSelectedJob } from "../redux/slices/job";
+import { useUser } from "@clerk/clerk-react";
 
 export default function JobsListing(props: { loading: boolean }) {
   const dispatch = useAppDispatch();
+  const { user } = useUser();
   const { searchedJobs } = useAppSelector((store) => store.job);
   const { loading } = props;
   const handleCardOnClick = (job: any) => {
@@ -19,7 +21,7 @@ export default function JobsListing(props: { loading: boolean }) {
             <JobCard
               job={job}
               handleOnClick={handleCardOnClick}
-              isMyJob={false}
+              isMyJob={job?.recruiter_id === user?.id}
               savedInit={job?.saved?.length > 0}
             />
           );

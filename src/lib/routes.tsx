@@ -3,6 +3,7 @@ import Dashboard from "../pages/dashboard";
 import Home from "../pages/home";
 import JobSearch from "../pages/job-search";
 import Onbording from "../pages/onbording";
+import PageNotFound from "../pages/page-not-found";
 
 export interface IRoutes {
   path: string;
@@ -11,7 +12,7 @@ export interface IRoutes {
 const routes: Array<IRoutes> = [
   {
     path: "*",
-    element: <>Something</>,
+    element: <PageNotFound/>,
   },
   {
     path: "/",
@@ -27,11 +28,11 @@ const routes: Array<IRoutes> = [
   },
   {
     path: "/applications-status",
-    element: <ProtectedRoute>/applications-status</ProtectedRoute>,
+    element: <PageNotFound/>,
   },
   {
     path: "/bookmarks",
-    element: <ProtectedRoute>/bookmarks</ProtectedRoute>,
+    element: <PageNotFound/>,
   },
   {
     path: "/onbording",

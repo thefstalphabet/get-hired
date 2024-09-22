@@ -76,7 +76,6 @@ export async function getJob(token: string, payload: { id: string }) {
 
 export async function updateJob(token: string, payload: { id: string, isOpen: boolean }) {
   const supabase = await supabaseClient(token);
-console.log(payload)
   const { data, error } = await supabase.
     from("jobs").
     update({ is_open: payload?.isOpen }).

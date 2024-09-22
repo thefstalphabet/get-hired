@@ -7,6 +7,7 @@ import { Checkbox } from "./ui/checkbox";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
+import ApplyJobDrawer from "./apply-job-drawer";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
@@ -30,15 +31,13 @@ export default function JobDetail() {
           src={selectedJob?.company.logo_url}
           alt="company logo"
         />
-        <div>
+        <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">{selectedJob?.title}</h1>
           </div>
           <h4 style={{ color: "#691F74" }} className="font-semibold">
-            {selectedJob?.company.name}
+            {selectedJob?.company.name} • {selectedJob?.location}
           </h4>
-          <p>{selectedJob?.location}</p>
-
           {selectedJob?.recruiter_id === user?.id ? (
             <div className="flex items-center space-x-2">
               <Checkbox
@@ -54,15 +53,15 @@ export default function JobDetail() {
             <p>
               {!selectedJob?.isOpen && (
                 <div className="flex gap-2 items-center">
-                  <BiWindowClose />
-                  <p>No longer accepting applications</p>
+                  <BiWindowClose className="text-red-600 text-lg" />
+                  <p className="text-red-600">
+                    No longer accepting applications
+                  </p>
                 </div>
               )}
             </p>
           )}
-          <Button size="sm" className="mt-2">
-            <AiFillThunderbolt className="mt-[3px]" /> <p>Quick Apply</p>
-          </Button>
+          {selectedJob?.recruiter_id === user?.id && <ApplyJobDrawer />}
         </div>
       </div>
       <hr />
