@@ -1,21 +1,22 @@
 import supabaseClient from "../utils/supabase-client";
-export async function getJobs(token: string, payload: {
+interface IGetJobPayload {
   location?: string,
-  company_id?: string,
-  searchQuery?: string
-}) {
-  const supabase = await supabaseClient(token);
+  companyId?: string,
+  title?: string
+}
 
+export async function getJobs(token: string, payload: IGetJobPayload) {
+  const supabase = await supabaseClient(token);
   let query = supabase.from("jobs").select("*, company:companies(name, logo_url)")
 
   if (payload?.location) {
     query = query.eq("location", payload?.location)
   }
-  if (payload?.company_id) {
-    query = query.eq("company_id", payload?.company_id)
+  if (payload?.companyId) {
+    query = query.eq("company_id", payload?.companyId)
   }
-  if (payload?.searchQuery) {
-    query = query.eq("title", `%${payload?.searchQuery}%`)
+  if (payload?.title) {
+    query = query.ilike("title", `%${payload?.title}%`)
   }
 
   const { data, error } = await query;

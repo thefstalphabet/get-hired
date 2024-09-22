@@ -1,21 +1,20 @@
-import { useSession } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useSession, useUser } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
 
-const useFetch = (callBackFunction: any, options: any) => {
+const useFetch = (apiCallFun: any, payload: any) => {
+  const { session } = useSession();
+  const { isLoaded } = useUser();
   const [data, setData] = useState<any>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 
-  const { session } = useSession();
-
-  const makeRequest = async (...args: any) => {
+  const makeRequest = async (args?: any) => {
     setLoading(true);
-
     try {
       const supabaseAccessToken = await session?.getToken({
         template: "supabase",
       });
-      const res = await callBackFunction(supabaseAccessToken, options, ...args);
+      const res = await apiCallFun(supabaseAccessToken, {payload, ...args});
       setData(res);
     } catch (error) {
       setError(error);
@@ -23,7 +22,12 @@ const useFetch = (callBackFunction: any, options: any) => {
       setLoading(false);
     }
   };
-  return { makeRequest, data, loading, error };
+
+  useEffect(() => {
+    makeRequest();
+  }, [isLoaded]);
+
+  return { data, loading, error, makeRequest };
 };
 
 export default useFetch;

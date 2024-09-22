@@ -1,33 +1,16 @@
-import { useEffect, useState } from "react";
-import { getJobs } from "../api/jobs";
-import useFetch from "../hooks/use-fetch";
-import { useUser } from "@clerk/clerk-react";
 import JobCard from "./job-card";
-import { Skeleton } from "./ui/skeleton";
 import JobCardSkeleton from "./job-card-skeleton";
+import { useAppSelector } from "../redux/Hooks";
 
-export default function JobsListing() {
-  const [location, setLocation] = useState<string>("");
-  const [companyId, setCompanyId] = useState<string>("");
-  const [jobTitle, setJobTitle] = useState<string>("");
-  const { isLoaded } = useUser();
-
-  const { makeRequest, data, loading } = useFetch(getJobs, {
-    location: location,
-    company_id: companyId,
-    searchQuery: jobTitle,
-  });
-
+export default function JobsListing(props: { loading: boolean }) {
+  const { searchedJobs } = useAppSelector((store) => store.job);
+  const { loading } = props;
   const handleOnBookmark = () => {};
-
-  useEffect(() => {
-    makeRequest();
-  }, [isLoaded]);
 
   return (
     <div className="flex flex-col gap-3 h-[60vh] overflow-y-scroll hide-scrollbar">
       {!loading ? (
-        data?.map((job: any) => {
+        searchedJobs?.map((job: any) => {
           return (
             <JobCard
               job={job}

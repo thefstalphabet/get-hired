@@ -12,41 +12,31 @@ import {
 import { State } from "country-state-city";
 import { getCompanies } from "../api/company";
 import useFetch from "../hooks/use-fetch";
-import { useUser } from "@clerk/clerk-react";
 import { Label } from "./ui/label";
 import { GoOrganization } from "react-icons/go";
 import { FaRegCalendarAlt } from "react-icons/fa";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 type FIlterType = "small" | "big";
+export interface ISearchQuery {
+  title: string;
+  location: string;
+  companyId: string;
+  date: string;
+}
 
-export default function JobsFilter(props: { type: FIlterType }) {
+export default function JobsFilter(props: {
+  type: FIlterType;
+  handleSearchSubmit: Function;
+  loading: boolean;
+}) {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
-  const { type } = props;
-  const { isLoaded } = useUser();
-  const navigate = useNavigate();
-  const { makeRequest, data: companies } = useFetch(getCompanies, {});
-
-  const [jobLocation, setJobLocation] = useState<string>("");
-  const [jobTitle, setJobTitle] = useState<string>("");
-  const [jobCompany, setJobCompany] = useState<string>("");
-  const [dateFilter, setDateFilter] = useState<Date | null>(null);
-
-  function handleSearchSubmit(e: any) {
-    e.preventDefault();
-    navigate(
-      `/job-search?query=${JSON.stringify({
-        jobTitle: jobTitle,
-        jobLocation: jobLocation,
-      })}`
-    );
-  }
-
+  const { type, handleSearchSubmit, loading } = props;
+  const { data: companies } = useFetch(getCompanies, {});
+  const [searchQuery, setSearchQuery] = useState<ISearchQuery | null>(null);
   function handleClearFilterClicks() {
-    setJobLocation("");
-    setJobTitle("");
-    navigate(`/job-search`);
+    setSearchQuery(null);
   }
 
   const handleDateFilterChange = (value: string) => {
@@ -74,20 +64,26 @@ export default function JobsFilter(props: { type: FIlterType }) {
     setDateFilter(startDate);
   };
 
-  useEffect(() => {
-    makeRequest();
-  }, [isLoaded]);
+  const handleFormSubmit = (e: any) => {
+    e.preventDefault();
+    handleSearchSubmit(searchQuery);
+  };
 
   useEffect(() => {
     if (query) {
       const searchQuery = JSON.parse(query);
-      setJobLocation(searchQuery?.jobLocation);
-      setJobTitle(searchQuery?.jobTitle);
+      setSearchQuery((prev: any) => {
+        return {
+          ...prev,
+          location: searchQuery?.jobLocation,
+          title: searchQuery?.jobTitle,
+        };
+      });
     }
   }, [query]);
 
   return (
-    <form className="grid gap-5" onSubmit={handleSearchSubmit}>
+    <form className="grid gap-5" onSubmit={handleFormSubmit}>
       <div className="flex gap-4 border py-3 px-10 items-center justify-center bg-white rounded-full">
         <div className="flex items-center gap-3">
           <Label htmlFor="search-query" className="text-base whitespace-nowrap">
@@ -98,9 +94,14 @@ export default function JobsFilter(props: { type: FIlterType }) {
             type="text"
             placeholder="Search job by title"
             name="search-query"
-            value={jobTitle}
+            value={searchQuery?.title}
             onChange={(e) => {
-              setJobTitle(e.target.value);
+              setSearchQuery((prev: any) => {
+                return {
+                  ...prev,
+                  title: e.target.value,
+                };
+              });
             }}
           />
         </div>
@@ -109,9 +110,14 @@ export default function JobsFilter(props: { type: FIlterType }) {
             Job Location
           </Label>
           <Select
-            value={jobLocation}
+            value={searchQuery?.location}
             onValueChange={(value: string) => {
-              setJobLocation(value);
+              setSearchQuery((prev: any) => {
+                return {
+                  ...prev,
+                  location: value,
+                };
+              });
             }}
           >
             <SelectTrigger className="w-96">
@@ -130,16 +136,21 @@ export default function JobsFilter(props: { type: FIlterType }) {
             </SelectContent>
           </Select>
         </div>
-        <Button type="submit" className="rounded-full w-28">
+        <Button loading={loading} type="submit" className="rounded-full w-28">
           Find Jobs
         </Button>
       </div>
       {type === "big" && (
         <div className="flex items-center justify-center gap-5">
           <Select
-            value={jobCompany}
+            value={searchQuery?.companyId}
             onValueChange={(value: string) => {
-              setJobCompany(value);
+              setSearchQuery((prev: any) => {
+                return {
+                  ...prev,
+                  companyId: String(value),
+                };
+              });
             }}
           >
             <SelectTrigger className="rounded-full w-32">
@@ -151,7 +162,7 @@ export default function JobsFilter(props: { type: FIlterType }) {
                 {companies?.map((company: any) => {
                   const { name, id } = company;
                   return (
-                    <SelectItem value={name} key={id}>
+                    <SelectItem value={String(id)} key={id}>
                       {name}
                     </SelectItem>
                   );
