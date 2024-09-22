@@ -28,7 +28,7 @@ export interface ISearchQuery {
 export default function JobsFilter(props: {
   type: FIlterType;
   handleSearchSubmit: Function;
-  loading: boolean;
+  loading?: boolean;
 }) {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
@@ -61,7 +61,12 @@ export default function JobsFilter(props: {
         startDate = null; // No filtering
         break;
     }
-    setDateFilter(startDate);
+    setSearchQuery((prev: any) => {
+      return {
+        ...prev,
+        date: startDate,
+      };
+    });
   };
 
   const handleFormSubmit = (e: any) => {

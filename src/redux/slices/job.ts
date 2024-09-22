@@ -20,9 +20,9 @@ const JobSlices = createSlice({
     setSelectedJob(state, action: PayloadAction<any>) {
       state.selectedJob = action.payload;
     },
-    // addaddress(state, action: PayloadAction<any>) {
-    //   state.address = [...state.address, action.payload];
-    // },
+    updateSelectedJob(state, action: PayloadAction<any>) {
+      state.selectedJob = {...state.selectedJob, ...action.payload};
+    },
     // updateaddress(
     //   state,
     //   action: PayloadAction<{
@@ -48,6 +48,6 @@ const JobSlices = createSlice({
     // },
   },
 });
-export const { setSearchedJobs, setSelectedJob } =
+export const { setSearchedJobs, setSelectedJob, updateSelectedJob} =
   JobSlices.actions;
 export default JobSlices.reducer;

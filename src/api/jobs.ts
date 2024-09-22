@@ -55,3 +55,38 @@ export async function bookmarkJob(token: string, payload: IBookmarkJobPayload) {
     return data
   }
 }
+
+export async function getJob(token: string, payload: { id: string }) {
+  const supabase = await supabaseClient(token);
+
+  const { data, error } = await supabase.
+    from("jobs").
+    select("*, company:companies(name, logo_url), application(*)").
+    eq("id", payload?.id).
+    single()
+
+  if (error) {
+    console.error("Error while fetching job", error);
+    return null;
+  }
+
+  return data;
+
+}
+
+export async function updateJob(token: string, payload: { id: string, isOpen: boolean }) {
+  const supabase = await supabaseClient(token);
+console.log(payload)
+  const { data, error } = await supabase.
+    from("jobs").
+    update({ is_open: payload?.isOpen }).
+    eq("id", payload?.id).single()
+
+  if (error) {
+    console.error("Error while updating job", error);
+    return null;
+  }
+
+  return data;
+
+}

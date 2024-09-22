@@ -1,9 +1,27 @@
-import { useAppSelector } from "../redux/Hooks";
+import { useUser } from "@clerk/clerk-react";
+import { useAppDispatch, useAppSelector } from "../redux/Hooks";
 import { Button } from "./ui/button";
 import { AiFillThunderbolt } from "react-icons/ai";
+import { BiWindowClose } from "react-icons/bi";
+import { Checkbox } from "./ui/checkbox";
+import { updateJob } from "../api/jobs";
+import useFetch from "../hooks/use-fetch";
+import { updateSelectedJob } from "../redux/slices/job";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
+  const { user } = useUser();
+  const dispatch = useAppDispatch();
+  const { makeRequest } = useFetch(updateJob);
+
+  async function handleJobStatusChanges(value: boolean) {
+    await makeRequest({
+      id: selectedJob?.id,
+      isOpen: value,
+    });
+    dispatch(updateSelectedJob({ is_open: value }));
+  }
+
   return selectedJob ? (
     <div className="bg-white p-5 rounded-lg border bg-card text-card-foreground shadow-sm">
       <div className="flex items-start gap-7 mb-5">
@@ -20,6 +38,28 @@ export default function JobDetail() {
             {selectedJob?.company.name}
           </h4>
           <p>{selectedJob?.location}</p>
+
+          {selectedJob?.recruiter_id === user?.id ? (
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="closed"
+                checked={selectedJob?.is_open}
+                onCheckedChange={handleJobStatusChanges}
+              />
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Mark it closed.
+              </label>
+            </div>
+          ) : (
+            <p>
+              {!selectedJob?.isOpen && (
+                <div className="flex gap-2 items-center">
+                  <BiWindowClose />
+                  <p>No longer accepting applications</p>
+                </div>
+              )}
+            </p>
+          )}
           <Button size="sm" className="mt-2">
             <AiFillThunderbolt className="mt-[3px]" /> <p>Quick Apply</p>
           </Button>

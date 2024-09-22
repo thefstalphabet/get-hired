@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import routes, { IRoutes } from "./lib/routes";
 import NavigationBar from "./components/navigation-bar";
+import Footer from "./components/footer";
 
 export default function App() {
   return (
