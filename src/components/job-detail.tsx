@@ -1,13 +1,12 @@
 import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/Hooks";
-import { Button } from "./ui/button";
-import { AiFillThunderbolt } from "react-icons/ai";
+
 import { BiWindowClose } from "react-icons/bi";
 import { Checkbox } from "./ui/checkbox";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
-import ApplyJobDrawer from "./apply-job-drawer";
+import ApplyJobModal from "./apply-job-modal";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
@@ -35,9 +34,11 @@ export default function JobDetail() {
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">{selectedJob?.title}</h1>
           </div>
-          <h4 style={{ color: "#691F74" }} className="font-semibold">
-            {selectedJob?.company.name} • {selectedJob?.location}
-          </h4>
+          <div className="flex gap-1">
+            <h4 className="font-semibold">{selectedJob?.company.name}</h4>
+            <span>|</span>
+            <h4 className="font-semibold">{selectedJob?.location}</h4>
+          </div>
           {selectedJob?.recruiter_id === user?.id ? (
             <div className="flex items-center space-x-2">
               <Checkbox
@@ -46,7 +47,7 @@ export default function JobDetail() {
                 onCheckedChange={handleJobStatusChanges}
               />
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Mark it closed.
+                Do you want to close this opening?
               </label>
             </div>
           ) : (
@@ -61,7 +62,7 @@ export default function JobDetail() {
               )}
             </p>
           )}
-          {selectedJob?.recruiter_id === user?.id && <ApplyJobDrawer />}
+          {selectedJob?.recruiter_id === user?.id && <ApplyJobModal />}
         </div>
       </div>
       <hr />
