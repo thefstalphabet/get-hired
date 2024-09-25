@@ -39,7 +39,7 @@ export async function bookmarkJob(token: string, payload: IBookmarkJobPayload) {
   const supabase = await supabaseClient(token);
 
   if (payload.alreadyBookmarked) {
-    const { data, error: unBookmarkError } = await supabase.from("saved_jobs").delete().eq("job_id", payload?.job_id)
+    const { data, error: unBookmarkError } = await supabase.from("saved_jobs").delete().eq("job_id", payload?.jobId)
     if (unBookmarkError) {
       console.log("Error in unbookmark Jobs", unBookmarkError)
       return null;

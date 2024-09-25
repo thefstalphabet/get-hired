@@ -18,7 +18,7 @@ export default function ApplyJobModal() {
       </DialogTrigger>
       <DialogContent
         title={`Apply to ${selectedJob?.company?.name}`}
-        className="h-[30rem] w-[35rem] p-5"
+        className="h-[35rem] w-[35rem] p-5"
       >
         <form className="grid gap-5" onSubmit={handleFormSubmit}>
           <div className="flex gap-2">
@@ -33,7 +33,7 @@ export default function ApplyJobModal() {
           </div>
           <div className="flex flex-col gap-2.5">
             <Label htmlFor="resume">Resume</Label>
-            <Input type="file" name="resume" />
+            <Input type="file" accept=".pdf" name="resume" />
           </div>
           <div className="flex flex-col gap-2.5">
             <Label htmlFor="experienceYears">Experience Years</Label>
@@ -46,7 +46,11 @@ export default function ApplyJobModal() {
             <Label htmlFor="skills">Skills</Label>
             <Input type="text" name="skills" />
           </div>
-          <Button type="submit">Submit</Button>
+          <div className="flex flex-col gap-2.5">
+            <Label htmlFor="phoneNumber">Phone Number</Label>
+            <Input type="text" name="phoneNumber" />
+          </div>
+          <Button type="submit">Apply</Button>
         </form>
       </DialogContent>
     </Dialog>

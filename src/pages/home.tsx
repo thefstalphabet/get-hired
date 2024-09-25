@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import HomeImage from "../assets/home-img.png";
 import JobsFilter, { ISearchQuery } from "../components/jobs-filter";
-import Footer from "../components/footer";
 export default function Home() {
   const navigate = useNavigate();
 
