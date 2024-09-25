@@ -1,6 +1,6 @@
 import JobCard from "./job-card";
 import JobCardSkeleton from "./job-card-skeleton";
-import { useAppDispatch, useAppSelector } from "../redux/Hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSelectedJob } from "../redux/slices/job";
 import { useUser } from "@clerk/clerk-react";
 

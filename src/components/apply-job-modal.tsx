@@ -3,7 +3,7 @@ import { AiFillThunderbolt } from "react-icons/ai";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { useAppSelector } from "../redux/Hooks";
+import { useAppSelector } from "../redux/hooks";
 
 export default function ApplyJobModal() {
   const { selectedJob } = useAppSelector((store) => store.job);

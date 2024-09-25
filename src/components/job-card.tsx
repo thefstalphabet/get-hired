@@ -5,7 +5,7 @@ import { Card } from "./ui/card";
 import useFetch from "../hooks/use-fetch";
 import { bookmarkJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
-import { useAppSelector } from "../redux/Hooks";
+import { useAppSelector } from "../redux/hooks";
 
 export default function JobCard(props: {
   job: any;
@@ -73,10 +73,12 @@ export default function JobCard(props: {
               (job?.description.split(".").length > 2 ? "." : "")}
           </p>
           <p className="text-sm mt-1">
-            {Math.floor(
-              (Date.now() - new Date(job?.created_at)) / (1000 * 60 * 60 * 24)
-            )}{" "}
-            days ago
+            {selectedJob?.created_at
+              ? Math.floor(
+                  (Date.now() - selectedJob?.created_at.getTime()) /
+                    (1000 * 60 * 60 * 24)
+                )
+              : null}
           </p>
         </div>
       </div>
