@@ -1,7 +1,7 @@
 import JobsFilter, { ISearchQuery } from "../components/jobs-filter";
 import JobsListing from "../components/jobs-listing";
 import JobDetail from "../components/job-detail";
-import { useAppDispatch } from "../redux/Hooks";
+import { useAppDispatch } from "../redux/hooks";
 import useFetch from "../hooks/use-fetch";
 import { setSearchedJobs } from "../redux/slices/job";
 import { useEffect } from "react";

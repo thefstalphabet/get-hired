@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import { useAppDispatch, useAppSelector } from "../redux/Hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 import { BiWindowClose } from "react-icons/bi";
 import { Checkbox } from "./ui/checkbox";
