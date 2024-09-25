@@ -66,8 +66,8 @@ export default function NavigationBar() {
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
         >
           <SignIn
-            fallbackRedirectUrl="/job-search"
-            signUpForceRedirectUrl="/job-search"
+            fallbackRedirectUrl="/onbording"
+            signUpForceRedirectUrl="/onbording"
           />
         </div>
       )}

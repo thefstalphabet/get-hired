@@ -18,7 +18,7 @@ function Onbording() {
       await user?.update({
         unsafeMetadata: { role: value },
       });
-      navigate(value === "1" ? "/dashboard" : "/post-jobs");
+      navigate(value === "1" ? "/job-search" : "/job-search");
     } catch (error) {
       console.error("Error while selecting user type:", error);
     }
