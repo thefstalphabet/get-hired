@@ -52,7 +52,7 @@ export default function JobDetail() {
             </div>
           ) : (
             <p>
-              {!selectedJob?.isOpen && (
+              {!selectedJob?.is_open && (
                 <div className="flex gap-2 items-center">
                   <BiWindowClose className="text-red-600 text-lg" />
                   <p className="text-red-600">

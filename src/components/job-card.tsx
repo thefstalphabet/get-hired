@@ -73,12 +73,7 @@ export default function JobCard(props: {
               (job?.description.split(".").length > 2 ? "." : "")}
           </p>
           <p className="text-sm mt-1">
-            {selectedJob?.created_at
-              ? Math.floor(
-                  (Date.now() - selectedJob?.created_at.getTime()) /
-                    (1000 * 60 * 60 * 24)
-                )
-              : null}
+            {/* {Math.floor((Date.now() - new Date(selectedJob?.created_at)) / (1000 * 3600 * 24))} days ago */}
           </p>
         </div>
       </div>
