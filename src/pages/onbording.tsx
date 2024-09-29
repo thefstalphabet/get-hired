@@ -18,7 +18,7 @@ function Onbording() {
       await user?.update({
         unsafeMetadata: { role: value },
       });
-      navigate(value === "1" ? "/job-search" : "/job-search");
+      navigate(value === "1" ? "/" : "/");
     } catch (error) {
       console.error("Error while selecting user type:", error);
     }
@@ -26,7 +26,7 @@ function Onbording() {
   useEffect(() => {
     if (user?.unsafeMetadata?.role) {
       navigate(
-        user?.unsafeMetadata?.role === "1" ? "/dashboard" : "/post-jobs"
+        user?.unsafeMetadata?.role === "1" ? "/job-search" : "/job-search"
       );
     }
   }, [user]);
