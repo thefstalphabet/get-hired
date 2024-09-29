@@ -62,7 +62,7 @@ export default function JobDetail() {
               )}
             </p>
           )}
-          {selectedJob?.recruiter_id === user?.id && <ApplyJobModal />}
+          {selectedJob?.recruiter_id !== user?.id && <ApplyJobModal />}
         </div>
       </div>
       <hr />
