@@ -7,6 +7,7 @@ import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
 import ApplyJobModal from "./apply-job-modal";
+import { FaUsers } from "react-icons/fa";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
@@ -38,6 +39,10 @@ export default function JobDetail() {
             <h4 className="font-semibold">{selectedJob?.company.name}</h4>
             <span>|</span>
             <h4 className="font-semibold">{selectedJob?.location}</h4>
+          </div>
+          <div className="flex items-center gap-2">
+            <FaUsers className="text-xl mt-[2px]" />
+            <p>{selectedJob?.applications?.length} Applicants</p>
           </div>
           {selectedJob?.recruiter_id === user?.id ? (
             <div className="flex items-center space-x-2">

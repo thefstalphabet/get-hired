@@ -42,7 +42,6 @@ export default function ApplyJobModal() {
     resolver: zodResolver(formSchema),
   });
 
-  console.log(errors);
   function handleFormSubmit(data: any) {
     makeRequest({
       ...data,
@@ -65,30 +64,6 @@ export default function ApplyJobModal() {
         className="w-[35rem] p-5"
       >
         <form className="grid gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
-          {/* <div className="flex gap-2">
-            <div className="flex flex-col gap-2.5 w-full">
-              <Label htmlFor="firstName">First Name</Label>
-              <div className="grid gap-1">
-                <Input type="text" {...register("firstName")} />
-                {errors?.firstName && (
-                  <p className="text-red-500 text-xs">
-                    {String(errors?.firstName?.message)}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col gap-2.5 w-full">
-              <Label htmlFor="lastName">Last Name</Label>
-              <div className="grid gap-1">
-                <Input type="text" {...register("lastName")} />
-                {errors?.lastName && (
-                  <p className="text-red-500 text-xs">
-                    {String(errors?.lastName?.message)}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div> */}
           <div className="flex flex-col gap-2.5">
             <Label htmlFor="resume">Resume</Label>
             <div className="grid gap-1">
@@ -137,7 +112,11 @@ export default function ApplyJobModal() {
           <div className="flex flex-col gap-2.5">
             <Label htmlFor="skills">Skills</Label>
             <div className="grid gap-1">
-              <Input type="text" {...register("skills")} />
+              <Input
+                type="text"
+                {...register("skills")}
+                placeholder="Comma separated skills"
+              />
               {errors?.skills && (
                 <p className="text-red-500 text-xs">
                   {String(errors?.skills?.message)}
@@ -148,7 +127,11 @@ export default function ApplyJobModal() {
           <div className="flex flex-col gap-2.5">
             <Label htmlFor="phoneNumber">Phone Number</Label>
             <div className="grid gap-1">
-              <Input type="text" {...register("phone_number")} />
+              <Input
+                type="text"
+                {...register("phone_number")}
+                placeholder="Your phone number"
+              />
               {errors?.phone_number && (
                 <p className="text-red-500 text-xs">
                   {String(errors?.phone_number?.message)}

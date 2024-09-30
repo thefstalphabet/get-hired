@@ -7,7 +7,8 @@ interface IGetJobPayload {
 
 export async function getJobs(token: string, payload: IGetJobPayload) {
   const supabase = await supabaseClient(token);
-  let query = supabase.from("jobs").select("*, company:companies(name, logo_url)")
+  let query = supabase.from("jobs").select("*, company:companies(name, logo_url), applications: applications(*)")
+
 
   if (payload?.location) {
     query = query.eq("location", payload?.location)
