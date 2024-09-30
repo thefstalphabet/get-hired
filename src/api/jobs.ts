@@ -61,7 +61,7 @@ export async function getJob(token: string, payload: { id: string }) {
 
   const { data, error } = await supabase.
     from("jobs").
-    select("*, company:companies(name, logo_url), application(*)").
+    select("*, company:companies(name, logo_url), applications: applications(*)").
     eq("id", payload?.id).
     single()
 

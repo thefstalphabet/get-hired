@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
 import { useAppSelector } from "../redux/hooks";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -28,7 +28,7 @@ const formSchema = z.object({
 });
 
 export default function ApplyJobModal() {
-  const { makeRequest } = useFetch(applyToJob, {});
+  const { makeRequest, loading } = useFetch(applyToJob, {});
   const { user } = useUser();
   const { selectedJob } = useAppSelector((store) => store.job);
 
@@ -37,10 +37,12 @@ export default function ApplyJobModal() {
     handleSubmit,
     // control,
     formState: { errors },
-    // reset,
+    reset,
   } = useForm({
     resolver: zodResolver(formSchema),
   });
+
+  console.log(errors);
   function handleFormSubmit(data: any) {
     makeRequest({
       ...data,
@@ -49,6 +51,7 @@ export default function ApplyJobModal() {
       name: user?.fullName,
       resume: data?.resume[0],
     });
+    reset();
   }
   return (
     <Dialog>
@@ -153,7 +156,15 @@ export default function ApplyJobModal() {
               )}
             </div>
           </div>
-          <Button type="submit">Apply</Button>
+          <DialogClose asChild>
+            <Button
+              loading={loading}
+              disabled={Object.keys(errors).length > 0 ? true : false}
+              type="submit"
+            >
+              Apply
+            </Button>
+          </DialogClose>
         </form>
       </DialogContent>
     </Dialog>
