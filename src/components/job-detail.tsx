@@ -2,12 +2,14 @@ import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 import { BiWindowClose } from "react-icons/bi";
-import { Checkbox } from "./ui/checkbox";
+// import { Checkbox } from "./ui/checkbox";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
 import ApplyJobModal from "./apply-job-modal";
 import { FaUsers } from "react-icons/fa";
+import ReCard from "../reusable-antd-components/ReCard";
+import { Checkbox } from "antd";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
@@ -15,16 +17,17 @@ export default function JobDetail() {
   const dispatch = useAppDispatch();
   const { makeRequest } = useFetch(updateJob);
 
-  async function handleJobStatusChanges(value: boolean) {
+  async function handleJobStatusChanges(e: any) {
+    console.log(e);
     await makeRequest({
       id: selectedJob?.id,
-      isOpen: value,
+      isOpen: e?.target?.checked,
     });
-    dispatch(updateSelectedJob({ is_open: value }));
+    dispatch(updateSelectedJob({ is_open: e?.target?.checked }));
   }
 
   return selectedJob ? (
-    <div className="bg-white p-5 rounded-lg border bg-card text-card-foreground shadow-sm">
+    <ReCard>
       <div className="flex items-start gap-7 mb-5">
         <img
           className="h-[3rem] border p-2 rounded-md"
@@ -40,16 +43,13 @@ export default function JobDetail() {
             <span>|</span>
             <h4 className="font-semibold">{selectedJob?.location}</h4>
           </div>
-          <div className="flex items-center gap-2">
-            <FaUsers className="text-xl mt-[2px]" />
-            <p>{selectedJob?.applications?.length} Applicants</p>
-          </div>
+
           {selectedJob?.recruiter_id === user?.id ? (
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="closed"
                 checked={selectedJob?.is_open}
-                onCheckedChange={handleJobStatusChanges}
+                onChange={handleJobStatusChanges}
               />
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Do you want to close this opening?
@@ -67,6 +67,10 @@ export default function JobDetail() {
               )}
             </p>
           )}
+          <div className="flex items-center gap-2">
+            <FaUsers className="text-xl mt-[2px]" />
+            <p>{selectedJob?.applications?.length} Applicants</p>
+          </div>
           {selectedJob?.recruiter_id !== user?.id && <ApplyJobModal />}
         </div>
       </div>
@@ -81,7 +85,7 @@ export default function JobDetail() {
           <p style={{ color: "#676767" }}>{selectedJob?.requirements}</p>
         </div>
       </div>
-    </div>
+    </ReCard>
   ) : (
     <></>
   );

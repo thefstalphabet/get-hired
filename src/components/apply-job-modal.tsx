@@ -1,4 +1,3 @@
-import { Button } from "./ui/button";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -10,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useFetch from "../hooks/use-fetch";
 import { applyToJob } from "../api/application";
 import { useUser } from "@clerk/clerk-react";
+import { Button } from "antd";
 
 const formSchema = z.object({
   experience_year: z
@@ -55,8 +55,11 @@ export default function ApplyJobModal() {
   return (
     <Dialog>
       <DialogTrigger className="w-0">
-        <Button size="sm" className="mt-2 h-9 flex gap-1 rounded-full">
-          <AiFillThunderbolt className="mt-[3px]" /> <p>Quick Apply</p>
+        <Button
+          icon={<AiFillThunderbolt className="mt-[3px] text-lg" />}
+          className="mt-2 h-9 rounded-full"
+        >
+          Quick Apply
         </Button>
       </DialogTrigger>
       <DialogContent

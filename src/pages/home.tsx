@@ -36,7 +36,7 @@ export default function Home() {
         </div>
         <img className="w-[85%] mt-10" src={HomeImage} alt="img-home" />
       </div>
-      <div className="absolute bottom-[-34px] left-1/2 transform -translate-x-1/2">
+      <div className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2">
         <JobsFilter handleSearchSubmit={handleSearchSubmit} type="small" />
       </div>
     </div>

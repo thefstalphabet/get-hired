@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { FaRegBookmark } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa6";
-import { Card } from "./ui/card";
+// import { Card } from "./ui/card";
 import useFetch from "../hooks/use-fetch";
 import { bookmarkJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSelectedJob } from "../redux/slices/job";
+import ReCard from "../reusable-antd-components/ReCard";
 
 export default function JobCard(props: { job: any }) {
   const { job } = props;
@@ -35,14 +36,14 @@ export default function JobCard(props: { job: any }) {
   }, [data]);
 
   return (
-    <Card
-      className={`flex gap-6 p-5 cursor-pointer ${
+    <ReCard
+      className={`cursor-pointer  ${
         job?.id === selectedJob?.id && "border-black"
       }`}
       onClick={handleOnCardClicks}
     >
       <img
-        className="h-[3rem] border p-2 rounded-md"
+        className="h-[3rem] border p-2 rounded-md mb-2"
         src={job.company.logo_url}
         alt="company logo"
       />
@@ -52,12 +53,12 @@ export default function JobCard(props: { job: any }) {
           {!(job?.recruiter_id === user?.id) &&
             (saved ? (
               <FaBookmark
-                className="text-xl cursor-pointer"
+                className="text-2xl cursor-pointer"
                 onClick={handleBookmarkClicks}
               />
             ) : (
               <FaRegBookmark
-                className="text-xl cursor-pointer"
+                className="text-2xl cursor-pointer"
                 onClick={handleBookmarkClicks}
               />
             ))}
@@ -76,6 +77,6 @@ export default function JobCard(props: { job: any }) {
           </p>
         </div>
       </div>
-    </Card>
+    </ReCard>
   );
 }
