@@ -49,7 +49,7 @@ export default function JobCard(props: { job: any }) {
       />
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">{job.title}</h1>
+          <h1 className="text-lg font-bold">{job.title}</h1>
           {!(job?.recruiter_id === user?.id) &&
             (saved ? (
               <FaBookmark

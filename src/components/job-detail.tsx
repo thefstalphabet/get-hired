@@ -9,13 +9,17 @@ import { updateSelectedJob } from "../redux/slices/job";
 import ApplyJobModal from "./apply-job-modal";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
-import { Checkbox } from "antd";
+import { Button, Checkbox } from "antd";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { useState } from "react";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
   const { user } = useUser();
   const dispatch = useAppDispatch();
   const { makeRequest } = useFetch(updateJob);
+  const [applyJobDrawerVisibility, setApplyJobDrawerVisibility] =
+    useState<boolean>(false);
 
   async function handleJobStatusChanges(e: any) {
     console.log(e);
@@ -36,7 +40,7 @@ export default function JobDetail() {
         />
         <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold">{selectedJob?.title}</h1>
+            <h1 className="text-lg font-bold">{selectedJob?.title}</h1>
           </div>
           <div className="flex gap-1">
             <h4 className="font-semibold">{selectedJob?.company.name}</h4>
@@ -71,17 +75,31 @@ export default function JobDetail() {
             <FaUsers className="text-xl mt-[2px]" />
             <p>{selectedJob?.applications?.length} Applicants</p>
           </div>
-          {selectedJob?.recruiter_id !== user?.id && <ApplyJobModal />}
+          {selectedJob?.recruiter_id !== user?.id && (
+            <ApplyJobModal
+              visibility={applyJobDrawerVisibility}
+              setVisibility={setApplyJobDrawerVisibility}
+            />
+          )}
+          <Button
+            icon={<AiFillThunderbolt className="mt-[3px] text-lg" />}
+            className="mt-2 h-9 rounded-full w-36"
+            onClick={() => {
+              setApplyJobDrawerVisibility(true);
+            }}
+          >
+            Quick Apply
+          </Button>
         </div>
       </div>
       <hr />
       <div className="flex flex-col gap-5 mt-5 h-[90vh] overflow-y-scroll hide-scrollbar">
         <div>
-          <h1 className="text-lg font-semibold">Description:</h1>
+          <h1 className="text-base mb-2">Description:</h1>
           <p style={{ color: "#676767" }}>{selectedJob?.description}</p>
         </div>
         <div>
-          <h1 className="text-lg font-semibold">Requirments:</h1>
+          <h1 className="text-base mb-2">Requirments:</h1>
           <p style={{ color: "#676767" }}>{selectedJob?.requirements}</p>
         </div>
       </div>
