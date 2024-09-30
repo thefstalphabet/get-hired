@@ -15,7 +15,8 @@ import useFetch from "../hooks/use-fetch";
 import { Label } from "./ui/label";
 import { GoOrganization } from "react-icons/go";
 import { FaRegCalendarAlt } from "react-icons/fa";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 
 type FIlterType = "small" | "big";
 export interface ISearchQuery {
@@ -32,6 +33,9 @@ export default function JobsFilter(props: {
 }) {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
+  const navigate = useNavigate();
+  const { isSignedIn } = useUser();
+
   const { type, handleSearchSubmit, loading } = props;
   const { data: companies } = useFetch(getCompanies, {});
   const [searchQuery, setSearchQuery] = useState<ISearchQuery | null>(null);
@@ -71,6 +75,9 @@ export default function JobsFilter(props: {
 
   const handleFormSubmit = (e: any) => {
     e.preventDefault();
+    if (!isSignedIn) {
+      return navigate("/?sign-in=true");
+    }
     handleSearchSubmit(searchQuery);
   };
 

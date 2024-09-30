@@ -7,6 +7,7 @@ import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
 import ApplyJobModal from "./apply-job-modal";
+import { FaUsers } from "react-icons/fa";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
@@ -39,6 +40,10 @@ export default function JobDetail() {
             <span>|</span>
             <h4 className="font-semibold">{selectedJob?.location}</h4>
           </div>
+          <div className="flex items-center gap-2">
+            <FaUsers className="text-xl mt-[2px]" />
+            <p>{selectedJob?.applications?.length} Applicants</p>
+          </div>
           {selectedJob?.recruiter_id === user?.id ? (
             <div className="flex items-center space-x-2">
               <Checkbox
@@ -62,7 +67,7 @@ export default function JobDetail() {
               )}
             </p>
           )}
-          {selectedJob?.recruiter_id === user?.id && <ApplyJobModal />}
+          {selectedJob?.recruiter_id !== user?.id && <ApplyJobModal />}
         </div>
       </div>
       <hr />

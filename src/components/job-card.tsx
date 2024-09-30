@@ -5,18 +5,15 @@ import { Card } from "./ui/card";
 import useFetch from "../hooks/use-fetch";
 import { bookmarkJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { setSelectedJob } from "../redux/slices/job";
 
-export default function JobCard(props: {
-  job: any;
-  handleOnClick: Function;
-  isMyJob: boolean;
-  savedInit: boolean;
-}) {
-  const { job, savedInit, isMyJob, handleOnClick } = props;
+export default function JobCard(props: { job: any }) {
+  const { job } = props;
+  const dispatch = useAppDispatch();
   const { selectedJob } = useAppSelector((store) => store.job);
   const { user } = useUser();
-  const [saved, setSaved] = useState<boolean>(savedInit);
+  const [saved, setSaved] = useState<boolean>(job?.saved?.length > 0);
   const { makeRequest, data } = useFetch(bookmarkJob);
 
   const handleBookmarkClicks = async () => {
@@ -25,6 +22,10 @@ export default function JobCard(props: {
       job_id: job?.id,
       alreadyBookmarked: saved,
     });
+  };
+
+  const handleOnCardClicks = () => {
+    dispatch(setSelectedJob(job));
   };
 
   useEffect(() => {
@@ -38,9 +39,7 @@ export default function JobCard(props: {
       className={`flex gap-6 p-5 cursor-pointer ${
         job?.id === selectedJob?.id && "border-black"
       }`}
-      onClick={() => {
-        handleOnClick(job);
-      }}
+      onClick={handleOnCardClicks}
     >
       <img
         className="h-[3rem] border p-2 rounded-md"
@@ -50,7 +49,7 @@ export default function JobCard(props: {
       <div>
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold">{job.title}</h1>
-          {!isMyJob &&
+          {!(job?.recruiter_id === user?.id) &&
             (saved ? (
               <FaBookmark
                 className="text-xl cursor-pointer"
