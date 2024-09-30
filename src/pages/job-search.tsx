@@ -1,14 +1,16 @@
 import JobsFilter, { ISearchQuery } from "../components/jobs-filter";
 import JobsListing from "../components/jobs-listing";
 import JobDetail from "../components/job-detail";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useFetch from "../hooks/use-fetch";
 import { setSearchedJobs } from "../redux/slices/job";
 import { useEffect } from "react";
 import { getJobs } from "../api/jobs";
+import NoJobsFound from '../assets/noJobsFound.png';
 
 export default function JobSearch() {
   const dispatch = useAppDispatch();
+  const { searchedJobs } = useAppSelector((store) => store.job);
   const {
     data: jobs,
     loading: jobsLoading,
@@ -36,13 +38,24 @@ export default function JobSearch() {
         </div>
         <div className="h-32 bg-white"></div>
       </div>
-      <div
-        className="grid grid-flow-col grid-cols-2 p-5 gap-3 px-40"
-        style={{ backgroundColor: "#F6F6F9" }}
-      >
-        <JobsListing loading={jobsLoading} />
-        <JobDetail />
-      </div>
+
+      {searchedJobs?.length ? (
+        <div
+          className="grid grid-flow-col grid-cols-2 p-5 gap-3 px-40"
+          style={{ backgroundColor: "#F6F6F9" }}
+        >
+          <JobsListing loading={jobsLoading} />
+          <JobDetail />
+        </div>
+      ) : (
+        <div
+          className="p-10 flex flex-col items-center"
+          style={{ backgroundColor: "#F6F6F9" }}
+        >
+          <img src={NoJobsFound} alt="No job Found" className="w-[18rem]"  />
+          <p>No result found for your searched data.</p>
+        </div>
+      )}
     </div>
   );
 }
