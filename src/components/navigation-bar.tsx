@@ -1,8 +1,8 @@
 import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/clerk-react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
+import { Button } from "antd";
 
 export default function NavigationBar() {
   const [signInModalVisibility, setSignInModalVisibility] =

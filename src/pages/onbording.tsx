@@ -1,13 +1,8 @@
 import { useUser } from "@clerk/clerk-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
+
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { Select } from "antd";
 
 function Onbording() {
   const { user } = useUser();
@@ -35,18 +30,14 @@ function Onbording() {
     <div className="flex flex-col items-center justify-center gap-7 h-[70vh]">
       <h1 className="text-3xl font-bold">You are a...</h1>
       <Select
-        onValueChange={(value: string) => {
-          handleSelectChanges(value);
-        }}
-      >
-        <SelectTrigger className="w-[350px]">
-          <SelectValue placeholder="Select user type" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="1">Candidate</SelectItem>
-          <SelectItem value="2">Recruiter</SelectItem>
-        </SelectContent>
-      </Select>
+        className="w-60"
+        defaultValue="lucy"
+        onSelect={handleSelectChanges}
+        options={[
+          { value: "1", label: "Candidate" },
+          { value: "2", label: "Recruiter" },
+        ]}
+      />
     </div>
   );
 }
