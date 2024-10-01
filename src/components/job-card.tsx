@@ -76,7 +76,7 @@ export default function JobCard(props: { job: any }) {
           <p className="text-sm mt-1">
             {job?.created_at &&
               `${moment().diff(
-                moment(selectedJob.created_at),
+                moment(job?.created_at),
                 "days"
               )} days ago`}
           </p>

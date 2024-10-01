@@ -1,8 +1,10 @@
+import moment from "moment";
 import supabaseClient from "../utils/supabase-client";
 interface IGetJobPayload {
   location?: string,
   companyId?: string,
   title?: string
+  created_at?: Date
 }
 
 export async function getJobs(token: string, payload: IGetJobPayload) {
@@ -15,6 +17,9 @@ export async function getJobs(token: string, payload: IGetJobPayload) {
   }
   if (payload?.companyId) {
     query = query.eq("company_id", payload?.companyId)
+  }
+  if (payload?.created_at) {
+    query = query.gte("created_at", moment(new Date(payload.created_at)).format('YYYY-MM-DDTHH:mm:ssZ')).lte("created_at", moment(new Date()).format('YYYY-MM-DDTHH:mm:ssZ'));
   }
   if (payload?.title) {
     query = query.ilike("title", `%${payload?.title}%`)

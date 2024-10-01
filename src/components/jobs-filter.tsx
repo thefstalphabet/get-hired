@@ -19,29 +19,29 @@ export interface ISearchQuery {
   title: string;
   location: string;
   companyId: string;
-  date: string;
+  created_at: Date;
 }
 
 const dateFilterItems: ISelectOptions[] = [
   {
     label: "Last 24 Hours",
-    value: "last_24_hours",
+    value: `${new Date(new Date().getTime() - 24 * 60 * 60 * 1000)}`,
   },
   {
     label: "Last 3 Days",
-    value: "last_3_days",
+    value: `${new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000)}`,
   },
   {
     label: "Last 7 Days",
-    value: "last_7_days",
+    value: `${new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)}`,
   },
   {
     label: "Last 14 Days",
-    value: "last_14_days",
+    value: `${new Date(new Date().getTime() - 14 * 24 * 60 * 60 * 1000)}`,
   },
   {
     label: "Anytime",
-    value: "anytime",
+    value: "",
   },
 ];
 
@@ -58,31 +58,6 @@ export default function JobsFilter(props: {
 
   const { type, handleSearchSubmit, loading } = props;
   const { data: companies } = useFetch(getCompanies, {});
-
-  const handleDateFilterChange = (value: string) => {
-    const currentDate = new Date();
-
-    let startDate;
-    switch (value) {
-      case "last_24_hours":
-        startDate = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000);
-        break;
-      case "last_3_days":
-        startDate = new Date(currentDate.getTime() - 3 * 24 * 60 * 60 * 1000);
-        break;
-      case "last_7_days":
-        startDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-        break;
-      case "last_14_days":
-        startDate = new Date(currentDate.getTime() - 14 * 24 * 60 * 60 * 1000);
-        break;
-      case "anytime":
-      default:
-        startDate = null; // No filtering
-        break;
-    }
-    form.setFieldValue("date", startDate);
-  };
 
   const handleFormSubmit = (values: any) => {
     if (!isSignedIn) {
@@ -165,9 +140,7 @@ export default function JobsFilter(props: {
               label="Date"
               placeholder="Anytime"
               noStyle
-              name="date"
-              searchable
-              onChange={handleDateFilterChange}
+              name="created_at"
               items={dateFilterItems?.map((item: ISelectOptions) => {
                 const { label, value } = item;
                 return {
