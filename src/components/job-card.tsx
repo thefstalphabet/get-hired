@@ -8,6 +8,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSelectedJob } from "../redux/slices/job";
 import ReCard from "../reusable-antd-components/ReCard";
+import moment from "moment";
 
 export default function JobCard(props: { job: any }) {
   const { job } = props;
@@ -73,7 +74,11 @@ export default function JobCard(props: { job: any }) {
               (job?.description.split(".").length > 2 ? "." : "")}
           </p>
           <p className="text-sm mt-1">
-            {/* {Math.floor((Date.now() - new Date(selectedJob?.created_at)) / (1000 * 3600 * 24))} days ago */}
+            {job?.created_at &&
+              `${moment().diff(
+                moment(selectedJob.created_at),
+                "days"
+              )} days ago`}
           </p>
         </div>
       </div>

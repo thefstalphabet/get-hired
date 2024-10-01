@@ -22,7 +22,7 @@ createRoot(document.getElementById("root")!).render(
         theme={{
           token: {
             // Seed Token
-            colorPrimary: "#691F74",
+            colorPrimary: "#70297a",
             borderRadius: 5,
             fontFamily: "Segoe UI Symbol",
             fontSize: 14,
