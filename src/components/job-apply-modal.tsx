@@ -2,33 +2,41 @@ import { useAppSelector } from "../redux/hooks";
 import useFetch from "../hooks/use-fetch";
 import { applyToJob } from "../api/application";
 import { useUser } from "@clerk/clerk-react";
-import { Button, Form } from "antd";
+import { Button, Form, UploadFile } from "antd";
 import ReDrawer from "../reusable-antd-components/ReDrawer";
 import ReForm from "../reusable-antd-components/ReForm";
-import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 import ReUpload from "../reusable-antd-components/ReFormFields/ReUpload";
 import { FaPlus } from "react-icons/fa";
+import { useState } from "react";
+import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 
 export default function JobApplyModal(props: {
   visibility: boolean;
-  setVisibility: Function;
+  setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { makeRequest, loading } = useFetch(applyToJob, {});
+  const { makeRequest, loading } = useFetch(applyToJob);
   const { visibility, setVisibility } = props;
   const [form] = Form.useForm();
+  const [fileList, setFileList] = useState<UploadFile<File>[]>([]);
 
   const { user } = useUser();
   const { selectedJob } = useAppSelector((store) => store.job);
 
   function handleFormSubmit(data: any) {
-    makeRequest({
+    console.log(data);
+    const fileData = data?.resume?.file?.originFileObj;
+    let payload = {
       ...data,
       job_id: selectedJob?.id,
       candidate_id: user?.id,
       name: user?.fullName,
-      resume: data?.resume[0],
-    });
+    };
+    if (fileData) {
+      payload["resume"] = fileData;
+    }
+    // makeRequest(payload);
   }
+
   return (
     <ReDrawer
       title={<h3>{`Apply to ${selectedJob?.company?.name}`}</h3>}
@@ -43,6 +51,7 @@ export default function JobApplyModal(props: {
         <Button
           className="create-btn"
           type="primary"
+          loading={loading}
           onClick={() => {
             form.submit();
           }}
@@ -54,15 +63,20 @@ export default function JobApplyModal(props: {
       <ReForm formInstance={form} onSubmit={handleFormSubmit}>
         <ReUpload
           required
-          onRemove={() => {}}
           accept=".pdf"
           label="Resume"
           name="resume"
-          fileList={[]}
-          fileListMaxCount={1}
-          onBeforeUpload={() => {}}
-          uploadIcon={<FaPlus />}
           listType="picture-card"
+          fileList={fileList}
+          uploadIcon={<FaPlus className="text-2xl" />}
+          fileListMaxCount={1}
+          beforeUpload={(fileData: UploadFile<File>) => {
+            setFileList([fileData]);
+          }}
+          onRemove={() => {
+            setFileList([]);
+            form.setFieldValue("resume", {hello: "ajshajksh"});
+          }}
         />
         <div className="grid grid-flow-col gap-2">
           <ReInput
@@ -70,12 +84,16 @@ export default function JobApplyModal(props: {
             name="experience_year"
             type="number"
             required
+            min={0}
+            max={50}
           />
           <ReInput
             label="Experience Month"
             name="experience_month"
             type="number"
             required
+            min={0}
+            max={11}
           />
         </div>
 
@@ -83,13 +101,13 @@ export default function JobApplyModal(props: {
           label="Skills"
           placeholder="Comma separated skills"
           name="skills"
-          type="simple"
+          type="string"
           required
         />
         <ReInput
           label="Phone Number"
           name="phone_number"
-          type="simple"
+          type="string"
           required
           placeholder="Your phone number"
         />
