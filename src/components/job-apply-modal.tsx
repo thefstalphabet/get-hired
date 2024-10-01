@@ -9,7 +9,7 @@ import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 import ReUpload from "../reusable-antd-components/ReFormFields/ReUpload";
 import { FaPlus } from "react-icons/fa";
 
-export default function ApplyJobModal(props: {
+export default function JobApplyModal(props: {
   visibility: boolean;
   setVisibility: Function;
 }) {

@@ -6,7 +6,7 @@ import { BiWindowClose } from "react-icons/bi";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
-import ApplyJobModal from "./apply-job-modal";
+import JobApplyModal from "./job-apply-modal";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
 import { Button, Checkbox } from "antd";
@@ -76,7 +76,7 @@ export default function JobDetail() {
             <p>{selectedJob?.applications?.length} Applicants</p>
           </div>
           {selectedJob?.recruiter_id !== user?.id && (
-            <ApplyJobModal
+            <JobApplyModal
               visibility={applyJobDrawerVisibility}
               setVisibility={setApplyJobDrawerVisibility}
             />
