@@ -1,8 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-
 import { BiWindowClose } from "react-icons/bi";
-// import { Checkbox } from "./ui/checkbox";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
@@ -22,7 +20,6 @@ export default function JobDetail() {
     useState<boolean>(false);
 
   async function handleJobStatusChanges(e: any) {
-    console.log(e);
     await makeRequest({
       id: selectedJob?.id,
       isOpen: e?.target?.checked,

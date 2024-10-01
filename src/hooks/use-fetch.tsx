@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const useFetch = (apiCallFun: any, payload?: any) => {
   const { session } = useSession();
   const { isLoaded } = useUser();
-  const [data, setData] = useState<any>(undefined);
+  const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 

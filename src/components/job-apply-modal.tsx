@@ -34,7 +34,7 @@ export default function JobApplyModal(props: {
     if (fileData) {
       payload["resume"] = fileData;
     }
-    // makeRequest(payload);
+    makeRequest(payload);
   }
 
   return (
@@ -75,7 +75,7 @@ export default function JobApplyModal(props: {
           }}
           onRemove={() => {
             setFileList([]);
-            form.setFieldValue("resume", {hello: "ajshajksh"});
+            form.setFieldValue("resume", { hello: "ajshajksh" });
           }}
         />
         <div className="grid grid-flow-col gap-2">

@@ -6,11 +6,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { Button, Form } from "antd";
 import ReForm from "../reusable-antd-components/ReForm";
-import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
-import ReSelect from "../reusable-antd-components/ReFormFields/ReSelect";
+import ReSelect, {
+  ISelectOptions,
+} from "../reusable-antd-components/ReFormFields/ReSelect";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { GoOrganization } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
+import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 
 type FIlterType = "small" | "big";
 export interface ISearchQuery {
@@ -20,32 +22,32 @@ export interface ISearchQuery {
   date: string;
 }
 
-const dateFilterItems = [
+const dateFilterItems: ISelectOptions[] = [
   {
-    title: "Last 24 Hours",
+    label: "Last 24 Hours",
     value: "last_24_hours",
   },
   {
-    title: "Last 3 Days",
+    label: "Last 3 Days",
     value: "last_3_days",
   },
   {
-    title: "Last 7 Days",
+    label: "Last 7 Days",
     value: "last_7_days",
   },
   {
-    title: "Last 14 Days",
+    label: "Last 14 Days",
     value: "last_14_days",
   },
   {
-    title: "Anytime",
+    label: "Anytime",
     value: "anytime",
   },
 ];
 
 export default function JobsFilter(props: {
   type: FIlterType;
-  handleSearchSubmit: Function;
+  handleSearchSubmit: (searchQuery: ISearchQuery) => void;
   loading?: boolean;
 }) {
   const [form] = Form.useForm();
@@ -56,6 +58,7 @@ export default function JobsFilter(props: {
 
   const { type, handleSearchSubmit, loading } = props;
   const { data: companies } = useFetch(getCompanies, {});
+
   const handleDateFilterChange = (value: string) => {
     const currentDate = new Date();
 
@@ -78,6 +81,7 @@ export default function JobsFilter(props: {
         startDate = null; // No filtering
         break;
     }
+    form.setFieldValue("date", startDate);
   };
 
   const handleFormSubmit = (values: any) => {
@@ -108,11 +112,11 @@ export default function JobsFilter(props: {
         <div className="flex items-center gap-3">
           <label className="text-base whitespace-nowrap font-bold">What?</label>
           <ReInput
-            borderLess={false}
+            variant="borderless"
             noStyle
             label=""
             name="title"
-            type="simple"
+            type="string"
             placeholder="Job Title"
           />
         </div>
@@ -122,19 +126,21 @@ export default function JobsFilter(props: {
           </label>
           <ReSelect
             placeholder="Job Location"
-            borderLess={false}
+            variant="borderless"
             className="w-80"
             noStyle
             label=""
             name="location"
             searchable
-            items={State.getStatesOfCountry("IN").map((city: any) => {
-              const { name } = city;
-              return {
-                title: name,
-                value: name,
-              };
-            })}
+            items={State.getStatesOfCountry("IN").map(
+              (city: { name: string }) => {
+                const { name } = city;
+                return {
+                  label: name,
+                  value: name,
+                };
+              }
+            )}
           />
         </div>
         <Button
@@ -155,16 +161,17 @@ export default function JobsFilter(props: {
             <FaRegCalendarAlt />
             <ReSelect
               dropdownStyle={{ width: "10rem" }}
-              borderLess={false}
+              variant="borderless"
               label="Date"
               placeholder="Anytime"
               noStyle
               name="date"
               searchable
-              items={dateFilterItems?.map((item: any) => {
-                const { title, value } = item;
+              onChange={handleDateFilterChange}
+              items={dateFilterItems?.map((item: ISelectOptions) => {
+                const { label, value } = item;
                 return {
-                  title: title,
+                  label: label,
                   value: value,
                 };
               })}
@@ -174,16 +181,16 @@ export default function JobsFilter(props: {
             <GoOrganization />
             <ReSelect
               dropdownStyle={{ width: "10rem" }}
-              borderLess={false}
+              variant="borderless"
               label="Job Location"
               placeholder="Company"
               noStyle
               name="companyId"
               searchable
-              items={[]?.map((company: any) => {
+              items={companies?.map((company: { name: string; id: string }) => {
                 const { name, id } = company;
                 return {
-                  title: name,
+                  label: name,
                   value: id,
                 };
               })}
@@ -201,73 +208,5 @@ export default function JobsFilter(props: {
         </div>
       )}
     </ReForm>
-    //   </div>
-    //   {type === "big" && (
-    //     <div className="flex items-center justify-center gap-5">
-    //       <Select
-    //         value={searchQuery?.companyId}
-    //         onValueChange={(value: string) => {
-    //           setSearchQuery((prev: any) => {
-    //             return {
-    //               ...prev,
-    //               companyId: String(value),
-    //             };
-    //           });
-    //         }}
-    //       >
-    //         <SelectTrigger className="rounded-full w-32">
-    //           <GoOrganization />
-    //           <SelectValue placeholder="Company" />
-    //         </SelectTrigger>
-    //         <SelectContent className="w-80">
-    //           <SelectGroup>
-    //             {companies?.map((company: any) => {
-    //               const { name, id } = company;
-    //               return (
-    //                 <SelectItem value={String(id)} key={id}>
-    //                   {name}
-    //                 </SelectItem>
-    //               );
-    //             })}
-    //           </SelectGroup>
-    //         </SelectContent>
-    //       </Select>
-    //       <div className="flex items-center justify-center gap-5">
-    //         <Select onValueChange={handleDateFilterChange}>
-    //           <SelectTrigger className="rounded-full w-36">
-    //             <FaRegCalendarAlt />
-    //             <SelectValue placeholder="Date Posted" />
-    //           </SelectTrigger>
-    //           <SelectContent className="w-80">
-    //             <SelectGroup>
-    //               <SelectItem value="anytime" key="anytime">
-    //                 Anytime
-    //               </SelectItem>
-    //               <SelectItem value="last_24_hours" key="last_24_hours">
-    //                 Last 24 Hours
-    //               </SelectItem>
-    //               <SelectItem value="last_3_days" key="last_3_days">
-    //                 Last 3 Days
-    //               </SelectItem>
-    //               <SelectItem value="last_7_days" key="last_7_days">
-    //                 Last 7 Days
-    //               </SelectItem>
-    //               <SelectItem value="last_14_days" key="last_14_days">
-    //                 Last 14 Days
-    //               </SelectItem>
-    //             </SelectGroup>
-    //           </SelectContent>
-    //         </Select>
-    //       </div>
-    //       <Button
-    //         className="rounded-full w-28"
-    //         variant="secondary"
-    //         onClick={handleClearFilterClicks}
-    //       >
-    //         Clear Filters
-    //       </Button>
-    //     </div>
-    //   )}
-    // </form>
   );
 }

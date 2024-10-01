@@ -31,7 +31,6 @@ function Onbording() {
       <h1 className="text-3xl font-bold">You are a...</h1>
       <Select
         className="w-60"
-        defaultValue="lucy"
         onSelect={handleSelectChanges}
         options={[
           { value: "1", label: "Candidate" },
