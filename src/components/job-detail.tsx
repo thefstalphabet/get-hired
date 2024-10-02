@@ -16,6 +16,7 @@ export default function JobDetail() {
   const { user } = useUser();
   const dispatch = useAppDispatch();
   const { makeRequest } = useFetch(updateJob);
+
   const [applyJobDrawerVisibility, setApplyJobDrawerVisibility] =
     useState<boolean>(false);
 
@@ -73,20 +74,22 @@ export default function JobDetail() {
             <p>{selectedJob?.applications?.length} Applicants</p>
           </div>
           {selectedJob?.recruiter_id !== user?.id && (
-            <JobApplyModal
-              visibility={applyJobDrawerVisibility}
-              setVisibility={setApplyJobDrawerVisibility}
-            />
+            <>
+              <Button
+                icon={<AiFillThunderbolt className="mt-[3px] text-lg" />}
+                className="mt-2 h-9 rounded-full w-36"
+                onClick={() => {
+                  setApplyJobDrawerVisibility(true);
+                }}
+              >
+                Quick Apply
+              </Button>
+              <JobApplyModal
+                visibility={applyJobDrawerVisibility}
+                setVisibility={setApplyJobDrawerVisibility}
+              />
+            </>
           )}
-          <Button
-            icon={<AiFillThunderbolt className="mt-[3px] text-lg" />}
-            className="mt-2 h-9 rounded-full w-36"
-            onClick={() => {
-              setApplyJobDrawerVisibility(true);
-            }}
-          >
-            Quick Apply
-          </Button>
         </div>
       </div>
       <hr />

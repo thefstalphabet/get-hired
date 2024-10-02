@@ -13,6 +13,8 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { GoOrganization } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
+import { useAppDispatch } from "../redux/hooks";
+import { setSelectedQuery } from "../redux/slices/job";
 
 type FIlterType = "small" | "big";
 export interface ISearchQuery {
@@ -55,6 +57,7 @@ export default function JobsFilter(props: {
   const query = searchParams.get("query");
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
+  const dispatch = useAppDispatch();
 
   const { type, handleSearchSubmit, loading } = props;
   const { data: companies } = useFetch(getCompanies, {});
@@ -80,6 +83,9 @@ export default function JobsFilter(props: {
     <ReForm
       formInstance={form}
       onSubmit={handleFormSubmit}
+      onChange={(changedValues: unknown, allValues: unknown) => {
+        dispatch(setSelectedQuery(allValues));
+      }}
       fieldsClassName="grid gap-7"
       layout="horizontal"
     >
@@ -172,8 +178,10 @@ export default function JobsFilter(props: {
           <Button
             className="rounded-full w-24 py-5 px-10"
             type="default"
+            htmlType="submit"
             onClick={() => {
               form.resetFields();
+              dispatch(setSelectedQuery(null));
             }}
           >
             Rest Filter

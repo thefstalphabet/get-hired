@@ -30,6 +30,7 @@ export default function NavigationBar() {
       <div className="flex items-center gap-4">
         <SignedOut>
           <Button
+            type="primary"
             onClick={() => {
               setSignInModalVisibility(true);
             }}

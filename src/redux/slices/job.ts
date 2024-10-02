@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialStage {
+  selectedJob: any | null;
   searchedJobs: any[];
-  selectedJob: any | null
+  searchedQuery: any | null
 }
 const initialState: IInitialStage = {
   searchedJobs: [],
-  selectedJob: null
+  selectedJob: null,
+  searchedQuery: null
 };
 
 const JobSlices = createSlice({
@@ -21,7 +23,10 @@ const JobSlices = createSlice({
       state.selectedJob = action.payload;
     },
     updateSelectedJob(state, action: PayloadAction<any>) {
-      state.selectedJob = {...state.selectedJob, ...action.payload};
+      state.selectedJob = { ...state.selectedJob, ...action.payload };
+    },
+    setSelectedQuery(state, action: PayloadAction<any>) {
+      state.searchedQuery = action.payload;
     },
     // updateaddress(
     //   state,
@@ -48,6 +53,6 @@ const JobSlices = createSlice({
     // },
   },
 });
-export const { setSearchedJobs, setSelectedJob, updateSelectedJob} =
+export const { setSearchedJobs, setSelectedJob, updateSelectedJob, setSelectedQuery } =
   JobSlices.actions;
 export default JobSlices.reducer;
