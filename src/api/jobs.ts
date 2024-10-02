@@ -5,6 +5,7 @@ interface IGetJobPayload {
   companyId?: string,
   title?: string
   created_at?: Date
+  is_open?: string
 }
 
 export async function getJobs(token: string, payload: IGetJobPayload) {
@@ -17,6 +18,9 @@ export async function getJobs(token: string, payload: IGetJobPayload) {
   }
   if (payload?.companyId) {
     query = query.eq("company_id", payload?.companyId)
+  }
+  if (payload?.is_open) {
+    query = query.eq("is_open", payload?.is_open === "yes" ? true : false)
   }
   if (payload?.created_at) {
     query = query.gte("created_at", moment(new Date(payload.created_at)).format('YYYY-MM-DDTHH:mm:ssZ')).lte("created_at", moment(new Date()).format('YYYY-MM-DDTHH:mm:ssZ'));

@@ -9,7 +9,7 @@ import ReForm from "../reusable-antd-components/ReForm";
 import ReSelect, {
   ISelectOptions,
 } from "../reusable-antd-components/ReFormFields/ReSelect";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaHourglassStart, FaRegCalendarAlt } from "react-icons/fa";
 import { GoOrganization } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
@@ -44,6 +44,16 @@ const dateFilterItems: ISelectOptions[] = [
   {
     label: "Anytime",
     value: "",
+  },
+];
+const statusFilterItems: ISelectOptions[] = [
+  {
+    label: "Still Hiring",
+    value: "yes",
+  },
+  {
+    label: "Closed",
+    value: "no",
   },
 ];
 
@@ -139,12 +149,30 @@ export default function JobsFilter(props: {
       {type === "big" && (
         <div className="flex items-center justify-center gap-5">
           <div className="border rounded-full flex items-center px-2 pl-4 py-1">
+            <FaHourglassStart />
+            <ReSelect
+              dropdownStyle={{ width: "10rem" }}
+              variant="borderless"
+              label=""
+              placeholder="Status"
+              noStyle
+              name="is_open"
+              items={statusFilterItems?.map((item: ISelectOptions) => {
+                const { label, value } = item;
+                return {
+                  label: label,
+                  value: value,
+                };
+              })}
+            />
+          </div>
+          <div className="border rounded-full flex items-center px-2 pl-4 py-1">
             <FaRegCalendarAlt />
             <ReSelect
               dropdownStyle={{ width: "10rem" }}
               variant="borderless"
-              label="Date"
-              placeholder="Anytime"
+              label=""
+              placeholder="Date Psoted"
               noStyle
               name="created_at"
               items={dateFilterItems?.map((item: ISelectOptions) => {
@@ -161,7 +189,7 @@ export default function JobsFilter(props: {
             <ReSelect
               dropdownStyle={{ width: "10rem" }}
               variant="borderless"
-              label="Job Location"
+              label=""
               placeholder="Company"
               noStyle
               name="companyId"
