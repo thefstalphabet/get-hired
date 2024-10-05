@@ -10,6 +10,7 @@ import ReCard from "../reusable-antd-components/ReCard";
 import { Button, Checkbox } from "antd";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { useState } from "react";
+import ApplicantsModal from "./applicants-modal";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
@@ -18,6 +19,8 @@ export default function JobDetail() {
   const { makeRequest } = useFetch(updateJob);
 
   const [applyJobDrawerVisibility, setApplyJobDrawerVisibility] =
+    useState<boolean>(false);
+  const [viewApplicantsModalVisibility, setViewApplicantsModalVisibility] =
     useState<boolean>(false);
 
   async function handleJobStatusChanges(e: any) {
@@ -69,10 +72,29 @@ export default function JobDetail() {
               )}
             </p>
           )}
-          <div className="flex items-center gap-2">
-            <FaUsers className="text-xl mt-[2px]" />
-            <p>{selectedJob?.applications?.length} Applicants</p>
-          </div>
+          {selectedJob?.recruiter_id !== user?.id ? (
+            <div className="flex items-center gap-2">
+              <FaUsers className="text-xl mt-[2px]" />
+              <p>{selectedJob?.applications?.length} Applicants</p>
+            </div>
+          ) : (
+            <>
+              <Button
+                icon={<FaUsers className="text-xl mt-[2px]" />}
+                className="mt-2 h-9 rounded-full w-36"
+                onClick={() => {
+                  setViewApplicantsModalVisibility(true);
+                }}
+              >
+                Applicants
+              </Button>
+              <ApplicantsModal
+                id={selectedJob?.id}
+                visibility={viewApplicantsModalVisibility}
+                setVisibility={setViewApplicantsModalVisibility}
+              />
+            </>
+          )}
           {selectedJob?.recruiter_id !== user?.id && (
             <>
               <Button

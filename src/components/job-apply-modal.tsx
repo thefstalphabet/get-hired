@@ -23,7 +23,6 @@ export default function JobApplyModal(props: {
   const { selectedJob } = useAppSelector((store) => store.job);
 
   function handleFormSubmit(data: any) {
-    console.log(data);
     const fileData = data?.resume?.file?.originFileObj;
     let payload = {
       ...data,
@@ -35,6 +34,7 @@ export default function JobApplyModal(props: {
       payload["resume"] = fileData;
     }
     makeRequest(payload);
+    setVisibility(false);
   }
 
   return (
@@ -60,7 +60,11 @@ export default function JobApplyModal(props: {
         </Button>
       }
     >
-      <ReForm formInstance={form} onSubmit={handleFormSubmit}>
+      <ReForm
+        resetFieldsAfterSubmit
+        formInstance={form}
+        onSubmit={handleFormSubmit}
+      >
         <ReUpload
           required
           accept=".pdf"

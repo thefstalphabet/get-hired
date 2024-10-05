@@ -47,3 +47,20 @@ export async function updateApplication(token: string, payload: { job_id: string
     return data;
 
 }
+
+export async function getJobApplication(token: string, payload: { id: string }) {
+    const supabase = await supabaseClient(token);
+
+    const { data, error } = await supabase.
+        from("applications").
+        select("*").
+        eq("job_id", payload?.id)
+
+    if (error) {
+        console.error("Error while fetching job", error);
+        return null;
+    }
+
+    return data;
+
+}
