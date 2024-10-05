@@ -79,7 +79,6 @@ export default function JobApplyDrawer(props: {
           }}
           onRemove={() => {
             setFileList([]);
-            form.setFieldValue("resume", { hello: "ajshajksh" });
           }}
         />
         <div className="grid grid-flow-col gap-2">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReDrawer from "../reusable-antd-components/ReDrawer";
 import { Button, Form } from "antd";
 import ReForm from "../reusable-antd-components/ReForm";
@@ -8,6 +8,8 @@ import { getCompanies } from "../api/company";
 import useFetch from "../hooks/use-fetch";
 import { State } from "country-state-city";
 import TextEditor from "./text-editor/text-editor";
+import AddCompanyModal from "./add-company-modal";
+import { MdDomainAdd } from "react-icons/md";
 
 export default function PostJobDrawer(props: {
   visibility: boolean;
@@ -16,6 +18,8 @@ export default function PostJobDrawer(props: {
   const [form] = Form.useForm();
   const { visibility, setVisibility } = props;
   const { data: companies } = useFetch(getCompanies, {});
+  const [addCompanyModalVisibility, setAddCompanyModalVisibility] =
+    useState<boolean>(false);
 
   function handleFormSubmit(data: any) {
     console.log(data);
@@ -23,8 +27,8 @@ export default function PostJobDrawer(props: {
 
   return (
     <ReDrawer
-      title={<h3>{`Post Job`}</h3>}
-      visibility={true}
+      title={<h3>Post New Job</h3>}
+      visibility={visibility}
       onCancel={() => {
         setVisibility(false);
       }}
@@ -33,7 +37,6 @@ export default function PostJobDrawer(props: {
       width={800}
       extraContent={
         <Button
-          className="create-btn"
           type="primary"
           onClick={() => {
             form.submit();
@@ -55,20 +58,33 @@ export default function PostJobDrawer(props: {
           type="string"
           required
         />
-        <ReSelect
-          required
-          label="Company"
-          placeholder="Company"
-          name="companyId"
-          searchable
-          items={companies?.map((company: { name: string; id: string }) => {
-            const { name, id } = company;
-            return {
-              label: name,
-              value: id,
-            };
-          })}
-        />
+        <div className="grid grid-flow-col grid-cols-1 gap-2 items-center">
+          <ReSelect
+            required
+            label="Company"
+            placeholder="Company"
+            name="companyId"
+            searchable
+            items={companies?.map((company: { name: string; id: string }) => {
+              const { name, id } = company;
+              return {
+                label: name,
+                value: id,
+              };
+            })}
+          />
+          <Button
+            icon={<MdDomainAdd className="text-lg" />}
+            className="mt-[7px]"
+            onClick={() => {
+              setAddCompanyModalVisibility(true);
+            }}
+          />
+          <AddCompanyModal
+            visibility={addCompanyModalVisibility}
+            setVisibility={setAddCompanyModalVisibility}
+          />
+        </div>
         <ReSelect
           required
           placeholder="Job Location"
