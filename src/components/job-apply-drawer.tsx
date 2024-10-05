@@ -10,7 +10,7 @@ import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 
-export default function JobApplyModal(props: {
+export default function JobApplyDrawer(props: {
   visibility: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }) {

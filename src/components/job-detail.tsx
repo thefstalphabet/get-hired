@@ -4,7 +4,7 @@ import { BiWindowClose } from "react-icons/bi";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
 import { updateSelectedJob } from "../redux/slices/job";
-import JobApplyModal from "./job-apply-modal";
+import JobApplyDrawer from "./job-apply-drawer";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
 import { Button, Checkbox } from "antd";
@@ -106,7 +106,7 @@ export default function JobDetail() {
               >
                 Quick Apply
               </Button>
-              <JobApplyModal
+              <JobApplyDrawer
                 visibility={applyJobDrawerVisibility}
                 setVisibility={setApplyJobDrawerVisibility}
               />

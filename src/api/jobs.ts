@@ -99,3 +99,19 @@ export async function updateJob(token: string, payload: { id: string, isOpen: bo
   return data;
 
 }
+
+export async function addNewJob(token: string, payload: any) {
+  const supabase = await supabaseClient(token);
+  const { data, error } = await supabase.
+    from("jobs").
+    insert([payload]).
+    select()
+
+  if (error) {
+    console.error("Error while updating job", error);
+    return null;
+  }
+
+  return data;
+
+}
