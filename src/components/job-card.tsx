@@ -50,7 +50,7 @@ export default function JobCard(props: { job: any }) {
       />
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-lg font-bold">{job.title}</h1>
+          <h1 className="text-lg font-bold">{job?.title}</h1>
           {!(job?.recruiter_id === user?.id) &&
             (saved ? (
               <FaBookmark
@@ -70,8 +70,8 @@ export default function JobCard(props: { job: any }) {
         <p>{job?.location}</p>
         <div style={{ color: "#676767" }}>
           <p className="text-sm mt-2 pr-10">
-            {job?.description.split(".").slice(0, 2).join(".") +
-              (job?.description.split(".").length > 2 ? "." : "")}
+            {job?.description?.split(".").slice(0, 2).join(".") +
+              (job?.description?.split(".").length > 2 ? "." : "")}
           </p>
           <p className="text-sm mt-1">
             {job?.created_at &&

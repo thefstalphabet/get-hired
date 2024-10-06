@@ -1,8 +1,9 @@
-import { useSession } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useSession, useUser } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
 
-const useFetch = (apiCallFun: any, payload?: any) => {
+const useFetch = (apiCallFun: any, payload?: any, initialCall?: boolean) => {
   const { session } = useSession();
+  const { isLoaded } = useUser();
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
@@ -28,6 +29,12 @@ const useFetch = (apiCallFun: any, payload?: any) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (initialCall) {
+      makeRequest();
+    }
+  }, [isLoaded]);
 
   return { data, loading, error, makeRequest };
 };

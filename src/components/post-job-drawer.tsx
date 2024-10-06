@@ -14,19 +14,16 @@ import { addNewJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { ReNotification } from "../reusable-antd-components/ReNotification";
 import { useAppDispatch } from "../redux/hooks";
-import { setSearchedJobs } from "../redux/slices/job";
 
 export default function PostJobDrawer(props: {
   visibility: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [form] = Form.useForm();
-  const dispatch = useAppDispatch();
   const { visibility, setVisibility } = props;
-  const { data: companies, makeRequest: fetchCompanies } =
-    useFetch(getCompanies);
+  const { data: companies } = useFetch(getCompanies, {}, true);
   const { user } = useUser();
-  const { makeRequest: createNewJob, data: res } = useFetch(addNewJob, {});
+  const { makeRequest: createNewJob } = useFetch(addNewJob, {});
   const [addCompanyModalVisibility, setAddCompanyModalVisibility] =
     useState<boolean>(false);
 
@@ -44,14 +41,7 @@ export default function PostJobDrawer(props: {
       type: "success",
     });
     setVisibility(false);
-    console.log(res);
-
-    // dispatch(setSearchedJobs([res, ]))
   }
-
-  useEffect(() => {
-    fetchCompanies();
-  }, []);
 
   return (
     <ReDrawer

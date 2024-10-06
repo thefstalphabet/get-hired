@@ -11,7 +11,11 @@ import NoJobsFound from "../assets/noJobsFound.png";
 export default function JobSearch() {
   const dispatch = useAppDispatch();
   const { searchedJobs } = useAppSelector((store) => store.job);
-  const { data: jobs, loading: jobsLoading, makeRequest } = useFetch(getJobs);
+  const {
+    data: jobs,
+    loading: jobsLoading,
+    makeRequest,
+  } = useFetch(getJobs, {}, true);
 
   function handleSearchSubmit(searchQuery: ISearchQuery) {
     makeRequest(searchQuery);
@@ -20,10 +24,6 @@ export default function JobSearch() {
   useEffect(() => {
     dispatch(setSearchedJobs(jobs));
   }, [jobs]);
-
-  useEffect(() => {
-    makeRequest();
-  }, []);
 
   return (
     <div>

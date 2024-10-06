@@ -99,6 +99,7 @@ export default function ApplicantsModal(props: {
   useEffect(() => {
     makeRequest({ id });
   }, [visibility]);
+  
   return (
     <ReModal
       width="80%"

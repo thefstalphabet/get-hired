@@ -36,7 +36,7 @@ export default function JobDetail() {
       <div className="flex items-start gap-7 mb-5">
         <img
           className="h-[3rem] border p-2 rounded-md"
-          src={selectedJob?.company.logo_url}
+          src={selectedJob?.company?.logo_url}
           alt="company logo"
         />
         <div className="flex flex-col gap-1">
@@ -44,7 +44,7 @@ export default function JobDetail() {
             <h1 className="text-lg font-bold">{selectedJob?.title}</h1>
           </div>
           <div className="flex gap-1">
-            <h4 className="font-semibold">{selectedJob?.company.name}</h4>
+            <h4 className="font-semibold">{selectedJob?.company?.name}</h4>
             <span>|</span>
             <h4 className="font-semibold">{selectedJob?.location}</h4>
           </div>
