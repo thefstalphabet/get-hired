@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReDrawer from "../reusable-antd-components/ReDrawer";
 import { Button, Form } from "antd";
 import ReForm from "../reusable-antd-components/ReForm";
@@ -10,20 +10,48 @@ import { State } from "country-state-city";
 import TextEditor from "./text-editor/text-editor";
 import AddCompanyModal from "./add-company-modal";
 import { MdDomainAdd } from "react-icons/md";
+import { addNewJob } from "../api/jobs";
+import { useUser } from "@clerk/clerk-react";
+import { ReNotification } from "../reusable-antd-components/ReNotification";
+import { useAppDispatch } from "../redux/hooks";
+import { setSearchedJobs } from "../redux/slices/job";
 
 export default function PostJobDrawer(props: {
   visibility: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
   const { visibility, setVisibility } = props;
-  const { data: companies } = useFetch(getCompanies, {});
+  const { data: companies, makeRequest: fetchCompanies } =
+    useFetch(getCompanies);
+  const { user } = useUser();
+  const { makeRequest: createNewJob, data: res } = useFetch(addNewJob, {});
   const [addCompanyModalVisibility, setAddCompanyModalVisibility] =
     useState<boolean>(false);
 
-  function handleFormSubmit(data: any) {
-    console.log(data);
+  async function handleFormSubmit(data: any) {
+    const payload = {
+      recruiter_id: user?.id,
+      ...data,
+    };
+    createNewJob(payload);
+    ReNotification({
+      header: "Post Job Say's",
+      description: "New Job create sucessfully",
+      duration: 1,
+      placement: "topRight",
+      type: "success",
+    });
+    setVisibility(false);
+    console.log(res);
+
+    // dispatch(setSearchedJobs([res, ]))
   }
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
 
   return (
     <ReDrawer
@@ -63,7 +91,7 @@ export default function PostJobDrawer(props: {
             required
             label="Company"
             placeholder="Company"
-            name="companyId"
+            name="company_id"
             searchable
             items={companies?.map((company: { name: string; id: string }) => {
               const { name, id } = company;
@@ -102,7 +130,7 @@ export default function PostJobDrawer(props: {
             }
           )}
         />
-        <TextEditor label="Job Requirement" name="requirement" />
+        <TextEditor label="Job Requirement" name="requirements" />
       </ReForm>
     </ReDrawer>
   );

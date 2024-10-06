@@ -70,7 +70,7 @@ export default function JobsFilter(props: {
   const dispatch = useAppDispatch();
 
   const { type, handleSearchSubmit, loading } = props;
-  const { data: companies } = useFetch(getCompanies, {});
+  const { data: companies, makeRequest: fetchCompany } = useFetch(getCompanies, {});
 
   const handleFormSubmit = (values: any) => {
     if (!isSignedIn) {
@@ -88,6 +88,11 @@ export default function JobsFilter(props: {
       });
     }
   }, [query]);
+
+  useEffect(() => {
+   fetchCompany()
+  }, [])
+  
 
   return (
     <ReForm

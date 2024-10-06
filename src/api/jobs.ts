@@ -108,10 +108,9 @@ export async function addNewJob(token: string, payload: any) {
     select()
 
   if (error) {
-    console.error("Error while updating job", error);
+    console.error("Error while creating job", error);
     return null;
   }
-
   return data;
 
 }

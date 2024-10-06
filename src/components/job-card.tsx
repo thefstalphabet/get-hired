@@ -45,7 +45,7 @@ export default function JobCard(props: { job: any }) {
     >
       <img
         className="h-[3rem] border p-2 rounded-md mb-2"
-        src={job.company.logo_url}
+        src={job?.company?.logo_url}
         alt="company logo"
       />
       <div>
@@ -65,7 +65,7 @@ export default function JobCard(props: { job: any }) {
             ))}
         </div>
         <h4 style={{ color: "#691F74" }} className="font-semibold">
-          {job.company.name}
+          {job?.company?.name}
         </h4>
         <p>{job?.location}</p>
         <div style={{ color: "#676767" }}>

@@ -79,11 +79,6 @@ export default function NavigationBar() {
               >
                 <UserButton.MenuItems>
                   <UserButton.Link
-                    label="Applications Status"
-                    labelIcon={<></>}
-                    href="/applications-status"
-                  />
-                  <UserButton.Link
                     label="Bookmarks"
                     labelIcon={<></>}
                     href="/bookmarks"

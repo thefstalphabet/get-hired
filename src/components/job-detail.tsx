@@ -117,12 +117,13 @@ export default function JobDetail() {
       <hr />
       <div className="flex flex-col gap-5 mt-5 h-[90vh] overflow-y-scroll hide-scrollbar">
         <div>
-          <h1 className="text-base mb-2">Description:</h1>
+          <h1 className="text-[14px] font-bold">Description</h1>
           <p style={{ color: "#676767" }}>{selectedJob?.description}</p>
         </div>
         <div>
-          <h1 className="text-base mb-2">Requirments:</h1>
-          <p style={{ color: "#676767" }}>{selectedJob?.requirements}</p>
+          <div
+            dangerouslySetInnerHTML={{ __html: selectedJob?.requirements }}
+          />
         </div>
       </div>
     </ReCard>
