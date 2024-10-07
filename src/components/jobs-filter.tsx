@@ -10,19 +10,16 @@ import ReSelect, {
   ISelectOptions,
 } from "../reusable-antd-components/ReFormFields/ReSelect";
 import { FaHourglassStart, FaRegCalendarAlt } from "react-icons/fa";
-import { GoOrganization } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 import { useAppDispatch } from "../redux/hooks";
-import { setSelectedQuery } from "../redux/slices/job";
+import { setSearchedQuery } from "../redux/slices/job";
+import ReToggleButon from "../reusable-antd-components/ReFormFields/ReToggleButon";
+import { FaBuildingUser } from "react-icons/fa6";
+import { CgOrganisation } from "react-icons/cg";
+import { IGetJobPayload } from "../api/jobs";
 
 type FIlterType = "small" | "big";
-export interface ISearchQuery {
-  title: string;
-  location: string;
-  companyId: string;
-  created_at: Date;
-}
 
 const dateFilterItems: ISelectOptions[] = [
   {
@@ -59,7 +56,7 @@ const statusFilterItems: ISelectOptions[] = [
 
 export default function JobsFilter(props: {
   type: FIlterType;
-  handleSearchSubmit: (searchQuery: ISearchQuery) => void;
+  handleSearchSubmit: (searchQuery: IGetJobPayload) => void;
   loading?: boolean;
 }) {
   const [form] = Form.useForm();
@@ -68,6 +65,7 @@ export default function JobsFilter(props: {
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
   const dispatch = useAppDispatch();
+  const { user } = useUser();
 
   const { type, handleSearchSubmit, loading } = props;
   const { data: companies } = useFetch(getCompanies, {}, true);
@@ -75,6 +73,9 @@ export default function JobsFilter(props: {
   const handleFormSubmit = (values: any) => {
     if (!isSignedIn) {
       return navigate("/?sign-in=true");
+    }
+    if (values?.recruiter_id) {
+      values.recruiter_id = user?.id;
     }
     handleSearchSubmit(values);
   };
@@ -94,7 +95,7 @@ export default function JobsFilter(props: {
       formInstance={form}
       onSubmit={handleFormSubmit}
       onChange={(changedValues: unknown, allValues: unknown) => {
-        dispatch(setSelectedQuery(allValues));
+        dispatch(setSearchedQuery(allValues));
       }}
       fieldsClassName="grid gap-7"
       layout="horizontal"
@@ -185,14 +186,14 @@ export default function JobsFilter(props: {
             />
           </div>
           <div className="border rounded-full flex items-center px-2 pl-4 py-1">
-            <GoOrganization />
+            <CgOrganisation />
             <ReSelect
               dropdownStyle={{ width: "10rem" }}
               variant="borderless"
               label=""
               placeholder="Company"
               noStyle
-              name="companyId"
+              name="company_id"
               searchable
               items={companies?.map((company: { name: string; id: string }) => {
                 const { name, id } = company;
@@ -203,13 +204,25 @@ export default function JobsFilter(props: {
               })}
             />
           </div>
+          {user?.unsafeMetadata?.role === "2" && (
+            <ReToggleButon
+              disable
+              formInstance={form}
+              label="My Job"
+              noStyle
+              name="recruiter_id"
+              className="border rounded-full px-4 pl-4 py-2"
+              themeColor="#691F74"
+              icon={<FaBuildingUser />}
+            />
+          )}
           <Button
             className="rounded-full w-24 py-5 px-10"
             type="default"
             htmlType="submit"
             onClick={() => {
               form.resetFields();
-              dispatch(setSelectedQuery(null));
+              dispatch(setSearchedQuery(null));
             }}
           >
             Rest Filter

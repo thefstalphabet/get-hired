@@ -1,11 +1,12 @@
 import moment from "moment";
 import supabaseClient from "../utils/supabase-client";
-interface IGetJobPayload {
-  location?: string,
-  companyId?: string,
+export interface IGetJobPayload {
   title?: string
+  location?: string,
+  company_id?: string,
   created_at?: Date
-  is_open?: string
+  is_open?: "yes" | "no",
+  recruiter_id?: string
 }
 
 export async function getJobs(token: string, payload: IGetJobPayload) {
@@ -16,8 +17,11 @@ export async function getJobs(token: string, payload: IGetJobPayload) {
   if (payload?.location) {
     query = query.eq("location", payload?.location)
   }
-  if (payload?.companyId) {
-    query = query.eq("company_id", payload?.companyId)
+  if (payload?.company_id) {
+    query = query.eq("company_id", payload?.company_id)
+  }
+  if (payload?.recruiter_id) {
+    query = query.eq("recruiter_id", payload?.recruiter_id)
   }
   if (payload?.is_open) {
     query = query.eq("is_open", payload?.is_open === "yes" ? true : false)

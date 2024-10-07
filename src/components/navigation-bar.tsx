@@ -19,7 +19,6 @@ export default function NavigationBar() {
     useState<boolean>(false);
   const [search, setSearch] = useSearchParams();
   const { user } = useUser();
-  console.log(user?.unsafeMetadata);
 
   const handleOutSideModalClicks = (e: React.SyntheticEvent) => {
     if (e.target === e.currentTarget) {
