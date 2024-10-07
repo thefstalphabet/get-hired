@@ -13,7 +13,6 @@ import { MdDomainAdd } from "react-icons/md";
 import { addNewJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { ReNotification } from "../reusable-antd-components/ReNotification";
-import { useAppDispatch } from "../redux/hooks";
 
 export default function PostJobDrawer(props: {
   visibility: boolean;
