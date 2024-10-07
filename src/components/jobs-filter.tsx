@@ -173,7 +173,7 @@ export default function JobsFilter(props: {
               dropdownStyle={{ width: "10rem" }}
               variant="borderless"
               label=""
-              placeholder="Date Psoted"
+              placeholder="Date Posted"
               noStyle
               name="created_at"
               items={dateFilterItems?.map((item: ISelectOptions) => {

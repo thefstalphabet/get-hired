@@ -10,7 +10,8 @@ export default function JobsListing(props: { loading: boolean }) {
     <div className="flex flex-col gap-3 h-[90vh] overflow-y-scroll hide-scrollbar pb-5">
       {!loading ? (
         searchedJobs?.map((job: any) => {
-          return <JobCard job={job} />;
+          const saved = job?.saved?.find((ele: any) => ele.job_id === job?.id);
+          return <JobCard key={job?.id} job={job} alreadySaved={saved} />;
         })
       ) : (
         <>

@@ -1,11 +1,11 @@
-import JobsFilter, { ISearchQuery } from "../components/jobs-filter";
+import JobsFilter from "../components/jobs-filter";
 import JobsListing from "../components/jobs-listing";
 import JobDetail from "../components/job-detail";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useFetch from "../hooks/use-fetch";
 import { setSearchedJobs } from "../redux/slices/job";
 import { useEffect } from "react";
-import { getJobs } from "../api/jobs";
+import { getJobs, IGetJobPayload } from "../api/jobs";
 import NoJobsFound from "../assets/noJobsFound.png";
 
 export default function JobSearch() {
@@ -17,7 +17,7 @@ export default function JobSearch() {
     makeRequest,
   } = useFetch(getJobs, {}, true);
 
-  function handleSearchSubmit(searchQuery: ISearchQuery) {
+  function handleSearchSubmit(searchQuery: IGetJobPayload) {
     makeRequest(searchQuery);
   }
 
