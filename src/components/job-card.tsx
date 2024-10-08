@@ -2,7 +2,7 @@ import useFetch from "../hooks/use-fetch";
 import { bookmarkJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { setSelectedJob } from "../redux/slices/job";
+import { setSelectedJob, updateSearchedJob } from "../redux/slices/job";
 import ReCard from "../reusable-antd-components/ReCard";
 import moment from "moment";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -12,7 +12,7 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
   const dispatch = useAppDispatch();
   const { selectedJob } = useAppSelector((store) => store.job);
   const { user } = useUser();
-  const { makeRequest, data } = useFetch(bookmarkJob);
+  const { makeRequest } = useFetch(bookmarkJob);
 
   const handleBookmarkClicks = async () => {
     await makeRequest({
@@ -20,6 +20,7 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
       job_id: job?.id,
       alreadyBookmarked: alreadySaved,
     });
+    dispatch(updateSearchedJob({ job_id: job.id, alreadySaved }));
   };
 
   const handleOnCardClicks = () => {
@@ -51,7 +52,9 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
       />
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-lg font-bold">{job?.title}</h1>
+          <h1 className="text-lg font-bold">
+            {job?.title}
+          </h1>
           {!(job?.recruiter_id === user?.id) &&
             (alreadySaved ? (
               <FaHeart

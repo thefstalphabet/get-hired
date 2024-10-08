@@ -7,11 +7,12 @@ export interface IGetJobPayload {
   created_at?: Date
   is_open?: "yes" | "no",
   recruiter_id?: string
+  user_id?: string
 }
 
 export async function getJobs(token: string, payload: IGetJobPayload) {
   const supabase = await supabaseClient(token);
-  let query = supabase.from("jobs").select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id)")
+  let query = supabase.from("jobs").select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id)").eq("saved_jobs.user_id", payload?.user_id);
 
 
   if (payload?.location) {
@@ -45,15 +46,19 @@ export async function getJobs(token: string, payload: IGetJobPayload) {
 
 export interface IBookmarkJobPayload {
   alreadyBookmarked?: boolean,
-  userId: string,
-  jobId: string
+  user_id: string,
+  job_id: number
 }
 
 export async function bookmarkJob(token: string, payload: IBookmarkJobPayload) {
   const supabase = await supabaseClient(token);
 
   if (payload.alreadyBookmarked) {
-    const { data, error: unBookmarkError } = await supabase.from("saved_jobs").delete().eq("job_id", payload?.jobId)
+    const { data, error: unBookmarkError } = await supabase
+      .from("saved_jobs")
+      .delete()
+      .eq("job_id", payload?.job_id)
+
     if (unBookmarkError) {
       console.log("Error in unbookmark Jobs", unBookmarkError)
       return null;

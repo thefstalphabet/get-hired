@@ -11,7 +11,7 @@ export default function JobsListing(props: { loading: boolean }) {
       {!loading ? (
         searchedJobs?.map((job: any) => {
           const saved = job?.saved?.find((ele: any) => ele.job_id === job?.id);
-          return <JobCard key={job?.id} job={job} alreadySaved={saved} />;
+          return <JobCard key={job?.id} job={job} alreadySaved={saved ? true : false} />;
         })
       ) : (
         <>

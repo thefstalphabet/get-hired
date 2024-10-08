@@ -7,18 +7,20 @@ import { setSearchedJobs } from "../redux/slices/job";
 import { useEffect } from "react";
 import { getJobs, IGetJobPayload } from "../api/jobs";
 import NoJobsFound from "../assets/noJobsFound.png";
+import { useUser } from "@clerk/clerk-react";
 
 export default function JobSearch() {
   const dispatch = useAppDispatch();
   const { searchedJobs } = useAppSelector((store) => store.job);
+  const { user } = useUser();
   const {
     data: jobs,
     loading: jobsLoading,
     makeRequest,
-  } = useFetch(getJobs, {}, true);
+  } = useFetch(getJobs, { user_id: user?.id }, true);
 
   function handleSearchSubmit(searchQuery: IGetJobPayload) {
-    makeRequest(searchQuery);
+    makeRequest({ ...searchQuery, user_id: user?.id });
   }
 
   useEffect(() => {

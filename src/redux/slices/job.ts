@@ -4,7 +4,7 @@ import { IJob } from "../../interfaces/common";
 import { IGetJobPayload } from "../../api/jobs";
 
 interface IInitialStage {
-  searchedJobs: IJob[] | null;
+  searchedJobs: any[] | null;
   selectedJob: IJob | null;
   searchedQuery: IGetJobPayload | null
 }
@@ -21,6 +21,34 @@ const JobSlices = createSlice({
     setSearchedJobs(state, action: PayloadAction<IJob[]>) {
       state.searchedJobs = action.payload;
     },
+
+    updateSearchedJob(state, action: PayloadAction<{ job_id: string, alreadySaved: boolean }>) {
+      if (state?.searchedJobs?.length) {
+        const jobIndex = state.searchedJobs.findIndex((ele: any) => ele.id === action.payload.job_id);
+        if (jobIndex !== -1) {
+          const job = state.searchedJobs[jobIndex];
+          let updatedJob;
+          if (action.payload.alreadySaved) {
+            updatedJob = {
+              ...job,
+              saved: (job.saved || []).filter(savedJob => savedJob.job_id !== action.payload.job_id)
+            };
+          } else {
+            updatedJob = {
+              ...job,
+              saved: [...(job.saved || []), { job_id: action.payload.job_id }]
+            };
+          }
+
+          state.searchedJobs = [
+            ...state.searchedJobs.slice(0, jobIndex),
+            updatedJob,
+            ...state.searchedJobs.slice(jobIndex + 1)
+          ];
+        }
+      }
+    },
+
     setSelectedJob(state, action: PayloadAction<IJob>) {
       state.selectedJob = action.payload;
     },
@@ -32,6 +60,6 @@ const JobSlices = createSlice({
     },
   },
 });
-export const { setSearchedJobs, setSelectedJob, updateSelectedJob, setSearchedQuery } =
+export const { setSearchedJobs, setSelectedJob, updateSelectedJob, setSearchedQuery, updateSearchedJob } =
   JobSlices.actions;
 export default JobSlices.reducer;
