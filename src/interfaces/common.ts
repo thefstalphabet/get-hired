@@ -7,5 +7,7 @@ export interface IJob {
     description: string,
     location: string,
     requirements: string,
-    is_open: boolean
+    is_open: boolean,
+    company?: any,
+    applications?: any
 }

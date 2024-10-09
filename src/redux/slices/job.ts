@@ -52,7 +52,7 @@ const JobSlices = createSlice({
     setSelectedJob(state, action: PayloadAction<IJob>) {
       state.selectedJob = action.payload;
     },
-    updateSelectedJob(state, action: PayloadAction<IJob>) {
+    updateSelectedJob(state, action: PayloadAction<any>) {
       state.selectedJob = { ...state.selectedJob, ...action.payload };
     },
     setSearchedQuery(state, action: PayloadAction<IGetJobPayload | null>) {

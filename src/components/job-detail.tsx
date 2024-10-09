@@ -7,13 +7,16 @@ import { updateSelectedJob } from "../redux/slices/job";
 import JobApplyDrawer from "./job-apply-drawer";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
-import { Button, Checkbox } from "antd";
+import { Button, Form } from "antd";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { useState } from "react";
 import ApplicantsModal from "./applicants-modal";
+import { getPostedDate } from "../Helper/methods";
+import ReToggleButon from "../reusable-antd-components/ReFormFields/ReToggleButon";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
+  const [form] = Form.useForm();
   const { user } = useUser();
   const dispatch = useAppDispatch();
   const { makeRequest } = useFetch(updateJob);
@@ -43,34 +46,17 @@ export default function JobDetail() {
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-bold">{selectedJob?.title}</h1>
           </div>
-          <div className="flex gap-1">
-            <h4 className="font-semibold">{selectedJob?.company?.name}</h4>
-            <span>|</span>
-            <h4 className="font-semibold">{selectedJob?.location}</h4>
-          </div>
+          <h4>
+            {`${selectedJob?.company?.name} • ${
+              selectedJob?.location
+            } • ${getPostedDate(selectedJob?.created_at)}`}
+          </h4>
 
-          {selectedJob?.recruiter_id === user?.id ? (
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="closed"
-                checked={selectedJob?.is_open}
-                onChange={handleJobStatusChanges}
-              />
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Do you want to close this opening?
-              </label>
+          {!selectedJob?.is_open && selectedJob?.recruiter_id !== user?.id && (
+            <div className="flex gap-2 items-center">
+              <BiWindowClose className="text-red-600 text-lg" />
+              <p className="text-red-600">No longer accepting applications</p>
             </div>
-          ) : (
-            <p>
-              {!selectedJob?.is_open && (
-                <div className="flex gap-2 items-center">
-                  <BiWindowClose className="text-red-600 text-lg" />
-                  <p className="text-red-600">
-                    No longer accepting applications
-                  </p>
-                </div>
-              )}
-            </p>
           )}
           {selectedJob?.recruiter_id !== user?.id ? (
             <div className="flex items-center gap-2">
@@ -78,10 +64,21 @@ export default function JobDetail() {
               <p>{selectedJob?.applications?.length} Applicants</p>
             </div>
           ) : (
-            <>
+            <div className="flex items-center gap-2 mt-2">
+              <ReToggleButon
+                disable
+                formInstance={form}
+                label="Close Hiring"
+                noStyle
+                name="recruiter_id"
+                className="border rounded-full px-3 py-1.5"
+                themeColor="#691F74"
+                icon={<BiWindowClose className="text-lg" />}
+              />
               <Button
-                icon={<FaUsers className="text-xl mt-[2px]" />}
-                className="mt-2 h-9 rounded-full w-36"
+                icon={<FaUsers className="text-xl mt-[1.5px]" />}
+                className="h-9 rounded-full w-32"
+                size="small"
                 onClick={() => {
                   setViewApplicantsModalVisibility(true);
                 }}
@@ -93,7 +90,7 @@ export default function JobDetail() {
                 visibility={viewApplicantsModalVisibility}
                 setVisibility={setViewApplicantsModalVisibility}
               />
-            </>
+            </div>
           )}
           {selectedJob?.recruiter_id !== user?.id && (
             <>

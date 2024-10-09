@@ -4,8 +4,8 @@ import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSelectedJob, updateSearchedJob } from "../redux/slices/job";
 import ReCard from "../reusable-antd-components/ReCard";
-import moment from "moment";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { getPostedDate } from "../Helper/methods";
 
 export default function JobCard(props: { job: any; alreadySaved: boolean }) {
   const { job, alreadySaved } = props;
@@ -27,17 +27,6 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
     dispatch(setSelectedJob(job));
   };
 
-  const getPostedDate = () => {
-    const days = moment().diff(moment(job?.created_at), "days");
-    let str;
-    if (days === 0) {
-      str = "Posted Today";
-    } else {
-      str = `${days} days ago`;
-    }
-    return str;
-  };
-
   return (
     <ReCard
       className={`cursor-pointer  ${
@@ -52,9 +41,7 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
       />
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-lg font-bold">
-            {job?.title}
-          </h1>
+          <h1 className="text-lg font-bold">{job?.title}</h1>
           {!(job?.recruiter_id === user?.id) &&
             (alreadySaved ? (
               <FaHeart
@@ -70,9 +57,9 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
             ))}
         </div>
         <h4>
-          {`${job?.company?.name} • ${job?.location} • ${
-            job?.created_at && getPostedDate()
-          }`}
+          {`${job?.company?.name} • ${job?.location} • ${getPostedDate(
+            job?.created_at
+          )}`}
         </h4>
         <div style={{ color: "#676767" }}>
           <p className="text-sm mt-2 pr-10">
