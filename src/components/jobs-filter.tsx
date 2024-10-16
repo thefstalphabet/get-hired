@@ -211,7 +211,7 @@ export default function JobsFilter(props: {
               label="My Job"
               noStyle
               name="recruiter_id"
-              className="border rounded-full px-4 pl-4 py-2"
+              className="border rounded-full px-4 py-2.5"
               themeColor="#691F74"
               icon={<FaBuildingUser />}
             />

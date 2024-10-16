@@ -7,16 +7,15 @@ import { updateSelectedJob } from "../redux/slices/job";
 import JobApplyDrawer from "./job-apply-drawer";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
-import { Button, Form } from "antd";
+import { Button } from "antd";
 import { AiFillThunderbolt } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ApplicantsModal from "./applicants-modal";
 import { getPostedDate } from "../Helper/methods";
-import ReToggleButon from "../reusable-antd-components/ReFormFields/ReToggleButon";
+import { RiFileCloseFill } from "react-icons/ri";
 
 export default function JobDetail() {
   const { selectedJob } = useAppSelector((store) => store.job);
-  const [form] = Form.useForm();
   const { user } = useUser();
   const dispatch = useAppDispatch();
   const { makeRequest } = useFetch(updateJob);
@@ -26,13 +25,26 @@ export default function JobDetail() {
   const [viewApplicantsModalVisibility, setViewApplicantsModalVisibility] =
     useState<boolean>(false);
 
-  async function handleJobStatusChanges(e: any) {
+  const [jobStatus, setJobStatus] = useState<boolean>();
+
+  async function handleJobStatusChanges(status: boolean) {
+    setJobStatus(status);
+
     await makeRequest({
       id: selectedJob?.id,
-      isOpen: e?.target?.checked,
+      isOpen: status,
     });
-    dispatch(updateSelectedJob({ is_open: e?.target?.checked }));
+    dispatch(updateSelectedJob({ is_open: status }));
+    // need to update that job from searched array
   }
+
+  useEffect(() => {
+    if (selectedJob) {
+      setJobStatus(selectedJob?.is_open);
+    }
+  }, [selectedJob]);
+
+  console.log(selectedJob);
 
   return selectedJob ? (
     <ReCard>
@@ -65,18 +77,23 @@ export default function JobDetail() {
             </div>
           ) : (
             <div className="flex items-center gap-2 mt-2">
-              <ReToggleButon
-                disable
-                formInstance={form}
-                label="Close Hiring"
-                noStyle
-                name="recruiter_id"
-                className="border rounded-full px-3 py-1.5"
-                themeColor="#691F74"
-                icon={<BiWindowClose className="text-lg" />}
-              />
               <Button
-                icon={<FaUsers className="text-xl mt-[1.5px]" />}
+                onClick={() => {
+                  handleJobStatusChanges(!jobStatus);
+                }}
+                size="small"
+                icon={<RiFileCloseFill className="text-lg" />}
+                className={`rounded-full py-[17px] px-4 relative overflow-hidden focus:outline-none peer`}
+                style={
+                  jobStatus
+                    ? { border: "1px solid #691F74", color: "#691F74" }
+                    : {}
+                }
+              >
+                Close Hiring
+              </Button>
+              <Button
+                icon={<FaUsers className="text-xl" />}
                 className="h-9 rounded-full w-32"
                 size="small"
                 onClick={() => {
