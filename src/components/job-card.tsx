@@ -20,7 +20,7 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
       job_id: job?.id,
       alreadyBookmarked: alreadySaved,
     });
-    dispatch(updateSearchedJob({ job_id: job.id, alreadySaved }));
+    dispatch(updateSearchedJob({ job_id: job.id, updates: {}, alreadySaved }));
   };
 
   const handleOnCardClicks = () => {

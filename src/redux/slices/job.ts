@@ -22,22 +22,25 @@ const JobSlices = createSlice({
       state.searchedJobs = action.payload;
     },
 
-    updateSearchedJob(state, action: PayloadAction<{ job_id: string, alreadySaved: boolean }>) {
+    updateSearchedJob(state, action: PayloadAction<{ job_id: string, updates: any, alreadySaved?: boolean }>) {
       if (state?.searchedJobs?.length) {
         const jobIndex = state.searchedJobs.findIndex((ele: any) => ele.id === action.payload.job_id);
         if (jobIndex !== -1) {
           const job = state.searchedJobs[jobIndex];
-          let updatedJob;
-          if (action.payload.alreadySaved) {
-            updatedJob = {
-              ...job,
-              saved: (job.saved || []).filter(savedJob => savedJob.job_id !== action.payload.job_id)
-            };
-          } else {
-            updatedJob = {
-              ...job,
-              saved: [...(job.saved || []), { job_id: action.payload.job_id }]
-            };
+
+          let updatedJob = { ...job, ...action.payload.updates };
+          if (action.payload.alreadySaved !== undefined) {
+            if (action.payload.alreadySaved) {
+              updatedJob = {
+                ...job,
+                saved: (job.saved || []).filter((savedJob: any) => savedJob.job_id !== action.payload.job_id)
+              };
+            } else if (!action.payload.alreadySaved) {
+              updatedJob = {
+                ...job,
+                saved: [...(job.saved || []), { job_id: action.payload.job_id }]
+              };
+            }
           }
 
           state.searchedJobs = [

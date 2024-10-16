@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { BiWindowClose } from "react-icons/bi";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
-import { updateSelectedJob } from "../redux/slices/job";
+import { updateSearchedJob, updateSelectedJob } from "../redux/slices/job";
 import JobApplyDrawer from "./job-apply-drawer";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
@@ -25,17 +25,23 @@ export default function JobDetail() {
   const [viewApplicantsModalVisibility, setViewApplicantsModalVisibility] =
     useState<boolean>(false);
 
-  const [jobStatus, setJobStatus] = useState<boolean>();
+  const [jobStatus, setJobStatus] = useState<boolean>(false);
 
-  async function handleJobStatusChanges(status: boolean) {
+  async function handleJobStatusChanges(jobId: string, status: boolean) {
     setJobStatus(status);
+    console.log(status);
 
     await makeRequest({
       id: selectedJob?.id,
       isOpen: status,
     });
     dispatch(updateSelectedJob({ is_open: status }));
-    // need to update that job from searched array
+    dispatch(
+      updateSearchedJob({
+        job_id: jobId,
+        updates: { is_open: status },
+      })
+    );
   }
 
   useEffect(() => {
@@ -79,7 +85,7 @@ export default function JobDetail() {
             <div className="flex items-center gap-2 mt-2">
               <Button
                 onClick={() => {
-                  handleJobStatusChanges(!jobStatus);
+                  handleJobStatusChanges(selectedJob.id, !jobStatus);
                 }}
                 size="small"
                 icon={<RiFileCloseFill className="text-lg" />}
