@@ -20,7 +20,7 @@ export default function PostJobDrawer(props: {
 }) {
   const [form] = Form.useForm();
   const { visibility, setVisibility } = props;
-  const { data: companies } = useFetch(getCompanies, {}, true);
+  const { data: companies, makeRequest: fetchCompanies } = useFetch(getCompanies, {}, true);
   const { user } = useUser();
   const { makeRequest: createNewJob } = useFetch(addNewJob, {});
   const [addCompanyModalVisibility, setAddCompanyModalVisibility] =
@@ -100,6 +100,7 @@ export default function PostJobDrawer(props: {
           <AddCompanyModal
             visibility={addCompanyModalVisibility}
             setVisibility={setAddCompanyModalVisibility}
+            fetchCompanies={fetchCompanies}
           />
         </div>
         <ReSelect

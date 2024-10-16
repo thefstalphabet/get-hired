@@ -29,8 +29,6 @@ export default function JobDetail() {
 
   async function handleJobStatusChanges(jobId: string, status: boolean) {
     setJobStatus(status);
-    console.log(status);
-
     await makeRequest({
       id: selectedJob?.id,
       isOpen: status,
@@ -49,8 +47,6 @@ export default function JobDetail() {
       setJobStatus(selectedJob?.is_open);
     }
   }, [selectedJob]);
-
-  console.log(selectedJob);
 
   return selectedJob ? (
     <ReCard>

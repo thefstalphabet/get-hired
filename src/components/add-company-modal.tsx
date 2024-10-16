@@ -5,17 +5,31 @@ import ReForm from "../reusable-antd-components/ReForm";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 import ReUpload from "../reusable-antd-components/ReFormFields/ReUpload";
 import { FaPlus } from "react-icons/fa";
+import useFetch from "../hooks/use-fetch";
+import { createCompany } from "../api/company";
 
 export default function AddCompanyModal(props: {
   visibility: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchCompanies: Function;
 }) {
   const [form] = Form.useForm();
-  const { visibility, setVisibility } = props;
+  const { visibility, setVisibility, fetchCompanies } = props;
   const [fileList, setFileList] = useState<UploadFile<File>[]>([]);
+  const { makeRequest: createNewCompany, loading } = useFetch(
+    createCompany,
+    {}
+  );
 
   function handleFormSubmit(data: any) {
-    console.log(data);
+    const fileData = data?.logo?.file?.originFileObj;
+    if (fileData) {
+      data["logo"] = fileData;
+    }
+    createNewCompany(data);
+    fetchCompanies();
+    setFileList([]);
+    setVisibility(false);
   }
   return (
     <ReDrawer
@@ -29,6 +43,7 @@ export default function AddCompanyModal(props: {
       width={800}
       extraContent={
         <Button
+          loading={loading}
           type="primary"
           onClick={() => {
             form.submit();
