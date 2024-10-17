@@ -1,4 +1,4 @@
-import JobsFilter from "../components/jobs-filter";
+import JobSearchAndFilter from "../components/job-search-and-filter";
 import JobsListing from "../components/jobs-listing";
 import JobDetail from "../components/job-detail";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -16,11 +16,11 @@ export default function JobSearch() {
   const {
     data: jobs,
     loading: jobsLoading,
-    makeRequest,
+    makeRequest: fetchJobs,
   } = useFetch(getJobs, { user_id: user?.id }, true);
 
   function handleSearchSubmit(searchQuery: IGetJobPayload) {
-    makeRequest({ ...searchQuery, user_id: user?.id });
+    fetchJobs({ ...searchQuery, user_id: user?.id });
   }
 
   useEffect(() => {
@@ -32,10 +32,11 @@ export default function JobSearch() {
       <div className="relative">
         <div className="h-24" style={{ backgroundColor: "#691F74" }}></div>
         <div className="absolute bottom-[29px] left-1/2 transform -translate-x-1/2">
-          <JobsFilter
-            type="big"
+          <JobSearchAndFilter
+            type="large"
             handleSearchSubmit={handleSearchSubmit}
             loading={jobsLoading}
+            fetchJobs={fetchJobs}
           />
         </div>
         <div className="h-32 bg-white"></div>

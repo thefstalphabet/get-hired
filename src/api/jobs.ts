@@ -12,7 +12,9 @@ export interface IGetJobPayload {
 
 export async function getJobs(token: string, payload: IGetJobPayload) {
   const supabase = await supabaseClient(token);
-  let query = supabase.from("jobs").select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id)").eq("saved_jobs.user_id", payload?.user_id);
+  let query = supabase.from("jobs")
+  .select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id)")
+  .eq("saved_jobs.user_id", payload?.user_id);
 
 
   if (payload?.location) {
@@ -122,4 +124,24 @@ export async function addNewJob(token: string, payload: any) {
   }
   return data;
 
+}
+
+export async function getSavedJobs(token: string, payload: { id: string }) {
+  const supabase = await supabaseClient(token);
+
+  const { data, error } = await supabase
+    .from("saved_jobs")
+    .select("*, job: jobs(*, company: companies(name,logo_url))")
+    .eq("user_id", payload?.id)
+
+  if (error) {
+    console.error("Error fetching Saved Jobs", error);
+    return null;
+  }
+  return data.map((ele: any) => {
+    return {
+      ...ele?.job,
+      saved: [{job_id: ele?.job_id}]
+    } 
+  });
 }

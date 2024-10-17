@@ -1,25 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { State } from "country-state-city";
 import { getCompanies } from "../api/company";
 import useFetch from "../hooks/use-fetch";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
-import { Button, Form } from "antd";
+import { Button, Divider, Form } from "antd";
 import ReForm from "../reusable-antd-components/ReForm";
 import ReSelect, {
   ISelectOptions,
 } from "../reusable-antd-components/ReFormFields/ReSelect";
-import { FaHourglassStart, FaRegCalendarAlt } from "react-icons/fa";
+import { FaHeart, FaHourglassStart, FaRegCalendarAlt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 import { useAppDispatch } from "../redux/hooks";
-import { setSearchedQuery } from "../redux/slices/job";
-import ReToggleButon from "../reusable-antd-components/ReFormFields/ReToggleButon";
+import { setSearchedJobs, setSearchedQuery } from "../redux/slices/job";
 import { FaBuildingUser } from "react-icons/fa6";
 import { CgOrganisation } from "react-icons/cg";
-import { IGetJobPayload } from "../api/jobs";
+import { getSavedJobs, IGetJobPayload } from "../api/jobs";
 
-type FIlterType = "small" | "big";
+type FIlterType = "small" | "large";
 
 const dateFilterItems: ISelectOptions[] = [
   {
@@ -54,10 +53,11 @@ const statusFilterItems: ISelectOptions[] = [
   },
 ];
 
-export default function JobsFilter(props: {
+export default function JobSearchAndFilter(props: {
   type: FIlterType;
   handleSearchSubmit: (searchQuery: IGetJobPayload) => void;
   loading?: boolean;
+  fetchJobs: Function
 }) {
   const [form] = Form.useForm();
   const [searchParams] = useSearchParams();
@@ -67,17 +67,36 @@ export default function JobsFilter(props: {
   const dispatch = useAppDispatch();
   const { user } = useUser();
 
-  const { type, handleSearchSubmit, loading } = props;
+  const { type, handleSearchSubmit, loading, fetchJobs } = props;
   const { data: companies } = useFetch(getCompanies, {}, true);
+  const { data: allsavedJobs, makeRequest: fetchSavedJobs } = useFetch(
+    getSavedJobs,
+    { id: user?.id },
+    true
+  );
+  const [myJobsOption, setMyJobsOption] = useState<boolean>(false);
+  const [savedJobsOption, setSavedJobsOption] = useState<boolean>(false);
 
   const handleFormSubmit = (values: any) => {
     if (!isSignedIn) {
       return navigate("/?sign-in=true");
     }
-    if (values?.recruiter_id) {
-      values.recruiter_id = user?.id;
-    }
     handleSearchSubmit(values);
+  };
+
+  const handleMyJobsOptionClicks = () => {
+    setMyJobsOption(!myJobsOption);
+    if (!myJobsOption) {
+      handleSearchSubmit({ recruiter_id: user?.id });
+    }
+  };
+  const handleSavedJobsOptionClicks = () => {
+    setSavedJobsOption(!savedJobsOption);
+    if (!savedJobsOption) {
+      fetchSavedJobs();
+    } else {
+      fetchJobs();
+    }
   };
 
   useEffect(() => {
@@ -89,6 +108,10 @@ export default function JobsFilter(props: {
       });
     }
   }, [query]);
+
+  useEffect(() => {
+    dispatch(setSearchedJobs(allsavedJobs));
+  }, [allsavedJobs]);
 
   return (
     <ReForm
@@ -119,7 +142,7 @@ export default function JobsFilter(props: {
           <ReSelect
             placeholder="Job Location"
             variant="borderless"
-            className="w-80"
+            className="w-60"
             noStyle
             label=""
             name="location"
@@ -147,7 +170,7 @@ export default function JobsFilter(props: {
           Find Job
         </Button>
       </div>
-      {type === "big" && (
+      {type === "large" && (
         <div className="flex items-center justify-center gap-5">
           <div className="border rounded-full flex items-center px-2 pl-4 py-1">
             <FaHourglassStart />
@@ -204,18 +227,6 @@ export default function JobsFilter(props: {
               })}
             />
           </div>
-          {user?.unsafeMetadata?.role === "2" && (
-            <ReToggleButon
-              disable
-              formInstance={form}
-              label="My Job"
-              noStyle
-              name="recruiter_id"
-              className="border rounded-full px-4 py-2.5"
-              themeColor="#691F74"
-              icon={<FaBuildingUser />}
-            />
-          )}
           <Button
             className="rounded-full w-24 py-5 px-10"
             type="default"
@@ -227,6 +238,35 @@ export default function JobsFilter(props: {
           >
             Rest Filter
           </Button>
+          <div className="flex items-center gap-5">
+            <Divider type="vertical" className="h-8 m-0" />
+            {user?.unsafeMetadata?.role === "2" && (
+              <Button
+                onClick={handleMyJobsOptionClicks}
+                icon={<FaBuildingUser />}
+                className={`rounded-full relative overflow-hidden focus:outline-none peer px-4 py-5`}
+                style={
+                  myJobsOption
+                    ? { border: "1px solid #691F74", color: "#691F74" }
+                    : {}
+                }
+              >
+                My Jobs
+              </Button>
+            )}
+            <Button
+              onClick={handleSavedJobsOptionClicks}
+              icon={<FaHeart />}
+              className={`rounded-full relative overflow-hidden focus:outline-none peer px-4 py-5`}
+              style={
+                savedJobsOption
+                  ? { border: "1px solid #691F74", color: "#691F74" }
+                  : {}
+              }
+            >
+              Saved Jobs
+            </Button>
+          </div>
         </div>
       )}
     </ReForm>
