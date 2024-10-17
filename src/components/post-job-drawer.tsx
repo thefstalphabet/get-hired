@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReDrawer from "../reusable-antd-components/ReDrawer";
 import { Button, Form } from "antd";
 import ReForm from "../reusable-antd-components/ReForm";
@@ -10,18 +10,28 @@ import { State } from "country-state-city";
 import TextEditor from "./text-editor/text-editor";
 import AddCompanyModal from "./add-company-modal";
 import { MdDomainAdd } from "react-icons/md";
-import { addNewJob } from "../api/jobs";
+import { addNewJob, getJobs } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { ReNotification } from "../reusable-antd-components/ReNotification";
+import { useAppDispatch } from "../redux/hooks";
+import { setSearchedJobs } from "../redux/slices/job";
 
 export default function PostJobDrawer(props: {
   visibility: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [form] = Form.useForm();
-  const { visibility, setVisibility } = props;
-  const { data: companies, makeRequest: fetchCompanies } = useFetch(getCompanies, {}, true);
   const { user } = useUser();
+  const dispatch = useAppDispatch();
+  const { visibility, setVisibility } = props;
+  const { data: companies, makeRequest: fetchCompanies } = useFetch(
+    getCompanies,
+    {},
+    true
+  );
+  const { data: jobs, makeRequest: fetchJobs } = useFetch(getJobs, {
+    user_id: user?.id,
+  });
   const { makeRequest: createNewJob } = useFetch(addNewJob, {});
   const [addCompanyModalVisibility, setAddCompanyModalVisibility] =
     useState<boolean>(false);
@@ -31,7 +41,8 @@ export default function PostJobDrawer(props: {
       recruiter_id: user?.id,
       ...data,
     };
-    createNewJob(payload);
+    await createNewJob(payload);
+    await fetchJobs();
     ReNotification({
       header: "Post Job Say's",
       description: "New Job create sucessfully",
@@ -41,6 +52,10 @@ export default function PostJobDrawer(props: {
     });
     setVisibility(false);
   }
+
+  useEffect(() => {
+    dispatch(setSearchedJobs(jobs));
+  }, [jobs]);
 
   return (
     <ReDrawer

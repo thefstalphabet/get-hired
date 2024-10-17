@@ -88,12 +88,12 @@ export default function JobSearchAndFilter(props: {
       handleSearchSubmit({ recruiter_id: user?.id });
     }
   };
-  const handleSavedJobsOptionClicks = () => {
+  const handleSavedJobsOptionClicks = async () => {
     setSavedJobsOption(!savedJobsOption);
     if (!savedJobsOption) {
-      fetchSavedJobs && fetchSavedJobs();
+      fetchSavedJobs && (await fetchSavedJobs());
     } else {
-      fetchJobs && fetchJobs();
+      fetchJobs && (await fetchJobs());
     }
   };
 

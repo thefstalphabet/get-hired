@@ -21,15 +21,15 @@ export default function AddCompanyModal(props: {
     {}
   );
 
-  function handleFormSubmit(data: any) {
+  async function handleFormSubmit(data: any) {
     const fileData = data?.logo?.file?.originFileObj;
     if (fileData) {
       data["logo"] = fileData;
     }
-    createNewCompany(data);
-    fetchCompanies();
+    await createNewCompany(data);
     setFileList([]);
     setVisibility(false);
+    await fetchCompanies();
   }
   return (
     <ReDrawer
