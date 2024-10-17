@@ -7,8 +7,12 @@ import ReCard from "../reusable-antd-components/ReCard";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { getPostedDate } from "../Helper/methods";
 
-export default function JobCard(props: { job: any; alreadySaved: boolean }) {
-  const { job, alreadySaved } = props;
+export default function JobCard(props: {
+  job: any;
+  alreadySaved: boolean;
+  view: "card" | "list";
+}) {
+  const { job, alreadySaved, view } = props;
   const dispatch = useAppDispatch();
   const { selectedJob } = useAppSelector((store) => store.job);
   const { user } = useUser();
@@ -27,7 +31,7 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
     dispatch(setSelectedJob(job));
   };
 
-  return (
+  return view === "card" ? (
     <ReCard
       className={`cursor-pointer  ${
         job?.id === selectedJob?.id && "border-[#691F74]"
@@ -46,12 +50,12 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
             (alreadySaved ? (
               <FaHeart
                 fill="red"
-                className="text-2xl cursor-pointe "
+                className="text-lg cursor-pointe "
                 onClick={handleBookmarkClicks}
               />
             ) : (
               <FaRegHeart
-                className="text-2xl cursor-pointer"
+                className="text-lg cursor-pointer"
                 onClick={handleBookmarkClicks}
               />
             ))}
@@ -69,5 +73,46 @@ export default function JobCard(props: { job: any; alreadySaved: boolean }) {
         </div>
       </div>
     </ReCard>
+  ) : (
+    <div
+      style={{
+        border: `1px solid ${
+          job?.id === selectedJob?.id ? "#691F74" : "#F0F0F0"
+        }`,
+      }}
+      className={`cursor-pointer bg-white p-3 rounded-md flex justify-between items-center`}
+      onClick={handleOnCardClicks}
+    >
+      <div className="flex items-center gap-2">
+        <img
+          className="h-[2rem] border p-2 rounded-md "
+          src={job?.company?.logo_url}
+          alt="company logo"
+        />
+        <div>
+          <h1 className="text-sm font-medium">{job?.title}</h1>
+          <h4 className="text-xs" style={{ color: "#676767" }}>
+            {`${job?.company?.name} • ${job?.location} • ${getPostedDate(
+              job?.created_at
+            )}`}
+          </h4>
+        </div>
+      </div>
+      <div>
+        {!(job?.recruiter_id === user?.id) &&
+          (alreadySaved ? (
+            <FaHeart
+              fill="red"
+              className="text-base cursor-pointe "
+              onClick={handleBookmarkClicks}
+            />
+          ) : (
+            <FaRegHeart
+              className="text-base cursor-pointer"
+              onClick={handleBookmarkClicks}
+            />
+          ))}
+      </div>
+    </div>
   );
 }
