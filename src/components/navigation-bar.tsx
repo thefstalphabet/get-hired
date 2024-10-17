@@ -75,15 +75,15 @@ export default function NavigationBar() {
                     avatarBox: "w-10 h-10",
                   },
                 }}
-              >
-                <UserButton.MenuItems>
+              />
+              {/* <UserButton.MenuItems>
                   <UserButton.Link
                     label="Bookmarks"
                     labelIcon={<></>}
                     href="/bookmarks"
                   />
-                </UserButton.MenuItems>
-              </UserButton>
+                </UserButton.MenuItems> */}
+              {/* </UserButton> */}
             </SignedIn>
           </div>
         </div>

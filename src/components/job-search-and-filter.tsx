@@ -13,10 +13,10 @@ import { FaHeart, FaHourglassStart, FaRegCalendarAlt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
 import { useAppDispatch } from "../redux/hooks";
-import { setSearchedJobs, setSearchedQuery } from "../redux/slices/job";
+import { setSearchedQuery } from "../redux/slices/job";
 import { FaBuildingUser } from "react-icons/fa6";
 import { CgOrganisation } from "react-icons/cg";
-import { getSavedJobs, IGetJobPayload } from "../api/jobs";
+import { IGetJobPayload } from "../api/jobs";
 
 type FIlterType = "small" | "large";
 
@@ -57,7 +57,8 @@ export default function JobSearchAndFilter(props: {
   type: FIlterType;
   handleSearchSubmit: (searchQuery: IGetJobPayload) => void;
   loading?: boolean;
-  fetchJobs: Function
+  fetchJobs: Function;
+  fetchSavedJobs: Function;
 }) {
   const [form] = Form.useForm();
   const [searchParams] = useSearchParams();
@@ -67,13 +68,10 @@ export default function JobSearchAndFilter(props: {
   const dispatch = useAppDispatch();
   const { user } = useUser();
 
-  const { type, handleSearchSubmit, loading, fetchJobs } = props;
+  const { type, handleSearchSubmit, loading, fetchJobs, fetchSavedJobs } =
+    props;
   const { data: companies } = useFetch(getCompanies, {}, true);
-  const { data: allsavedJobs, makeRequest: fetchSavedJobs } = useFetch(
-    getSavedJobs,
-    { id: user?.id },
-    true
-  );
+
   const [myJobsOption, setMyJobsOption] = useState<boolean>(false);
   const [savedJobsOption, setSavedJobsOption] = useState<boolean>(false);
 
@@ -108,10 +106,6 @@ export default function JobSearchAndFilter(props: {
       });
     }
   }, [query]);
-
-  useEffect(() => {
-    dispatch(setSearchedJobs(allsavedJobs));
-  }, [allsavedJobs]);
 
   return (
     <ReForm
