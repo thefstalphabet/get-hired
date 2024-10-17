@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import HomeImage from "../assets/home-img.png";
-import JobSearchAndFilter, { ISearchQuery } from "../components/job-search-and-filter";
+import JobSearchAndFilter from "../components/job-search-and-filter";
+import { IGetJobPayload } from "../api/jobs";
 export default function Home() {
   const navigate = useNavigate();
 
-  function handleSearchSubmit(searchQuery: ISearchQuery) {
+  function handleSearchSubmit(searchQuery: IGetJobPayload) {
     navigate(
       `/job-search?query=${JSON.stringify({
         jobTitle: searchQuery?.title,

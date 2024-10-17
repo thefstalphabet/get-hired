@@ -17,7 +17,10 @@ export default function ApplicantsModal(props: {
   const { visibility, setVisibility, id } = props;
   const { makeRequest, data, loading } = useFetch(getJobApplication);
 
-  function handleEditClicks() {}
+  function handleEditClicks(id: string) {
+    console.log(id);
+    
+  }
   function handleResumeDownload() {}
 
   const columns = [

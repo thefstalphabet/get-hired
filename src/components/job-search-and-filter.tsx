@@ -57,8 +57,8 @@ export default function JobSearchAndFilter(props: {
   type: FIlterType;
   handleSearchSubmit: (searchQuery: IGetJobPayload) => void;
   loading?: boolean;
-  fetchJobs: Function;
-  fetchSavedJobs: Function;
+  fetchJobs?: Function;
+  fetchSavedJobs?: Function;
 }) {
   const [form] = Form.useForm();
   const [searchParams] = useSearchParams();
@@ -91,9 +91,9 @@ export default function JobSearchAndFilter(props: {
   const handleSavedJobsOptionClicks = () => {
     setSavedJobsOption(!savedJobsOption);
     if (!savedJobsOption) {
-      fetchSavedJobs();
+      fetchSavedJobs && fetchSavedJobs();
     } else {
-      fetchJobs();
+      fetchJobs && fetchJobs();
     }
   };
 
@@ -111,7 +111,7 @@ export default function JobSearchAndFilter(props: {
     <ReForm
       formInstance={form}
       onSubmit={handleFormSubmit}
-      onChange={(changedValues: unknown, allValues: unknown) => {
+      onChange={(changedValues: any, allValues: any) => {
         dispatch(setSearchedQuery(allValues));
       }}
       fieldsClassName="grid gap-7"
