@@ -7,6 +7,7 @@ import ReUpload from "../reusable-antd-components/ReFormFields/ReUpload";
 import { FaPlus } from "react-icons/fa";
 import useFetch from "../hooks/use-fetch";
 import { createCompany } from "../api/company";
+import { ReNotification } from "../reusable-antd-components/ReNotification";
 
 export default function AddCompanyModal(props: {
   visibility: boolean;
@@ -30,6 +31,12 @@ export default function AddCompanyModal(props: {
     setFileList([]);
     setVisibility(false);
     await fetchCompanies();
+    ReNotification({
+      description: "New Company create sucessfully",
+      duration: 1,
+      placement: "topRight",
+      type: "success",
+    });
   }
   return (
     <ReDrawer

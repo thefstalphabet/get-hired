@@ -21,7 +21,6 @@ const JobSlices = createSlice({
     setSearchedJobs(state, action: PayloadAction<IJob[]>) {
       state.searchedJobs = action.payload;
     },
-
     updateSearchedJob(state, action: PayloadAction<{ job_id: string, updates: any, alreadySaved?: boolean }>) {
       if (state?.searchedJobs?.length) {
         const jobIndex = state.searchedJobs.findIndex((ele: any) => ele.id === action.payload.job_id);
@@ -51,7 +50,6 @@ const JobSlices = createSlice({
         }
       }
     },
-
     setSelectedJob(state, action: PayloadAction<IJob>) {
       state.selectedJob = action.payload;
     },

@@ -13,8 +13,8 @@ export interface IGetJobPayload {
 export async function getJobs(token: string, payload: IGetJobPayload) {
   const supabase = await supabaseClient(token);
   let query = supabase.from("jobs")
-  .select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id)")
-  .eq("saved_jobs.user_id", payload?.user_id);
+    .select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id)")
+    .eq("saved_jobs.user_id", payload?.user_id);
 
 
   if (payload?.location) {
@@ -141,7 +141,25 @@ export async function getSavedJobs(token: string, payload: { id: string }) {
   return data.map((ele: any) => {
     return {
       ...ele?.job,
-      saved: [{job_id: ele?.job_id}]
-    } 
+      saved: [{ job_id: ele?.job_id }]
+    }
   });
+}
+
+export async function deleteJob(token: string, payload: { job_id: string }) {
+  const supabase = await supabaseClient(token);
+
+  const { data, error: deleteError } = await supabase
+    .from("jobs")
+    .delete()
+    .eq("id", payload?.job_id)
+    .select();
+
+  if (deleteError) {
+    console.error("Error deleting job:", deleteError);
+    return data;
+  }
+
+  return data;
+
 }

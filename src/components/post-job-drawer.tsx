@@ -44,7 +44,6 @@ export default function PostJobDrawer(props: {
     await createNewJob(payload);
     await fetchJobs();
     ReNotification({
-      header: "Post Job Say's",
       description: "New Job create sucessfully",
       duration: 1,
       placement: "topRight",

@@ -1,11 +1,14 @@
 import useFetch from "../hooks/use-fetch";
-import { bookmarkJob } from "../api/jobs";
+import { bookmarkJob, deleteJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSelectedJob, updateSearchedJob } from "../redux/slices/job";
 import ReCard from "../reusable-antd-components/ReCard";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { getPostedDate } from "../Helper/methods";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { Popconfirm } from "antd";
+import { ReNotification } from "../reusable-antd-components/ReNotification";
 
 export default function JobCard(props: {
   job: any;
@@ -17,6 +20,7 @@ export default function JobCard(props: {
   const { selectedJob } = useAppSelector((store) => store.job);
   const { user } = useUser();
   const { makeRequest } = useFetch(bookmarkJob);
+  const { makeRequest: removeJob } = useFetch(deleteJob);
 
   const handleBookmarkClicks = async () => {
     await makeRequest({
@@ -25,6 +29,16 @@ export default function JobCard(props: {
       alreadyBookmarked: alreadySaved,
     });
     dispatch(updateSearchedJob({ job_id: job.id, updates: {}, alreadySaved }));
+  };
+
+  const handleJobRemoveClicks = async (id: string) => {
+    await removeJob({ job_id: id });
+    ReNotification({
+      description: "Job deleted sucessfully",
+      duration: 1,
+      placement: "topRight",
+      type: "success",
+    });
   };
 
   const handleOnCardClicks = () => {
@@ -46,8 +60,8 @@ export default function JobCard(props: {
       <div>
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-bold">{job?.title}</h1>
-          {!(job?.recruiter_id === user?.id) &&
-            (alreadySaved ? (
+          {!(job?.recruiter_id === user?.id) ? (
+            alreadySaved ? (
               <FaHeart
                 fill="red"
                 className="text-lg cursor-pointe "
@@ -58,7 +72,20 @@ export default function JobCard(props: {
                 className="text-lg cursor-pointer"
                 onClick={handleBookmarkClicks}
               />
-            ))}
+            )
+          ) : (
+            <Popconfirm
+              title="Delete the Job"
+              description="Are you sure to delete this job?"
+              onConfirm={() => {
+                handleJobRemoveClicks(job?.id);
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <RiDeleteBin6Fill className="text-lg" />
+            </Popconfirm>
+          )}
         </div>
         <h4>
           {`${job?.company?.name} • ${job?.location} • ${getPostedDate(
@@ -99,19 +126,22 @@ export default function JobCard(props: {
         </div>
       </div>
       <div>
-        {!(job?.recruiter_id === user?.id) &&
-          (alreadySaved ? (
+        {!(job?.recruiter_id === user?.id) && (
+          <>
+            (alreadySaved ? (
             <FaHeart
               fill="red"
               className="text-base cursor-pointe "
               onClick={handleBookmarkClicks}
             />
-          ) : (
+            ) : (
             <FaRegHeart
               className="text-base cursor-pointer"
               onClick={handleBookmarkClicks}
             />
-          ))}
+            ))
+          </>
+        )}
       </div>
     </div>
   );
