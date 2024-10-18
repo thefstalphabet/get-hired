@@ -2,13 +2,14 @@ import useFetch from "../hooks/use-fetch";
 import { bookmarkJob, deleteJob } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { setSelectedJob, updateSearchedJob } from "../redux/slices/job";
 import ReCard from "../reusable-antd-components/ReCard";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { getPostedDate } from "../Helper/methods";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { Popconfirm } from "antd";
 import { ReNotification } from "../reusable-antd-components/ReNotification";
+import { removeOneJob, updateOneJob } from "../redux/slices/job/jobs";
+import { setSelectedJob } from "../redux/slices/job/selected-job";
 
 export default function JobCard(props: {
   job: any;
@@ -17,7 +18,7 @@ export default function JobCard(props: {
 }) {
   const { job, alreadySaved, view } = props;
   const dispatch = useAppDispatch();
-  const { selectedJob } = useAppSelector((store) => store.job);
+  const { selectedJob } = useAppSelector((store) => store.selectedJob);
   const { user } = useUser();
   const { makeRequest } = useFetch(bookmarkJob);
   const { makeRequest: removeJob } = useFetch(deleteJob);
@@ -28,11 +29,12 @@ export default function JobCard(props: {
       job_id: job?.id,
       alreadyBookmarked: alreadySaved,
     });
-    dispatch(updateSearchedJob({ job_id: job.id, updates: {}, alreadySaved }));
+    dispatch(updateOneJob({ job_id: job.id, updates: {}, alreadySaved }));
   };
 
   const handleJobRemoveClicks = async (id: string) => {
     await removeJob({ job_id: id });
+    dispatch(removeOneJob(id));
     ReNotification({
       description: "Job deleted sucessfully",
       duration: 1,

@@ -14,7 +14,7 @@ import { addNewJob, getJobs } from "../api/jobs";
 import { useUser } from "@clerk/clerk-react";
 import { ReNotification } from "../reusable-antd-components/ReNotification";
 import { useAppDispatch } from "../redux/hooks";
-import { setSearchedJobs } from "../redux/slices/job";
+import { setJobs } from "../redux/slices/job/jobs";
 
 export default function PostJobDrawer(props: {
   visibility: boolean;
@@ -53,7 +53,7 @@ export default function PostJobDrawer(props: {
   }
 
   useEffect(() => {
-    dispatch(setSearchedJobs(jobs));
+    dispatch(setJobs(jobs));
   }, [jobs]);
 
   return (

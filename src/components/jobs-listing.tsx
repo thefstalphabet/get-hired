@@ -8,7 +8,7 @@ import { TfiLayoutListThumb } from "react-icons/tfi";
 
 export default function JobsListing(props: { loading: boolean }) {
   const { loading } = props;
-  const { searchedJobs } = useAppSelector((store) => store.job);
+  const { jobs } = useAppSelector((store) => store.jobs);
   const [jobView, setJobView] = useState<"card" | "list">("card");
 
   return (
@@ -36,7 +36,7 @@ export default function JobsListing(props: { loading: boolean }) {
         </div>
       </div>
       {!loading ? (
-        searchedJobs?.map((job: any) => {
+        jobs?.map((job: any) => {
           const saved = job?.saved?.find((ele: any) => ele.job_id === job?.id);
           return (
             <JobCard

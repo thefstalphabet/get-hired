@@ -3,18 +3,18 @@ import JobsListing from "../components/jobs-listing";
 import JobDetail from "../components/job-detail";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useFetch from "../hooks/use-fetch";
-import { setSearchedJobs } from "../redux/slices/job";
 import { useEffect } from "react";
 import { getJobs, getSavedJobs, IGetJobPayload } from "../api/jobs";
 import NoJobsFound from "../assets/noJobsFound.png";
 import { useUser } from "@clerk/clerk-react";
+import { setJobs } from "../redux/slices/job/jobs";
 
 export default function JobSearch() {
   const dispatch = useAppDispatch();
-  const { searchedJobs } = useAppSelector((store) => store.job);
+  const { jobs } = useAppSelector((store) => store.jobs);
   const { user } = useUser();
   const {
-    data: jobs,
+    data: allJobs,
     loading: jobsLoading,
     makeRequest: fetchJobs,
   } = useFetch(getJobs, { user_id: user?.id }, true);
@@ -28,12 +28,14 @@ export default function JobSearch() {
     fetchJobs({ ...searchQuery, user_id: user?.id });
   }
 
-  useEffect(() => {
-    dispatch(setSearchedJobs(jobs));
-  }, [jobs]);
+  console.log(allJobs);
 
   useEffect(() => {
-    dispatch(setSearchedJobs(allsavedJobs));
+    dispatch(setJobs(allJobs));
+  }, [allJobs]);
+
+  useEffect(() => {
+    dispatch(setJobs(allsavedJobs));
   }, [allsavedJobs]);
 
   return (
@@ -52,7 +54,7 @@ export default function JobSearch() {
         <div className="h-32 bg-white"></div>
       </div>
 
-      {searchedJobs?.length ? (
+      {jobs.length ? (
         <div
           className="grid grid-flow-col grid-cols-2 p-5 gap-3 px-40"
           style={{ backgroundColor: "#F6F6F9" }}

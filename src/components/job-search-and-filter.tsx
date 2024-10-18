@@ -12,8 +12,7 @@ import ReSelect, {
 import { FaHeart, FaHourglassStart, FaRegCalendarAlt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
-import { useAppDispatch } from "../redux/hooks";
-import { setSearchedQuery } from "../redux/slices/job";
+// import { useAppDispatch } from "../redux/hooks";
 import { FaBuildingUser } from "react-icons/fa6";
 import { CgOrganisation } from "react-icons/cg";
 import { IGetJobPayload } from "../api/jobs";
@@ -65,7 +64,7 @@ export default function JobSearchAndFilter(props: {
   const query = searchParams.get("query");
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const { user } = useUser();
 
   const { type, handleSearchSubmit, loading, fetchJobs, fetchSavedJobs } =
@@ -111,13 +110,13 @@ export default function JobSearchAndFilter(props: {
     <ReForm
       formInstance={form}
       onSubmit={handleFormSubmit}
-      onChange={(changedValues: any, allValues: any) => {
-        dispatch(setSearchedQuery(allValues));
-      }}
+      // onChange={(changedValues: any, allValues: any) => {
+      // dispatch(setSearchedQuery(allValues));
+      // }}
       fieldsClassName="grid gap-7"
       layout="horizontal"
     >
-      <div className="flex gap-4 border px-10 pr-2 py-2 items-center justify-center bg-white rounded-full">
+      <div className="flex gap-4 border px-10 pr-2 py-2 bg-white rounded-full justify-between">
         <div className="flex items-center gap-3">
           <label className="text-base whitespace-nowrap font-bold">What?</label>
           <ReInput
@@ -136,7 +135,7 @@ export default function JobSearchAndFilter(props: {
           <ReSelect
             placeholder="Job Location"
             variant="borderless"
-            className="w-60"
+            className="w-80"
             noStyle
             label=""
             name="location"
@@ -153,7 +152,7 @@ export default function JobSearchAndFilter(props: {
           />
         </div>
         <Button
-          className="rounded-full w-28 py-5 px-10 shadow-none"
+          className="rounded-full py-5 px-5 shadow-none"
           loading={loading}
           type="primary"
           icon={<IoSearch />}
@@ -227,7 +226,7 @@ export default function JobSearchAndFilter(props: {
             htmlType="submit"
             onClick={() => {
               form.resetFields();
-              dispatch(setSearchedQuery(null));
+              // dispatch(setSearchedQuery(null));
             }}
           >
             Rest Filter

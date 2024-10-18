@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { BiWindowClose } from "react-icons/bi";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
-import { updateSearchedJob, updateSelectedJob } from "../redux/slices/job";
 import JobApplyDrawer from "./job-apply-drawer";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
@@ -13,9 +12,11 @@ import { useEffect, useState } from "react";
 import ApplicantsModal from "./applicants-modal";
 import { getPostedDate } from "../Helper/methods";
 import { RiFileCloseFill } from "react-icons/ri";
+import { updateSelectedJob } from "../redux/slices/job/selected-job";
+import { updateOneJob } from "../redux/slices/job/jobs";
 
 export default function JobDetail() {
-  const { selectedJob } = useAppSelector((store) => store.job);
+  const { selectedJob } = useAppSelector((store) => store.selectedJob);
   const { user } = useUser();
   const dispatch = useAppDispatch();
   const { makeRequest } = useFetch(updateJob);
@@ -35,7 +36,7 @@ export default function JobDetail() {
     });
     dispatch(updateSelectedJob({ is_open: status }));
     dispatch(
-      updateSearchedJob({
+      updateOneJob({
         job_id: jobId,
         updates: { is_open: status },
       })
