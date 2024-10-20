@@ -47,6 +47,37 @@ export default function JobCard(props: {
     dispatch(setSelectedJob(job));
   };
 
+  const optionIcons = (
+    <>
+      {!(job?.recruiter_id === user?.id) ? (
+        alreadySaved ? (
+          <FaHeart
+            fill="red"
+            className="text-lg cursor-pointe "
+            onClick={handleBookmarkClicks}
+          />
+        ) : (
+          <FaRegHeart
+            className="text-lg cursor-pointer"
+            onClick={handleBookmarkClicks}
+          />
+        )
+      ) : (
+        <Popconfirm
+          title="Delete the Job"
+          description="Are you sure to delete this job?"
+          onConfirm={() => {
+            handleJobRemoveClicks(job?.id);
+          }}
+          okText="Yes"
+          cancelText="No"
+        >
+          <RiDeleteBin6Fill className="text-lg cursor-pointer" />
+        </Popconfirm>
+      )}
+    </>
+  );
+
   return view === "card" ? (
     <ReCard className={`${job?.id === selectedJob?.id && "border-[#691F74]"}`}>
       <img
@@ -70,32 +101,7 @@ export default function JobCard(props: {
             </p>
           </div>
         </div>
-        {!(job?.recruiter_id === user?.id) ? (
-          alreadySaved ? (
-            <FaHeart
-              fill="red"
-              className="text-lg cursor-pointe "
-              onClick={handleBookmarkClicks}
-            />
-          ) : (
-            <FaRegHeart
-              className="text-lg cursor-pointer"
-              onClick={handleBookmarkClicks}
-            />
-          )
-        ) : (
-          <Popconfirm
-            title="Delete the Job"
-            description="Are you sure to delete this job?"
-            onConfirm={() => {
-              handleJobRemoveClicks(job?.id);
-            }}
-            okText="Yes"
-            cancelText="No"
-          >
-            <RiDeleteBin6Fill className="text-lg cursor-pointer" />
-          </Popconfirm>
-        )}
+        {optionIcons}
       </div>
     </ReCard>
   ) : (
@@ -125,32 +131,7 @@ export default function JobCard(props: {
           </h4>
         </div>
       </div>
-      {!(job?.recruiter_id === user?.id) ? (
-        alreadySaved ? (
-          <FaHeart
-            fill="red"
-            className="text-lg cursor-pointe "
-            onClick={handleBookmarkClicks}
-          />
-        ) : (
-          <FaRegHeart
-            className="text-lg cursor-pointer"
-            onClick={handleBookmarkClicks}
-          />
-        )
-      ) : (
-        <Popconfirm
-          title="Delete the Job"
-          description="Are you sure to delete this job?"
-          onConfirm={() => {
-            handleJobRemoveClicks(job?.id);
-          }}
-          okText="Yes"
-          cancelText="No"
-        >
-          <RiDeleteBin6Fill className="text-lg cursor-pointer" />
-        </Popconfirm>
-      )}
+      {optionIcons}
     </div>
   );
 }

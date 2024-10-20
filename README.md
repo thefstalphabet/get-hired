@@ -5,8 +5,6 @@
 ![Clerk](https://img.shields.io/badge/Clerk-Auth-yellow?style=for-the-badge&logo=clerk)
 ![Vite](https://img.shields.io/badge/Vite-v4-red?style=for-the-badge&logo=vite)
 
-
-
 ## 🎯 **Project Overview**
 
 Welcome to **Get Hired** – a modern, streamlined platform designed to **empower job seekers** and **recruiters** alike! Whether you're hunting for your dream job or scouting for top talent, **Get Hired** makes it easy, fast, and secure.
@@ -18,8 +16,6 @@ Welcome to **Get Hired** – a modern, streamlined platform designed to **empowe
 🔐 **Authentication**: Powered by [Clerk](https://clerk.dev), ensuring secure and seamless logins and registrations.
 
 💾 **Database**: All user and job data is managed with [Supabase](https://supabase.com), providing real-time updates and scalable data handling.
-
-
 
 ## 🛠 **Tech Stack**
 
@@ -33,15 +29,14 @@ This project leverages the following modern technologies to ensure the best perf
 - **Supabase**: Secure, scalable backend solution with real-time updates.
 - **Clerk**: User authentication that’s easy to implement and maintain.
 
-
-
 ## 📸 **Project Gallery**
 
 Check out these awesome screenshots showcasing the sleek design and user-friendly interface of **Get Hired**:
 
-Coming soon...
-
-
+![Home]({96E5488A-050B-44C1-BDCA-BFD22EEAB1AF}.png)
+![Manage Profile]({83D6B875-2B84-41C5-BEB3-27E36F9F627F}.png)
+![Job Search]({FC76BBD9-35B4-49DF-94D3-73CB4B00468F}.png)
+![JOb Detail View]({3F6F2FD4-CE3A-414F-B153-354F6B7F24BE}.png)
 
 ## 🚀 **Getting Started**
 
@@ -86,8 +81,6 @@ Make sure you have these installed on your machine:
    ```
 
 🚀 Your app will now be up and running at http://localhost:5173!
-
-
 
 ## 📧 Contact
 
