@@ -20,7 +20,7 @@ export default function JobApplyDrawer(props: {
   const [fileList, setFileList] = useState<UploadFile<File>[]>([]);
 
   const { user } = useUser();
-  const { selectedJob } = useAppSelector((store) => store.job);
+  const { selectedJob } = useAppSelector((store) => store.selectedJob);
 
   function handleFormSubmit(data: any) {
     const fileData = data?.resume?.file?.originFileObj;
