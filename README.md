@@ -33,10 +33,17 @@ This project leverages the following modern technologies to ensure the best perf
 
 Check out these awesome screenshots showcasing the sleek design and user-friendly interface of **Get Hired**:
 
+**As a Job Seeker**:
 ![Home]({96E5488A-050B-44C1-BDCA-BFD22EEAB1AF}.png)
 ![Manage Profile]({83D6B875-2B84-41C5-BEB3-27E36F9F627F}.png)
 ![Job Search]({FC76BBD9-35B4-49DF-94D3-73CB4B00468F}.png)
 ![JOb Detail View]({3F6F2FD4-CE3A-414F-B153-354F6B7F24BE}.png)
+
+**As a recruiter**:
+![Home]({FD6923DE-06F4-489F-A4C7-15BC3E2B201E}.png)
+![Post Job]({95F719BF-84B5-4326-BD4C-DB57811A301F}.png)
+![Job Search]({42F275E5-4376-42A9-93E5-2B873063F008}.png)
+![Add New Company]({973E4E6C-5529-4D34-ACA5-81DC353CF94E}.png)
 
 ## 🚀 **Getting Started**
 
