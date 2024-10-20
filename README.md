@@ -5,7 +5,7 @@
 ![Clerk](https://img.shields.io/badge/Clerk-Auth-yellow?style=for-the-badge&logo=clerk)
 ![Vite](https://img.shields.io/badge/Vite-v4-red?style=for-the-badge&logo=vite)
 
-.....
+
 
 ## 🎯 **Project Overview**
 
@@ -19,7 +19,7 @@ Welcome to **Get Hired** – a modern, streamlined platform designed to **empowe
 
 💾 **Database**: All user and job data is managed with [Supabase](https://supabase.com), providing real-time updates and scalable data handling.
 
-.....
+
 
 ## 🛠 **Tech Stack**
 
@@ -33,7 +33,7 @@ This project leverages the following modern technologies to ensure the best perf
 - **Supabase**: Secure, scalable backend solution with real-time updates.
 - **Clerk**: User authentication that’s easy to implement and maintain.
 
-.....
+
 
 ## 📸 **Project Gallery**
 
@@ -41,7 +41,7 @@ Check out these awesome screenshots showcasing the sleek design and user-friendl
 
 Coming soon...
 
-.....
+
 
 ## 🚀 **Getting Started**
 
@@ -87,7 +87,7 @@ Make sure you have these installed on your machine:
 
 🚀 Your app will now be up and running at http://localhost:5173!
 
-.....
+
 
 ## 📧 Contact
 
