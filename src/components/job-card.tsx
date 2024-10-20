@@ -48,58 +48,54 @@ export default function JobCard(props: {
   };
 
   return view === "card" ? (
-    <ReCard
-      className={`cursor-pointer  ${
-        job?.id === selectedJob?.id && "border-[#691F74]"
-      }`}
-      onClick={handleOnCardClicks}
-    >
+    <ReCard className={`${job?.id === selectedJob?.id && "border-[#691F74]"}`}>
       <img
-        className="h-[3rem] border p-2 rounded-md mb-2"
+        className="h-[3rem] border p-2 rounded-md mb-2 cursor-pointer"
         src={job?.company?.logo_url}
         alt="company logo"
+        onClick={handleOnCardClicks}
       />
-      <div>
-        <div className="flex items-center justify-between">
+      <div className="grid grid-flow-col gap-3">
+        <div className="cursor-pointer" onClick={handleOnCardClicks}>
           <h1 className="text-lg font-bold">{job?.title}</h1>
-          {!(job?.recruiter_id === user?.id) ? (
-            alreadySaved ? (
-              <FaHeart
-                fill="red"
-                className="text-lg cursor-pointe "
-                onClick={handleBookmarkClicks}
-              />
-            ) : (
-              <FaRegHeart
-                className="text-lg cursor-pointer"
-                onClick={handleBookmarkClicks}
-              />
-            )
+          <h4>
+            {`${job?.company?.name} • ${job?.location} • ${getPostedDate(
+              job?.created_at
+            )}`}
+          </h4>
+          <div style={{ color: "#676767" }}>
+            <p className="text-sm mt-2 pr-10">
+              {job?.description?.split(".").slice(0, 2).join(".") +
+                (job?.description?.split(".").length > 2 ? "." : "")}
+            </p>
+          </div>
+        </div>
+        {!(job?.recruiter_id === user?.id) ? (
+          alreadySaved ? (
+            <FaHeart
+              fill="red"
+              className="text-lg cursor-pointe "
+              onClick={handleBookmarkClicks}
+            />
           ) : (
-            <Popconfirm
-              title="Delete the Job"
-              description="Are you sure to delete this job?"
-              onConfirm={() => {
-                handleJobRemoveClicks(job?.id);
-              }}
-              okText="Yes"
-              cancelText="No"
-            >
-              <RiDeleteBin6Fill className="text-lg" />
-            </Popconfirm>
-          )}
-        </div>
-        <h4>
-          {`${job?.company?.name} • ${job?.location} • ${getPostedDate(
-            job?.created_at
-          )}`}
-        </h4>
-        <div style={{ color: "#676767" }}>
-          <p className="text-sm mt-2 pr-10">
-            {job?.description?.split(".").slice(0, 2).join(".") +
-              (job?.description?.split(".").length > 2 ? "." : "")}
-          </p>
-        </div>
+            <FaRegHeart
+              className="text-lg cursor-pointer"
+              onClick={handleBookmarkClicks}
+            />
+          )
+        ) : (
+          <Popconfirm
+            title="Delete the Job"
+            description="Are you sure to delete this job?"
+            onConfirm={() => {
+              handleJobRemoveClicks(job?.id);
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <RiDeleteBin6Fill className="text-lg cursor-pointer" />
+          </Popconfirm>
+        )}
       </div>
     </ReCard>
   ) : (
@@ -109,16 +105,18 @@ export default function JobCard(props: {
           job?.id === selectedJob?.id ? "#691F74" : "#F0F0F0"
         }`,
       }}
-      className={`cursor-pointer bg-white p-3 rounded-md flex justify-between items-center`}
-      onClick={handleOnCardClicks}
+      className={` bg-white p-3 rounded-md flex items-center justify-between`}
     >
-      <div className="flex items-center gap-2">
+      <div
+        className="flex items-center gap-3 cursor-pointer"
+        onClick={handleOnCardClicks}
+      >
         <img
-          className="h-[2rem] border p-2 rounded-md "
+          className="h-[2rem] border p-2 rounded-md"
           src={job?.company?.logo_url}
           alt="company logo"
         />
-        <div>
+        <div className="cursor-pointer" onClick={handleOnCardClicks}>
           <h1 className="text-sm font-medium">{job?.title}</h1>
           <h4 className="text-xs" style={{ color: "#676767" }}>
             {`${job?.company?.name} • ${job?.location} • ${getPostedDate(
@@ -127,24 +125,32 @@ export default function JobCard(props: {
           </h4>
         </div>
       </div>
-      <div>
-        {!(job?.recruiter_id === user?.id) && (
-          <>
-            (alreadySaved ? (
-            <FaHeart
-              fill="red"
-              className="text-base cursor-pointe "
-              onClick={handleBookmarkClicks}
-            />
-            ) : (
-            <FaRegHeart
-              className="text-base cursor-pointer"
-              onClick={handleBookmarkClicks}
-            />
-            ))
-          </>
-        )}
-      </div>
+      {!(job?.recruiter_id === user?.id) ? (
+        alreadySaved ? (
+          <FaHeart
+            fill="red"
+            className="text-lg cursor-pointe "
+            onClick={handleBookmarkClicks}
+          />
+        ) : (
+          <FaRegHeart
+            className="text-lg cursor-pointer"
+            onClick={handleBookmarkClicks}
+          />
+        )
+      ) : (
+        <Popconfirm
+          title="Delete the Job"
+          description="Are you sure to delete this job?"
+          onConfirm={() => {
+            handleJobRemoveClicks(job?.id);
+          }}
+          okText="Yes"
+          cancelText="No"
+        >
+          <RiDeleteBin6Fill className="text-lg cursor-pointer" />
+        </Popconfirm>
+      )}
     </div>
   );
 }
