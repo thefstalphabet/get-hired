@@ -1,87 +1,149 @@
 import { useUser } from "@clerk/clerk-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-
 import { BiWindowClose } from "react-icons/bi";
-import { Checkbox } from "./ui/checkbox";
 import { updateJob } from "../api/jobs";
 import useFetch from "../hooks/use-fetch";
-import { updateSelectedJob } from "../redux/slices/job";
-import ApplyJobModal from "./apply-job-modal";
+import JobApplyDrawer from "./job-apply-drawer";
 import { FaUsers } from "react-icons/fa";
+import ReCard from "../reusable-antd-components/ReCard";
+import { Button } from "antd";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import ApplicantsModal from "./applicants-modal";
+import { getPostedDate } from "../Helper/methods";
+import { RiFileCloseFill } from "react-icons/ri";
+import { updateSelectedJob } from "../redux/slices/job/selected-job";
+import { updateOneJob } from "../redux/slices/job/jobs";
 
 export default function JobDetail() {
-  const { selectedJob } = useAppSelector((store) => store.job);
+  const { selectedJob } = useAppSelector((store) => store.selectedJob);
   const { user } = useUser();
   const dispatch = useAppDispatch();
   const { makeRequest } = useFetch(updateJob);
 
-  async function handleJobStatusChanges(value: boolean) {
+  const [applyJobDrawerVisibility, setApplyJobDrawerVisibility] =
+    useState<boolean>(false);
+  const [viewApplicantsModalVisibility, setViewApplicantsModalVisibility] =
+    useState<boolean>(false);
+
+  const [jobStatus, setJobStatus] = useState<boolean>(false);
+
+  async function handleJobStatusChanges(jobId: string, status: boolean) {
+    setJobStatus(status);
     await makeRequest({
       id: selectedJob?.id,
-      isOpen: value,
+      isOpen: status,
     });
-    dispatch(updateSelectedJob({ is_open: value }));
+    dispatch(updateSelectedJob({ is_open: status }));
+    dispatch(
+      updateOneJob({
+        job_id: jobId,
+        updates: { is_open: status },
+      })
+    );
   }
 
+  useEffect(() => {
+    if (selectedJob) {
+      setJobStatus(selectedJob?.is_open);
+    }
+  }, [selectedJob]);
+
   return selectedJob ? (
-    <div className="bg-white p-5 rounded-lg border bg-card text-card-foreground shadow-sm">
+    <ReCard>
       <div className="flex items-start gap-7 mb-5">
         <img
           className="h-[3rem] border p-2 rounded-md"
-          src={selectedJob?.company.logo_url}
+          src={selectedJob?.company?.logo_url}
           alt="company logo"
         />
         <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold">{selectedJob?.title}</h1>
+            <h1 className="text-lg font-bold">{selectedJob?.title}</h1>
           </div>
-          <div className="flex gap-1">
-            <h4 className="font-semibold">{selectedJob?.company.name}</h4>
-            <span>|</span>
-            <h4 className="font-semibold">{selectedJob?.location}</h4>
-          </div>
-          <div className="flex items-center gap-2">
-            <FaUsers className="text-xl mt-[2px]" />
-            <p>{selectedJob?.applications?.length} Applicants</p>
-          </div>
-          {selectedJob?.recruiter_id === user?.id ? (
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="closed"
-                checked={selectedJob?.is_open}
-                onCheckedChange={handleJobStatusChanges}
-              />
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Do you want to close this opening?
-              </label>
+          <h4>
+            {`${selectedJob?.company?.name} • ${
+              selectedJob?.location
+            } • ${getPostedDate(selectedJob?.created_at)}`}
+          </h4>
+
+          {!selectedJob?.is_open && selectedJob?.recruiter_id !== user?.id && (
+            <div className="flex gap-2 items-center">
+              <BiWindowClose className="text-red-600 text-lg" />
+              <p className="text-red-600">No longer accepting applications</p>
+            </div>
+          )}
+          {selectedJob?.recruiter_id !== user?.id ? (
+            <div className="flex items-center gap-2">
+              <FaUsers className="text-xl mt-[2px]" />
+              <p>{selectedJob?.applications?.length} Applicants</p>
             </div>
           ) : (
-            <p>
-              {!selectedJob?.is_open && (
-                <div className="flex gap-2 items-center">
-                  <BiWindowClose className="text-red-600 text-lg" />
-                  <p className="text-red-600">
-                    No longer accepting applications
-                  </p>
-                </div>
-              )}
-            </p>
+            <div className="flex items-center gap-2 mt-2">
+              <Button
+                onClick={() => {
+                  handleJobStatusChanges(selectedJob.id, !jobStatus);
+                }}
+                size="small"
+                icon={<RiFileCloseFill className="text-lg" />}
+                className={`rounded-full py-[17px] px-4 relative overflow-hidden focus:outline-none peer`}
+                style={
+                  jobStatus
+                    ? { border: "1px solid #691F74", color: "#691F74" }
+                    : {}
+                }
+              >
+                Close Hiring
+              </Button>
+              <Button
+                icon={<FaUsers className="text-xl" />}
+                className="h-9 rounded-full w-32"
+                size="small"
+                onClick={() => {
+                  setViewApplicantsModalVisibility(true);
+                }}
+              >
+                Applicants
+              </Button>
+              <ApplicantsModal
+                id={selectedJob?.id}
+                visibility={viewApplicantsModalVisibility}
+                setVisibility={setViewApplicantsModalVisibility}
+              />
+            </div>
           )}
-          {selectedJob?.recruiter_id !== user?.id && <ApplyJobModal />}
+          {selectedJob?.recruiter_id !== user?.id && (
+            <>
+              <Button
+                icon={<AiFillThunderbolt className="mt-[3px] text-lg" />}
+                className="mt-2 h-9 rounded-full w-36"
+                onClick={() => {
+                  setApplyJobDrawerVisibility(true);
+                }}
+              >
+                Quick Apply
+              </Button>
+              <JobApplyDrawer
+                visibility={applyJobDrawerVisibility}
+                setVisibility={setApplyJobDrawerVisibility}
+              />
+            </>
+          )}
         </div>
       </div>
       <hr />
       <div className="flex flex-col gap-5 mt-5 h-[90vh] overflow-y-scroll hide-scrollbar">
         <div>
-          <h1 className="text-lg font-semibold">Description:</h1>
+          <h1 className="text-[14px] font-bold">Description</h1>
           <p style={{ color: "#676767" }}>{selectedJob?.description}</p>
         </div>
         <div>
-          <h1 className="text-lg font-semibold">Requirments:</h1>
-          <p style={{ color: "#676767" }}>{selectedJob?.requirements}</p>
+          <div
+            dangerouslySetInnerHTML={{ __html: selectedJob?.requirements }}
+          />
         </div>
       </div>
-    </div>
+    </ReCard>
   ) : (
     <></>
   );

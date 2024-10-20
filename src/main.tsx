@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
+import { ConfigProvider } from "antd";
 // import { dark } from "@clerk/themes";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -17,17 +18,29 @@ if (!PUBLISHABLE_KEY) {
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <StrictMode>
-      <ClerkProvider
-        // appearance={{
-        //   baseTheme: dark,
-        // }}
-        publishableKey={PUBLISHABLE_KEY}
-        afterSignOutUrl="/"
+      <ConfigProvider
+        theme={{
+          token: {
+            // Seed Token
+            colorPrimary: "#70297a",
+            borderRadius: 5,
+            fontFamily: "Segoe UI Symbol",
+            fontSize: 14,
+          },
+        }}
       >
-        <Provider store={store}>
-        <App />
-        </Provider>
-      </ClerkProvider>
+        <ClerkProvider
+          // appearance={{
+          //   baseTheme: dark,
+          // }}
+          publishableKey={PUBLISHABLE_KEY}
+          afterSignOutUrl="/"
+        >
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </ClerkProvider>
+      </ConfigProvider>
     </StrictMode>
   </BrowserRouter>
 );

@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import HomeImage from "../assets/home-img.png";
-import JobsFilter, { ISearchQuery } from "../components/jobs-filter";
+import JobSearchAndFilter from "../components/job-search-and-filter";
+import { IGetJobPayload } from "../api/jobs";
 export default function Home() {
   const navigate = useNavigate();
 
-  function handleSearchSubmit(searchQuery: ISearchQuery) {
+  function handleSearchSubmit(searchQuery: IGetJobPayload) {
     navigate(
       `/job-search?query=${JSON.stringify({
         jobTitle: searchQuery?.title,
@@ -36,8 +37,8 @@ export default function Home() {
         </div>
         <img className="w-[85%] mt-10" src={HomeImage} alt="img-home" />
       </div>
-      <div className="absolute bottom-[-34px] left-1/2 transform -translate-x-1/2">
-        <JobsFilter handleSearchSubmit={handleSearchSubmit} type="small" />
+      <div className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2">
+        <JobSearchAndFilter handleSearchSubmit={handleSearchSubmit} type="small" />
       </div>
     </div>
   );

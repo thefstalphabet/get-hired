@@ -1,50 +1,65 @@
-import JobsFilter, { ISearchQuery } from "../components/jobs-filter";
+import JobSearchAndFilter from "../components/job-search-and-filter";
 import JobsListing from "../components/jobs-listing";
 import JobDetail from "../components/job-detail";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useFetch from "../hooks/use-fetch";
-import { setSearchedJobs } from "../redux/slices/job";
 import { useEffect } from "react";
-import { getJobs } from "../api/jobs";
-import NoJobsFound from '../assets/noJobsFound.png';
+import { getJobs, getSavedJobs, IGetJobPayload } from "../api/jobs";
+import NoJobsFound from "../assets/noJobsFound.png";
+import { useUser } from "@clerk/clerk-react";
+import { setJobs } from "../redux/slices/job/jobs";
 
 export default function JobSearch() {
   const dispatch = useAppDispatch();
-  const { searchedJobs } = useAppSelector((store) => store.job);
+  const { jobs } = useAppSelector((store) => store.jobs);
+  const { user } = useUser();
   const {
-    data: jobs,
+    data: allJobs,
     loading: jobsLoading,
-    makeRequest,
-  } = useFetch(getJobs, {});
+    makeRequest: fetchJobs,
+  } = useFetch(getJobs, { user_id: user?.id }, true);
+  const {
+    data: allsavedJobs,
+    makeRequest: fetchSavedJobs,
+    loading: savedJobsLoading,
+  } = useFetch(getSavedJobs, { id: user?.id });
+
+  function handleSearchSubmit(searchQuery: IGetJobPayload) {
+    fetchJobs({ ...searchQuery, user_id: user?.id });
+  }
+
+  console.log(allJobs);
 
   useEffect(() => {
-    dispatch(setSearchedJobs(jobs));
-  }, [jobs]);
+    dispatch(setJobs(allJobs));
+  }, [allJobs]);
 
-  function handleSearchSubmit(searchQuery: ISearchQuery) {
-    makeRequest(searchQuery);
-  }
+  useEffect(() => {
+    dispatch(setJobs(allsavedJobs));
+  }, [allsavedJobs]);
 
   return (
     <div>
       <div className="relative">
         <div className="h-24" style={{ backgroundColor: "#691F74" }}></div>
-        <div className="absolute bottom-[34px] left-1/2 transform -translate-x-1/2">
-          <JobsFilter
-            type="big"
+        <div className="absolute bottom-[29px] left-1/2 transform -translate-x-1/2">
+          <JobSearchAndFilter
+            type="large"
             handleSearchSubmit={handleSearchSubmit}
             loading={jobsLoading}
+            fetchJobs={fetchJobs}
+            fetchSavedJobs={fetchSavedJobs}
           />
         </div>
         <div className="h-32 bg-white"></div>
       </div>
 
-      {searchedJobs?.length ? (
+      {jobs.length ? (
         <div
           className="grid grid-flow-col grid-cols-2 p-5 gap-3 px-40"
           style={{ backgroundColor: "#F6F6F9" }}
         >
-          <JobsListing loading={jobsLoading} />
+          <JobsListing loading={jobsLoading || savedJobsLoading} />
           <JobDetail />
         </div>
       ) : (
@@ -52,7 +67,7 @@ export default function JobSearch() {
           className="p-10 flex flex-col items-center"
           style={{ backgroundColor: "#F6F6F9" }}
         >
-          <img src={NoJobsFound} alt="No job Found" className="w-[18rem]"  />
+          <img src={NoJobsFound} alt="No job Found" className="w-[18rem]" />
           <p>No result found for your searched data.</p>
         </div>
       )}
