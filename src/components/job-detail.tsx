@@ -42,6 +42,7 @@ export default function JobDetail() {
       })
     );
   }
+console.log(jobStatus);
 
   useEffect(() => {
     if (selectedJob) {
@@ -88,7 +89,7 @@ export default function JobDetail() {
                 icon={<RiFileCloseFill className="text-lg" />}
                 className={`rounded-full py-[17px] px-4 relative overflow-hidden focus:outline-none peer`}
                 style={
-                  jobStatus
+                  !jobStatus
                     ? { border: "1px solid #691F74", color: "#691F74" }
                     : {}
                 }
