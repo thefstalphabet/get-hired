@@ -3,6 +3,8 @@ import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Select } from "antd";
+import ReCard from "../reusable-antd-components/ReCard";
+import { FaUserGraduate, FaUserTie } from "react-icons/fa";
 
 function Onbording() {
   const { user } = useUser();
@@ -28,15 +30,39 @@ function Onbording() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-7 h-[70vh]">
-      <h1 className="text-3xl font-bold">You are a...</h1>
-      <Select
+      <h1 className="text-3xl font-bold">Select yout role</h1>
+      <div className="flex gap-4">
+        <ReCard
+          className="px-16 py-10 cursor-pointer hover:border-[#691F74]"
+          onClick={() => {
+            handleSelectChanges("1");
+          }}
+        >
+          <div className="flex flex-col items-center gap-3">
+            <FaUserGraduate className="text-4xl" />
+            <p className="text-base">Candidate</p>
+          </div>
+        </ReCard>
+        <ReCard
+          className="px-16 py-10 cursor-pointer hover:border-[#691F74]"
+          onClick={() => {
+            handleSelectChanges("2");
+          }}
+        >
+          <div className="flex flex-col items-center gap-3">
+            <FaUserTie className="text-4xl" />
+            <p className="text-base">Recruiter</p>
+          </div>
+        </ReCard>
+      </div>
+      {/* <Select
         className="w-60"
         onSelect={handleSelectChanges}
         options={[
           { value: "1", label: "Candidate" },
           { value: "2", label: "Recruiter" },
         ]}
-      />
+      /> */}
     </div>
   );
 }
