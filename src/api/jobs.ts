@@ -13,8 +13,9 @@ export interface IGetJobPayload {
 export async function getJobs(token: string, payload: IGetJobPayload) {
   const supabase = await supabaseClient(token);
   let query = supabase.from("jobs")
-    .select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id)")
-    .eq("saved_jobs.user_id", payload?.user_id);
+    .select("*, company:companies(name, logo_url), applications: applications(*), saved: saved_jobs(job_id), applyStatus: applications(status, job_id)")
+    .eq("saved_jobs.user_id", payload?.user_id)
+    .eq("applications.candidate_id", payload?.user_id)
 
 
   if (payload?.location) {

@@ -10,4 +10,5 @@ export interface IJob {
     is_open: boolean,
     company?: any,
     applications?: any
+    applyStatus?: any
 }

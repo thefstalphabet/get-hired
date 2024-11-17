@@ -6,7 +6,7 @@ import useFetch from "../hooks/use-fetch";
 import JobApplyDrawer from "./job-apply-drawer";
 import { FaUsers } from "react-icons/fa";
 import ReCard from "../reusable-antd-components/ReCard";
-import { Button } from "antd";
+import { Alert, Button } from "antd";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import ApplicantsModal from "./applicants-modal";
@@ -42,6 +42,7 @@ export default function JobDetail() {
       })
     );
   }
+  console.log(jobStatus);
 
   useEffect(() => {
     if (selectedJob) {
@@ -66,13 +67,6 @@ export default function JobDetail() {
               selectedJob?.location
             } • ${getPostedDate(selectedJob?.created_at)}`}
           </h4>
-
-          {!selectedJob?.is_open && selectedJob?.recruiter_id !== user?.id && (
-            <div className="flex gap-2 items-center">
-              <BiWindowClose className="text-red-600 text-lg" />
-              <p className="text-red-600">No longer accepting applications</p>
-            </div>
-          )}
           {selectedJob?.recruiter_id !== user?.id ? (
             <div className="flex items-center gap-2">
               <FaUsers className="text-xl mt-[2px]" />
@@ -88,7 +82,7 @@ export default function JobDetail() {
                 icon={<RiFileCloseFill className="text-lg" />}
                 className={`rounded-full py-[17px] px-4 relative overflow-hidden focus:outline-none peer`}
                 style={
-                  jobStatus
+                  !jobStatus
                     ? { border: "1px solid #691F74", color: "#691F74" }
                     : {}
                 }
@@ -112,21 +106,45 @@ export default function JobDetail() {
               />
             </div>
           )}
-          {selectedJob?.recruiter_id !== user?.id && (
+          {!selectedJob?.is_open && selectedJob?.recruiter_id !== user?.id ? (
+            <div className="flex gap-2 items-center">
+              <BiWindowClose className="text-red-600 text-lg" />
+              <p className="text-red-600">No longer accepting applications</p>
+            </div>
+          ) : (
             <>
-              <Button
-                icon={<AiFillThunderbolt className="mt-[3px] text-lg" />}
-                className="mt-2 h-9 rounded-full w-36"
-                onClick={() => {
-                  setApplyJobDrawerVisibility(true);
-                }}
-              >
-                Quick Apply
-              </Button>
-              <JobApplyDrawer
-                visibility={applyJobDrawerVisibility}
-                setVisibility={setApplyJobDrawerVisibility}
-              />
+              {selectedJob?.recruiter_id !== user?.id && (
+                <>
+                  {selectedJob.applyStatus?.find(
+                    (ele: any) => ele.job_id === selectedJob.id
+                  ) ? (
+                    <Alert
+                      className="mt-2"
+                      message={selectedJob?.applyStatus?.status}
+                      type="success"
+                      showIcon
+                    />
+                  ) : (
+                    <>
+                      <Button
+                        icon={
+                          <AiFillThunderbolt className="mt-[3px] text-lg" />
+                        }
+                        className="mt-2 h-9 rounded-full w-36"
+                        onClick={() => {
+                          setApplyJobDrawerVisibility(true);
+                        }}
+                      >
+                        Quick Apply
+                      </Button>
+                      <JobApplyDrawer
+                        visibility={applyJobDrawerVisibility}
+                        setVisibility={setApplyJobDrawerVisibility}
+                      />
+                    </>
+                  )}
+                </>
+              )}
             </>
           )}
         </div>
