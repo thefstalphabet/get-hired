@@ -1,8 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
-
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { Select } from "antd";
 import ReCard from "../reusable-antd-components/ReCard";
 import { FaUserGraduate, FaUserTie } from "react-icons/fa";
 
@@ -55,14 +53,6 @@ function Onbording() {
           </div>
         </ReCard>
       </div>
-      {/* <Select
-        className="w-60"
-        onSelect={handleSelectChanges}
-        options={[
-          { value: "1", label: "Candidate" },
-          { value: "2", label: "Recruiter" },
-        ]}
-      /> */}
     </div>
   );
 }
