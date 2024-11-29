@@ -10,7 +10,7 @@ import { Alert, Button } from "antd";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import ApplicantsModal from "./applicants-modal";
-import { getPostedDate } from "../Helper/methods";
+import { capitalizeFirstLetter, getPostedDate } from "../Helper/methods";
 import { RiFileCloseFill } from "react-icons/ri";
 import { updateSelectedJob } from "../redux/slices/job/selected-job";
 import { updateOneJob } from "../redux/slices/job/jobs";
@@ -42,7 +42,6 @@ export default function JobDetail() {
       })
     );
   }
-  console.log(jobStatus);
 
   useEffect(() => {
     if (selectedJob) {
@@ -58,7 +57,7 @@ export default function JobDetail() {
           src={selectedJob?.company?.logo_url}
           alt="company logo"
         />
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 w-full">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-bold">{selectedJob?.title}</h1>
           </div>
@@ -119,8 +118,11 @@ export default function JobDetail() {
                     (ele: any) => ele.job_id === selectedJob.id
                   ) ? (
                     <Alert
+                      banner
                       className="mt-2"
-                      message={selectedJob?.applyStatus?.status}
+                      message={capitalizeFirstLetter(
+                        selectedJob?.applyStatus[0]?.status
+                      )}
                       type="success"
                       showIcon
                     />
