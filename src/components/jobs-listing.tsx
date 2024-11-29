@@ -24,8 +24,8 @@ export default function JobsListing(props: { loading: boolean }) {
             setJobView(value);
           }}
           options={[
-            { value: "list", icon: <BsCardText className="mt-[7.5px]" /> },
-            { value: "card", icon: <IoIosList className="mt-[7.5px]" /> },
+            { value: "card", icon: <BsCardText className="mt-[7.5px]" /> },
+            { value: "list", icon: <IoIosList className="mt-[7.5px]" /> },
           ]}
         />
       </div>
