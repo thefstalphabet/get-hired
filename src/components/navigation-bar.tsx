@@ -42,12 +42,14 @@ export default function NavigationBar() {
         <div>
           <SignedOut>
             <Button
+              size="large"
+              shape="round"
               type="primary"
               onClick={() => {
                 setSignInModalVisibility(true);
               }}
             >
-              Sign In
+              Login
             </Button>
           </SignedOut>
           <div

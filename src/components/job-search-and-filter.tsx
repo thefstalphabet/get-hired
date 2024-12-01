@@ -152,7 +152,8 @@ export default function JobSearchAndFilter(props: {
           />
         </div>
         <Button
-          className="rounded-full py-5 px-5 shadow-none"
+          className="py-5 px-5 shadow-none"
+          shape="round"
           loading={loading}
           type="primary"
           icon={<IoSearch />}
