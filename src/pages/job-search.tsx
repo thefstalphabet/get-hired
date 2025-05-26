@@ -28,8 +28,6 @@ export default function JobSearch() {
     fetchJobs({ ...searchQuery, user_id: user?.id });
   }
 
-  console.log(allJobs);
-
   useEffect(() => {
     dispatch(setJobs(allJobs));
   }, [allJobs]);

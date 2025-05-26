@@ -12,10 +12,10 @@ import ReSelect, {
 import { FaHeart, FaHourglassStart, FaRegCalendarAlt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import ReInput from "../reusable-antd-components/ReFormFields/ReInput";
-// import { useAppDispatch } from "../redux/hooks";
 import { FaBuildingUser } from "react-icons/fa6";
 import { CgOrganisation } from "react-icons/cg";
 import { IGetJobPayload } from "../api/jobs";
+import useScreenWidth from "../hooks/use-screen-width";
 
 type FIlterType = "small" | "large";
 
@@ -64,8 +64,8 @@ export default function JobSearchAndFilter(props: {
   const query = searchParams.get("query");
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
-  // const dispatch = useAppDispatch();
   const { user } = useUser();
+  const screenWidth = useScreenWidth();
 
   const { type, handleSearchSubmit, loading, fetchJobs, fetchSavedJobs } =
     props;
@@ -110,17 +110,19 @@ export default function JobSearchAndFilter(props: {
     <ReForm
       formInstance={form}
       onSubmit={handleFormSubmit}
-      // onChange={(changedValues: any, allValues: any) => {
-      // dispatch(setSearchedQuery(allValues));
-      // }}
       fieldsClassName="grid gap-7"
       layout="horizontal"
     >
-      <div className="flex gap-4 border px-10 pr-2 py-2 bg-white rounded-full justify-between">
-        <div className="flex items-center gap-3">
+      <div
+        className={`${
+          screenWidth > 700 && "bg-white"
+        } flex border gap-4 px-5 pr-2 py-2 rounded-full justify-between`}
+      >
+        <div className="flex items-center gap-3 w-[15rem]">
           <label className="text-base whitespace-nowrap font-bold">What?</label>
           <ReInput
             variant="borderless"
+            className="min-w-20"
             noStyle
             label=""
             name="title"
@@ -157,9 +159,7 @@ export default function JobSearchAndFilter(props: {
           loading={loading}
           type="primary"
           icon={<IoSearch />}
-          onClick={() => {
-            form.submit();
-          }}
+          htmlType="submit"
         >
           Find Job
         </Button>
