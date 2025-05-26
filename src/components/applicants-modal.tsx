@@ -4,7 +4,6 @@ import useFetch from "../hooks/use-fetch";
 import ReModal from "../reusable-antd-components/ReModal";
 import { formatDate } from "../Helper/methods";
 import { GrView } from "react-icons/gr";
-import { FaDownload } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Avatar, Button, List, Select } from "antd";
 import { HiArrowLeft } from "react-icons/hi";
@@ -30,16 +29,16 @@ export default function ApplicantsModal(props: {
     null
   );
 
-  function handleResumeDownload() {}
-  async function handleStatusChanges(value: string) {
-    await changeStatus({ job_id: id, status: value });
-    setSelectedApplication((prev: any) => {
-      return {
-        ...prev,
-        status: value,
-      };
-    });
-  }
+  // function handleResumeDownload() {}
+  // async function handleStatusChanges(value: string) {
+  //   await changeStatus({ job_id: id, status: value });
+  //   setSelectedApplication((prev: any) => {
+  //     return {
+  //       ...prev,
+  //       status: value,
+  //     };
+  //   });
+  // }
 
   useEffect(() => {
     makeRequest({ id });
@@ -89,7 +88,7 @@ export default function ApplicantsModal(props: {
             <h1 className="font-bold">Status:</h1>
             <Select
               style={{ width: 300 }}
-              onChange={handleStatusChanges}
+              // onChange={handleStatusChanges}
               value={selectedApplication?.status}
               options={statusDropdownItems}
             />
