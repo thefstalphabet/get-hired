@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getJobApplication, updateApplication } from "../api/application";
+import { getJobApplication } from "../api/application";
 import useFetch from "../hooks/use-fetch";
 import ReModal from "../reusable-antd-components/ReModal";
 import { formatDate } from "../Helper/methods";
@@ -23,7 +23,7 @@ export default function ApplicantsModal(props: {
 }) {
   const { visibility, setVisibility, id } = props;
   const { makeRequest, data, loading } = useFetch(getJobApplication);
-  const { makeRequest: changeStatus } = useFetch(updateApplication);
+  // const { makeRequest: changeStatus } = useFetch(updateApplication);
   const [detailedView, setDetailedView] = useState<boolean>(false);
   const [selectedApplication, setSelectedApplication] = useState<null | any>(
     null
