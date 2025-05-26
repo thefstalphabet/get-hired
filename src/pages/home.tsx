@@ -5,7 +5,6 @@ import JobSearchAndFilter from "../components/job-search-and-filter";
 import { IGetJobPayload } from "../api/jobs";
 import useScreenWidth from "../hooks/use-screen-width";
 import { Button } from "antd";
-import { IoSearch } from "react-icons/io5";
 export default function Home() {
   const navigate = useNavigate();
   const screenWidth = useScreenWidth();
