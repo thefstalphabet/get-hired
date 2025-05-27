@@ -7,7 +7,7 @@ import {
 } from "@clerk/clerk-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.svg";
 import { Button } from "antd";
 import { AiFillEdit } from "react-icons/ai";
 import PostJobDrawer from "./post-job-drawer";
@@ -35,9 +35,9 @@ export default function NavigationBar() {
 
   return (
     <>
-      <nav className="flex items-center justify-between px-20 py-5">
+      <nav className="flex items-center justify-between px-20 py-2">
         <Link to="/">
-          <img className="w-[8rem]" src={logo} alt="logo" />
+          <img className="w-[4rem]" src={logo} alt="logo" />
         </Link>
         <div>
           <SignedOut>

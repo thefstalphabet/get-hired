@@ -5,6 +5,13 @@ import JobSearchAndFilter from "../components/job-search-and-filter";
 import { IGetJobPayload } from "../api/jobs";
 import useScreenWidth from "../hooks/use-screen-width";
 import { Button } from "antd";
+import {
+  TiSocialFacebook,
+  TiSocialLinkedin,
+  TiSocialTwitter,
+  TiSocialYoutube,
+} from "react-icons/ti";
+import { AiFillInstagram } from "react-icons/ai";
 export default function Home() {
   const navigate = useNavigate();
   const screenWidth = useScreenWidth();
@@ -78,6 +85,20 @@ export default function Home() {
               Sign in
             </Button>
           </div>
+        </div>
+      </div>
+      <div className="py-3 px-32 grid gap-3 bg-[#263238]">
+        <div className="grid justify-center gap-2">
+          <div className="flex justify-center gap-5 mt-2">
+            <TiSocialFacebook className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
+            <TiSocialLinkedin className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
+            <TiSocialTwitter className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
+            <AiFillInstagram className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
+            <TiSocialYoutube className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
+          </div>
+          <p className="text-center text-white text-sm">
+            ©Copyright all right reserved.
+          </p>
         </div>
       </div>
     </div>
