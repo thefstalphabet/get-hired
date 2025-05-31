@@ -5,16 +5,19 @@ import JobSearchAndFilter from "../components/job-search-and-filter";
 import { IGetJobPayload } from "../api/jobs";
 import useScreenWidth from "../hooks/use-screen-width";
 import { Button } from "antd";
-import {
-  TiSocialFacebook,
-  TiSocialLinkedin,
-  TiSocialTwitter,
-  TiSocialYoutube,
-} from "react-icons/ti";
-import { AiFillInstagram } from "react-icons/ai";
+import { useAppDispatch } from "../redux/hooks";
+import { setLoginModal } from "../redux/slices/global";
+import Footer from "../components/footer";
+import { useUser } from "@clerk/clerk-react";
+import { useEffect } from "react";
+
+const signupURL = "https://probable-parakeet-93.accounts.dev/sign-up";
+
 export default function Home() {
   const navigate = useNavigate();
   const screenWidth = useScreenWidth();
+  const dispatch = useAppDispatch();
+  const { isSignedIn } = useUser();
 
   function handleSearchSubmit(searchQuery: IGetJobPayload) {
     navigate(
@@ -24,6 +27,13 @@ export default function Home() {
       })}`
     );
   }
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate("/job-search");
+    }
+  }, []);
+
   return (
     <div>
       <div className="relative">
@@ -70,37 +80,28 @@ export default function Home() {
             <Button
               className="py-5 px-5 shadow-none border-[#fe3b1f] text-[#fe3b1f]"
               shape="round"
-              // loading={loading}
               variant="outlined"
               htmlType="submit"
+              onClick={() => {
+                window.location.href = signupURL;
+              }}
             >
               Create my account
             </Button>
             <Button
               className="py-5 px-5 shadow-none text-black"
-              // loading={loading}
               type="link"
               htmlType="submit"
+              onClick={() => {
+                dispatch(setLoginModal(true));
+              }}
             >
               Sign in
             </Button>
           </div>
         </div>
       </div>
-      <div className="py-3 px-32 grid gap-3 bg-[#263238]">
-        <div className="grid justify-center gap-2">
-          <div className="flex justify-center gap-5 mt-2">
-            <TiSocialFacebook className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
-            <TiSocialLinkedin className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
-            <TiSocialTwitter className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
-            <AiFillInstagram className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
-            <TiSocialYoutube className="text-4xl text-white border-2 rounded-3xl p-2 cursor-pointer" />
-          </div>
-          <p className="text-center text-white text-sm">
-            ©Copyright all right reserved.
-          </p>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }

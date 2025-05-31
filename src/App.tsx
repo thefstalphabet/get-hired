@@ -11,11 +11,11 @@ export default function App() {
   const [newRoutes, setNewRoutes] = useState<IRoutes[]>([]);
   useEffect(() => {
     if (isSignedIn) {
-      setNewRoutes(routes);
+      setNewRoutes(routes); 
       if (!user?.unsafeMetadata?.role) {
         return navigate("/onbording");
       } else {
-        if(pathname === "/obbording") {
+        if(pathname === "/onbording") {
           return navigate("/");
         }
       }

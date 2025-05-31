@@ -13,7 +13,7 @@ export default function JobsListing(props: { loading: boolean }) {
   const [jobView, setJobView] = useState<"card" | "list">("card");
 
   return (
-    <div className="flex flex-col gap-1 h-screen overflow-y-scroll hide-scrollbar pb-5">
+    <div className="flex flex-col gap-2 h-screen overflow-y-scroll hide-scrollbar pb-2">
       <div className="flex justify-between mb-2">
         <div className="flex gap-1 items-center">
           <RiSearchLine className="text-xs" />

@@ -11,10 +11,12 @@ import logo from "../assets/logo.svg";
 import { Button } from "antd";
 import { AiFillEdit } from "react-icons/ai";
 import PostJobDrawer from "./post-job-drawer";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { setLoginModal } from "../redux/slices/global";
 
 export default function NavigationBar() {
-  const [signInModalVisibility, setSignInModalVisibility] =
-    useState<boolean>(false);
+  const { loginModal } = useAppSelector((store) => store.global);
+  const dispatch = useAppDispatch();
   const [postJobDrawerVisibility, setPostJobDrawerVisibility] =
     useState<boolean>(false);
   const [search, setSearch] = useSearchParams();
@@ -22,34 +24,35 @@ export default function NavigationBar() {
 
   const handleOutSideModalClicks = (e: React.SyntheticEvent) => {
     if (e.target === e.currentTarget) {
-      setSignInModalVisibility(false);
+      dispatch(setLoginModal(false));
     }
     setSearch({});
   };
 
   useEffect(() => {
     if (search.get("sign-in")) {
-      setSignInModalVisibility(true);
+      dispatch(setLoginModal(true));
     }
   }, [search]);
 
   return (
     <>
-      <nav className="flex items-center justify-between px-20 py-2">
+      <nav className="flex items-center justify-between px-20 py-1">
         <Link to="/">
-          <img className="w-[4rem]" src={logo} alt="logo" />
+          <img className="w-[3rem]" src={logo} alt="logo" />
         </Link>
         <div>
           <SignedOut>
             <Button
+            className="shadow-none"
               size="large"
               shape="round"
               type="primary"
               onClick={() => {
-                setSignInModalVisibility(true);
+                dispatch(setLoginModal(true));
               }}
             >
-              Login
+              Sign in
             </Button>
           </SignedOut>
           <div
@@ -89,7 +92,7 @@ export default function NavigationBar() {
             </SignedIn>
           </div>
         </div>
-        {signInModalVisibility && (
+        {loginModal && (
           <div
             onClick={handleOutSideModalClicks}
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
