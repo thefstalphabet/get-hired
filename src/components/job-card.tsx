@@ -79,7 +79,11 @@ export default function JobCard(props: {
   );
 
   return view === "card" ? (
-    <ReCard className={`${job?.id === selectedJob?.id && "border-[#000000]"}`}>
+    <ReCard
+      className={`${
+        job?.id === selectedJob?.id && "border-[#691f74]"
+      } hover:drop-shadow-md`}
+    >
       <img
         className="h-[3rem] border p-2 rounded-md mb-2 cursor-pointer"
         src={job?.company?.logo_url}
@@ -111,7 +115,7 @@ export default function JobCard(props: {
           job?.id === selectedJob?.id ? "#000000" : "#F0F0F0"
         }`,
       }}
-      className={` bg-white p-3 rounded-md flex items-center justify-between`}
+      className={` bg-white p-3 rounded-md flex items-center justify-between hover:drop-shadow-md`}
     >
       <div
         className="flex items-center gap-3 cursor-pointer"

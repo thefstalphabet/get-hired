@@ -23,7 +23,6 @@ export default function ApplicantsModal(props: {
 }) {
   const { visibility, setVisibility, id } = props;
   const { makeRequest, data, loading } = useFetch(getJobApplication);
-  // const { makeRequest: changeStatus } = useFetch(updateApplication);
   const [detailedView, setDetailedView] = useState<boolean>(false);
   const [selectedApplication, setSelectedApplication] = useState<null | any>(
     null

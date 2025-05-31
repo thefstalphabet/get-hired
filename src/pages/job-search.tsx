@@ -54,7 +54,7 @@ export default function JobSearch() {
 
       {jobs.length ? (
         <div
-          className="grid grid-flow-col grid-cols-2 p-5 gap-3 px-40"
+          className="grid grid-flow-col grid-cols-2 p-4 gap-2 px-44"
           style={{ backgroundColor: "#F6F6F9" }}
         >
           <JobsListing loading={jobsLoading || savedJobsLoading} />
