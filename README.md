@@ -1,4 +1,4 @@
-# 🌟 **Get Hired** – Your Gateway to Opportunities
+![Screenshot 2025-05-31 102835](https://github.com/user-attachments/assets/463c536d-4beb-4731-80ec-a7366a15bdb8)# 🌟 **Get Hired** – Your Gateway to Opportunities
 
 ![React](https://img.shields.io/badge/React-v18-blue?style=for-the-badge&logo=react)
 ![Supabase](https://img.shields.io/badge/Supabase-Backend-green?style=for-the-badge&logo=supabase)
@@ -34,16 +34,23 @@ This project leverages the following modern technologies to ensure the best perf
 Check out these awesome screenshots showcasing the sleek design and user-friendly interface of **Get Hired**:
 
 **As a Job Seeker**:
-![Home]({96E5488A-050B-44C1-BDCA-BFD22EEAB1AF}.png)
-![Manage Profile]({83D6B875-2B84-41C5-BEB3-27E36F9F627F}.png)
-![Job Search]({FC76BBD9-35B4-49DF-94D3-73CB4B00468F}.png)
-![JOb Detail View]({3F6F2FD4-CE3A-414F-B153-354F6B7F24BE}.png)
+![Home 1](https://github.com/user-attachments/assets/61bd2c3b-99e2-41d1-afc1-e8128d8be537)
+![Home 2](https://github.com/user-attachments/assets/a47b4cb9-d40f-41c4-8011-09501a965feb)
+![Sign In](https://github.com/user-attachments/assets/8d377ae3-c4a8-457a-ba63-42d5d4178ba7)
+![Sign Up](https://github.com/user-attachments/assets/91c5df97-1e2c-4629-9653-d780e6d2343c)
+![Home after Sign In](https://github.com/user-attachments/assets/38eea864-4922-4975-a6f4-6d7895c4b668)
+![Find Jobs](https://github.com/user-attachments/assets/32e95972-a50f-4cdb-b363-d35ae97fd4e0)
+![Find Jobs in list view](https://github.com/user-attachments/assets/9441c7eb-f6d1-489c-acc0-7aa38594894f)
+![Manage Account](https://github.com/user-attachments/assets/4b716efb-87b3-4d40-a07e-40269693c425)
+![Find available jobs](https://github.com/user-attachments/assets/15cd3dd7-4404-4f21-a06f-64116c8a85d2)
+![Job Apply](https://github.com/user-attachments/assets/4b4208b2-bf4c-46f0-9b3a-348655465551)
 
 **As a recruiter**:
-![Home]({FD6923DE-06F4-489F-A4C7-15BC3E2B201E}.png)
-![Post Job]({95F719BF-84B5-4326-BD4C-DB57811A301F}.png)
-![Job Search]({42F275E5-4376-42A9-93E5-2B873063F008}.png)
-![Add New Company]({973E4E6C-5529-4D34-ACA5-81DC353CF94E}.png)
+![Find Jobs](https://github.com/user-attachments/assets/bc298e9e-6a57-4d68-85c9-16d8dde3c283)
+![Job Applicants List Modal](https://github.com/user-attachments/assets/e6dff0f6-cdf0-44f4-9497-5c6eb7ea786a)
+![Edit Applicant modal](https://github.com/user-attachments/assets/66891cbc-a723-4923-a1c1-20f0dedb8a18)
+![Post Job](https://github.com/user-attachments/assets/9197756a-2942-460d-9353-cdd4ff997178)
+![Add new Company](https://github.com/user-attachments/assets/5ead5e48-2c6e-4aaf-b556-b66b671f557a)
 
 ## 🚀 **Getting Started**
 
